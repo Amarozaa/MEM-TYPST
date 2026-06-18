@@ -84,7 +84,9 @@
 // CAPÍTULO 5: IMPLEMENTACIÓN DEL JUEGO
 // ==========================================
 #capitulo(title: "Implementación del videojuego")[
-    
+
+    test prueba commit pc del profe
+
     Para el proyecto se decidió utilizar Unreal Engine 5.6. El juego se construyó tomando
 como base la plantilla _Third Person_ incluida en Unreal Engine. Esta corresponde a un
 ejemplo diseñado para demostrar las funcionalidades fundamentales del sistema de
