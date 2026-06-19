@@ -288,9 +288,174 @@ Este componente posee múltiples variables, entre las cuales están:
 + `Potion Count Text Var`: Tipo _Text_. Referencia al elemento de texto de la interfaz que
   muestra la cantidad de pociones disponibles.
 
-    
-]
+== Ataque melee del jugador
 
+El ataque del jugador se implementó en el componente de combate mencionado previamente.
+Al detectarse el input de ataque, antes de ejecutar la acción se comprueba que el jugador
+no esté ya atacando ni esquivando (variables `isAttacking` e `isDodging`) y, además, que
+no se esté reproduciendo el _Animation Montage_ de reacción a daño (`HitReact_Montage`),
+de modo que el jugador no pueda atacar mientras recibe un golpe. Si la condición se
+cumple, se setea `isAttacking` como `true`, se registra el ataque cuerpo a cuerpo en el
+_Game Instance_ (para fines de telemetría) y se ejecuta el _Animation Montage_ asociado al
+ataque, que contiene una secuencia de 3 golpes consecutivos.
+
+El encadenamiento de golpes (combo) se controla mediante la variable `isCombo`, que
+representa la intención del jugador de continuar la secuencia. Esta variable se activa de
+forma diferida: si el jugador vuelve a presionar el input de ataque mientras un ataque ya
+está en curso (es decir, cuando la condición inicial es `false` porque `isAttacking` es
+`true`), en lugar de iniciar un ataque nuevo se setea `isCombo` como `true`. De esta forma
+el sistema "almacena" la intención de combo hasta el siguiente punto de decisión.
+
+Dicho punto de decisión se evalúa mediante un _Animation Notify_ ubicado en el montage, al
+final del primer y segundo golpe. Cada vez que el notify se activa, se comprueba si el
+jugador sigue atacando y si tiene la intención de continuar (variables `isAttacking` e
+`isCombo`). Si ambas son verdaderas, se permite que la secuencia continúe y se resetea
+`isCombo` a `false` (a la espera de un nuevo input). En caso contrario, se detiene el
+montage prematuramente mediante `Montage_Stop` y se limpian las variables `isAttacking` e
+`isCombo`. Cuando el montage se completa o es interrumpido, se restablecen también
+`isAttacking` e `isCombo` a `false` y se restaura el estado de movimiento del personaje;
+en el caso de interrupción, se distingue además si la causa fue la reproducción del
+`HitReact_Montage`.
+
+/*
+#figure(
+  image("imagenes/montage-golpe1.png", width: 80%),
+  caption: [Primer golpe del montage de ataque],
+) <fig:montage-golpe1>
+*/
+
+/*
+#figure(
+  image("imagenes/montage-golpe2.png", width: 80%),
+  caption: [Segundo golpe del montage de ataque],
+) <fig:montage-golpe2>
+*/
+
+/*
+#figure(
+  image("imagenes/montage-golpe3.png", width: 80%),
+  caption: [Tercer golpe del montage de ataque],
+) <fig:montage-golpe3>
+*/
+
+Con respecto a la detección de impacto del ataque, la implementación se basa en un sistema
+de _trace_ por temporizador. El montage tiene asociado un Blueprint que hereda de _Anim Notify State_, el cual delimita la ventana en la
+que el arma debe poder golpear mediante un momento de inicio y un momento de fin dentro del
+montage. Al recibirse la señal de inicio, se invoca el evento `Begin Damage Trace`, que
+inicia un _timer_ en bucle que, cada 0.1 segundos, ejecuta un _Sphere Trace_ entre dos
+componentes de escena anclados al arma (`Start Sword Trace Pos` y `End Sword Trace Pos`),
+que marcan la base y la punta de la hoja. Si el _trace_ detecta una colisión válida, se
+llama a la función `ApplyDamage` sobre el actor impactado, utilizando el valor de la
+variable `Sword Damage` y al jugador como causante del daño. Al recibirse la señal de fin,
+se invoca el evento `End Damage Trace`, que invalida el _timer_, desactivando la detección
+hasta el siguiente golpe.
+
+== Proyectiles
+
+Tanto el jugador como el jefe pueden lanzar proyectiles. Es por esto que se decidió crear
+un Blueprint Class que represente la base de un proyectil (`BP_BaseProjectile`), para que
+después tanto el proyectil del jugador como el del jefe hereden desde esta clase base y
+ajusten variables específicas de cada uno. El comportamiento por defecto del proyectil es
+avanzar con velocidad constante en línea recta hasta chocar con algo, momento en el cual
+aplica daño al objetivo impactado, reproduce el efecto visual (VFX) correspondiente y se
+destruye.
+
+El proyectil base posee múltiples componentes, entre los cuales están:
+
++ `BoxCollision`: Componente de colisión (_Box Collision_). Define el volumen de colisión
+  principal del proyectil.
++ `Arrow`: Componente _Arrow_. Sirve como referencia visual y direccional para indicar hacia
+  dónde se moverá u orientará el proyectil.
++ `StaticMesh`: Componente _Static Mesh_. Representa la malla estática visible del
+  proyectil, en caso de necesitarse.
++ `ProjectileMovement`: Componente _Projectile Movement_. Controla el movimiento del
+  proyectil, incluyendo velocidad, gravedad y comportamiento de persecución (_homing_).
+
+Las variables de las que se compone son:
+
++ `Speed`: Tipo _Float_. Define la velocidad a la que se mueve el proyectil.
++ `Gravity`: Tipo _Float_. Controla cuánta influencia tiene la gravedad sobre el proyectil.
++ `Homing`: Tipo _Boolean_. Indica si el proyectil tiene la capacidad de perseguir
+  automáticamente a un objetivo.
++ `Base Damage`: Tipo _Float_. Define el daño base que causa el proyectil al impactar.
++ `Impact Effect`: Tipo _Particle System_. Es la referencia al sistema de partículas que se
+  reproduce cuando el proyectil impacta.
++ `Sound Impact`: Tipo _Sound Base_. Es la referencia al sonido que se reproduce cuando el
+  proyectil impacta.
+
+
+/*
+#figure(
+  image("imagenes/blueprint-proyectil-base.png", width: 80%),
+  caption: [Blueprint del proyectil base],
+) <fig:blueprint-proyectil-base>
+*/
+El comportamiento del proyectil base se define mediante los siguientes eventos. Al
+inicializarse (`BeginPlay`), el proyectil configura su componente de colisión para ignorar
+al actor que lo originó (`GetOwner`), evitando así que colisione consigo mismo o con quien
+lo disparó. Además, si la variable `Homing` está activada, se habilita el modo de
+persecución del componente _Projectile Movement_ (`bIsHomingProjectile`) y se establece el
+componente objetivo de la persecución.
+
+La detección de impacto se gestiona mediante un evento ligado al solapamiento del
+componente de colisión. Cuando el proyectil se solapa con otro actor, se comprueba que dicho
+actor no sea su propio dueño (`GetOwner`); de no serlo, se invoca la función
+`SpawnImpactEffect`, que reproduce el sistema de partículas `Impact Effect` en el punto de
+colisión junto con el sonido `Sound Impact`. A continuación se aplica el daño definido en
+`Base Damage` sobre el actor impactado —indicando al dueño del proyectil como causante del
+daño— y finalmente el proyectil se destruye.
+
+=== Proyectil del jugador
+
+Uno de los hechizos que puede utilizar el jugador es el de disparar un proyectil. El
+Blueprint que representa al proyectil del jugador (`BP_PlayerFireBall`) hereda de
+`BP_BaseProjectile` y configura las siguientes variables: `Speed` con un valor alto (para
+que sea más rápido que el proyectil del jefe), `Gravity` en 0 (sin influencia
+gravitacional), `Homing` como `false` (no persigue objetivos), y el `Impact Effect` con un
+VFX de explosión de fuego. En cuanto a los componentes visuales, el `StaticMesh` permanece
+vacío y en su lugar se utiliza un componente _Particle System_ que representa el efecto
+visual del proyectil en movimiento.
+
+/*
+#figure(
+  image("imagenes/bp-playerfireball.png", width: 80%),
+  caption: [Blueprint del proyectil del jugador],
+) <fig:bp-playerfireball>
+*/
+
+
+
+
+=== Proyectil del jefe
+
+El jefe puede lanzar proyectiles mediante ciertos ataques. El Blueprint que los representa
+(`BP_BossSlimeBall`) hereda de `BP_BaseProjectile` y configura sus variables de la
+siguiente manera: `Speed` con un valor moderado (menor que el del jugador), `Gravity` en 0,
+el `Impact Effect` con un VFX de explosión de slime, y `Homing` que varía según el tipo de
+ataque. El jefe dispone de dos variantes de ataque con proyectiles: uno donde el proyectil
+avanza en línea recta a velocidad constante (`Homing` en `false`), y otro donde persigue
+activamente al jugador hasta alcanzarlo o explotar tras un tiempo determinado (`Homing` en
+`true`). Al igual que el proyectil del jugador, el `StaticMesh` permanece vacío y se emplea
+un componente _Particle System_ para el efecto visual del proyectil en movimiento.
+
+Esta subclase sobreescribe (_override_) el evento `BeginPlay` para extender el
+comportamiento heredado: al instanciarse, primero ejecuta el `BeginPlay` de la clase base
+(configurando la colisión y el _homing_ según corresponda) y, a continuación, inicia un
+temporizador de 5 segundos. Transcurrido ese tiempo, si el proyectil aún no ha impactado
+contra nada, spawnea un sistema de partículas Niagara (`NS_Projectile_03_Hit`) en su
+ubicación actual y se autodestruye, garantizando así que los proyectiles que no alcancen al
+jugador no permanezcan indefinidamente en la escena.
+
+
+/*
+#figure(
+  image("imagenes/bp-bossslimeball.png", width: 80%),
+  caption: [Blueprint del proyectil del jefe],
+) <fig:bp-bossslimeball>
+
+*/
+
+]
 // ==========================================
 // CAPÍTULO 6: PRUEBA DE CONCEPTO
 // ==========================================
