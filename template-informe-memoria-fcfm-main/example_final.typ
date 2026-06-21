@@ -198,14 +198,23 @@ entre las cuales están:
 
 La funcionalidad principal de este componente es una función llamada `IncreaseVal`, la
 cual recibe como parámetros un enum que indica la estadística que se quiere modificar,
-junto con el valor del cambio. Si la estadística a modificar es la vida (`health`), se
-disminuye la variable de vida por el valor deseado. Luego se calcula el porcentaje de vida
-actual (`health/maxHealth`), para finalmente, desde la referencia a la barra (`Progress Bar Ref`), llamar al método `Set Percent`, que se encarga de actualizar visualmente la
-barra con el porcentaje calculado previamente. En caso de recibir el enum perteneciente a
-la estadística de maná, el proceso es análogo. Para la estadística de stamina también es
-similar, con la diferencia de que el Widget de la stamina no se muestra siempre, solo
-cuando se está gastando o recuperando stamina, similar a como lo implementan juegos como
-_The Legend of Zelda: Breath of the Wild_
+junto con el valor del cambio (positivo para incrementar, negativo para disminuir). Según
+el valor del enum, se actualiza la estadística correspondiente sumándole el valor recibido,
+acotando siempre el resultado entre cero y su valor máximo (`maxHealth`, `maxMana` o
+`maxStamina`, según corresponda) mediante la función `FClamp`, de modo que ninguna
+estadística pueda exceder su máximo ni quedar en negativo.
+
+Si la estadística modificada es la vida (`health`), tras actualizarla se realizan dos
+acciones en paralelo: por un lado, se comprueba si la vida resultante es menor o igual a
+cero, y de ser así se invoca el evento `Die`, que da inicio a la secuencia de muerte del
+jugador; por otro, se calcula el porcentaje de vida actual (`health`/`maxHealth`) y, desde
+la referencia a la barra (`Progress Bar Ref`), se llama al método `Set Percent`, que
+actualiza visualmente la barra con dicho porcentaje. En caso de recibir el enum
+perteneciente a la estadística de maná, el proceso de actualización visual es análogo.
+
+Para la estadística de stamina también es similar, con la diferencia de que el widget de
+la stamina no se muestra siempre, solo cuando se está gastando o recuperando stamina,
+similar a como lo implementan juegos como _The Legend of Zelda: Breath of the Wild_
 #footnote[
   The Legend of Zelda: Breath of the Wild es un videojuego de acción y aventuras en mundo
   abierto desarrollado y publicado por Nintendo en 2017. El juego introduce mecánicas
@@ -215,9 +224,9 @@ _The Legend of Zelda: Breath of the Wild_
 ].
 
 Así, al recibirse el enum de stamina, se debe revisar si existe un widget creado en
-pantalla. Si se posee, simplemente se le indica al Widget que cambie su
-porcentaje y al final se revisa si el jugador posee toda la stamina. En caso contrario,
-significa que el widget no ha sido creado, por lo que se crea y se añade a la pantalla.
+pantalla. Si se posee, simplemente se le indica al widget que cambie su porcentaje y al
+final se revisa si el jugador posee toda la stamina. En caso contrario, significa que el
+widget no ha sido creado, por lo que se crea y se añade a la pantalla.
 
 Finalmente, se revisa si la stamina es mayor o igual al máximo (100%). En caso de ser
 verdadero, significa que el jugador ya posee toda la stamina, por lo que se procede a
@@ -231,6 +240,50 @@ creando así un sistema de regeneración continua controlada por condiciones. Es
 mencionar que este enfoque de regeneración mediante timers de alta frecuencia podría
 optimizarse en el futuro.
 
+== Recepción de daño y muerte
+
+El procesamiento del daño y la curación que recibe el jugador se centraliza en el evento
+`ReceiveAnyDamage` de `BP_ThirdPersonCharacter`, el cual es invocado automáticamente por el
+motor cada vez que se llama a la función `ApplyDamage` sobre el jugador, sin importar el
+origen del daño. Este evento recibe el valor a aplicar y, según su signo, distingue entre
+dos casos.
+
+Si el valor es negativo, se interpreta como curación: se invoca directamente `IncreaseVal`
+sobre `BPC_Stats` con el valor invertido, restaurando la vida del jugador según lo descrito
+en la sección anterior.
+
+Si el valor es positivo, se interpreta como daño recibido, y se ejecuta una secuencia más
+elaborada. En primer lugar, se intenta identificar si el causante del daño es el jefe
+(`BP_Slime`); de ser así, se consulta su _Behavior Tree_ para obtener cuál fue su último
+ataque (`LastAttack`) y se registra en el `PlayerMetricsComponent` mediante
+`RegisterBossAttackHit`, asociando así cada golpe recibido con el tipo de ataque que lo
+causó. A continuación, se distingue si el jugador se encontraba esquivando en el momento del
+impacto (`isDodging`): si es así, se registra como un dodge fallido mediante
+`RegisterDodgeResult`; en caso contrario, se registra el daño normalmente mediante
+`RegisterDamageTaken`, y se reproduce el sonido de dolor correspondiente. Si además el
+jugador se encontraba dentro de una zona específica del combate (`isInTankZone`), se efectúa
+un registro adicional (`RegisterDamageTakenInTankZone`).
+
+Finalmente, se aplica el daño a la vida del jugador mediante `IncreaseVal` y, si el daño es
+mayor a cero, se reproduce la animación de reacción a daño (`HitReact_Montage`), que
+interrumpe temporalmente el movimiento del jugador. Esta interrupción respeta las acciones
+que ya estén en curso: si el jugador se encuentra en medio de la animación de beber poción,
+de lanzar un hechizo, o del combo de ataque con espada, el `HitReact_Montage` no detiene el
+movimiento, evitando que la reacción a daño corte abruptamente otra acción ya iniciada.
+
+Cuando la vida del jugador llega a cero, `IncreaseVal` invoca el evento `Die`, que gestiona
+la secuencia de derrota. Este evento desactiva el componente de combate, reproduce una
+animación de derrota (`MO_DefeatDaiko`) y, una vez finalizada, pausa el juego, muestra el
+widget de "Try Again" y habilita el cursor del mouse. Si la derrota ocurrió en el nivel del
+jefe, adicionalmente se vuelca a un archivo el registro de resultados del combate mediante
+`DumpCombatResultToFile`, dato que forma parte del sistema de recolección de métricas del
+estudio de usuario.
+/*
+#figure(
+  image("imagenes/pantalla-muerte.png", width: 80%),
+  caption: [Pantalla mostrada al morir el jugador],
+) <fig:pantalla-muerte>
+*/
 == Componente de combate
 
 Como se mencionó anteriormente, se creó un _Actor Component_ llamado `BPC_Combat` que se
@@ -299,7 +352,7 @@ interna de cada Blueprint. Actualmente el juego solo cuenta con soporte para tec
 Los `Input Actions` utilizados por el componente de combate (`BPC_Combat`) y sus controles
 asociados son los siguientes:
 
-#table(
+#align(center, table(
   columns: 2,
   align: (left, left),
   table.header([*Input Action*], [*Control*]),
@@ -311,7 +364,7 @@ asociados son los siguientes:
   [`IA_Lock`], [Click rueda del mouse],
   [`IA_MyInteract`], [E],
   [`IA_EscapeMenu`], [Escape],
-)
+))
 
 En las secciones siguientes, cada acción del jugador se describe haciendo referencia
 explícita al `Input Action` correspondiente (por ejemplo, `IA_Attack` o `IA_Dash-Roll`),
@@ -569,11 +622,12 @@ fijado mediante el sistema de _Target Lock_.
 
 La función `GetRollMontage` determina cuál de las cuatro animaciones de roll ejecutar a
 partir de la dirección de movimiento del jugador. Para ello construye el vector de intención
-de movimiento en espacio mundo, combinando la entrada de movimiento (`MovInput`) con la
-rotación de la cámara (la rotación del controlador), y lo normaliza. Luego proyecta ese
-vector sobre el _Forward Vector_ y el _Right Vector_ del personaje mediante productos punto,
-y compara las magnitudes de ambas proyecciones: si la componente hacia adelante/atrás es
-mayor o igual que la lateral, el roll se considera frontal; en caso contrario, lateral.
+de movimiento en espacio mundo, combinando la entrada de movimiento (`MovInput`, actualizada
+continuamente mediante el `Input Action` `IA_Move`) con la rotación de la cámara (la
+rotación del controlador), y lo normaliza. Luego proyecta ese vector sobre el _Forward
+Vector_ y el _Right Vector_ del personaje mediante productos punto, y compara las magnitudes
+de ambas proyecciones: si la componente hacia adelante/atrás es mayor o igual que la lateral,
+el roll se considera frontal; en caso contrario, lateral.
 
 Una vez determinado el eje dominante, el signo del producto punto correspondiente define el
 sentido exacto y, con ello, el _Animation Montage_ que se retorna: hacia adelante
@@ -655,12 +709,154 @@ con su origen— definan explícitamente dónde debe apuntar la cámara; si no l
 utiliza directamente la ubicación del objetivo. Además, mientras el fijado está activo, se
 reposiciona en pantalla el widget de la barra de stamina.
 
+Actualmente, la única clase que implementa la interfaz `BPI_Lockable` es el jefe
+(`BP_Slime`). Esto se debe a que su animación de ataque de charco  desplaza visualmente al personaje hacia abajo —simulando que se hunde o agacha en el charco— sin que dicho desplazamiento se traduzca en un movimiento real del
+actor en el mundo. Si la cámara utilizara directamente la ubicación del actor (su origen),
+el punto de fijado quedaría desalineado respecto a la posición visual del jefe durante esta
+animación. Al implementar `BPI_Lockable`, el jefe puede reportar un punto de fijado ajustado
+a su posición visual real en cada momento, manteniendo la cámara correctamente orientada
+incluso cuando la animación no coincide con la posición lógica del actor.
+
 /*
 #figure(
   image("imagenes/target-lock.png", width: 80%),
   caption: [Jugador con un objetivo fijado mediante el sistema de Target Lock],
 ) <fig:target-lock>
 */
+
+== Correr
+
+La carrera permite al jugador desplazarse a mayor velocidad a cambio de consumir stamina, y está implementada en el componente `BPC_Combat` mediante el `Input Action` `IA_Run`. A diferencia de otras acciones, esta responde a las distintas fases del input —el momento en que se presiona, mientras se mantiene presionado, y cuando se suelta—, lo que permite controlar tanto la activación como el gasto continuo de stamina y el regreso al estado normal.
+
+Como condición común a todas las fases, la carrera solo opera si no se está reproduciendo la animación de reacción a daño (`HitReact_Montage`), de modo que recibir un golpe interrumpe la posibilidad de correr.
+
+Al presionar el input, si el jugador dispone de stamina suficiente, se aumenta su velocidad
+de movimiento (`MaxWalkSpeed`) al valor definido por la variable `runSpeed` y se bloquea la
+regeneración de stamina (`canRecoverStamina` en `false`), ya que no debe recuperarse stamina
+mientras se corre. Mientras el input se mantiene presionado, y siempre que aún quede stamina,
+se consume de forma continua llamando a la función `IncreaseVal` del componente `BPC_Stats`
+con el valor de `StaminaRunUse` en negativo, lo que reduce progresivamente la stamina
+disponible durante la carrera. Finalmente, al soltar el input, se restaura la velocidad de
+movimiento a su valor normal y se vuelve a habilitar la regeneración de stamina, devolviendo
+al jugador a su estado de desplazamiento habitual.
+
+/*
+Aca pondre una figura del jugador corriendo, pero no tengo una imagen todavia
+*/
+
+== Interactuar
+
+La interacción del jugador con elementos del entorno está implementada en el componente
+`BPC_Combat` mediante el `Input Action` `IA_MyInteract`. Actualmente esta acción está
+orientada a la interacción con palancas: al recibirse el input, primero se comprueba que
+exista una palanca con la que el jugador pueda interactuar en ese momento, mediante la
+referencia `currentLever`. Si existe dicha referencia, se procede a verificar si ya fue
+utilizada (`bAlreadyUsed`); de no haberlo sido, se invoca la función `PlayLever` sobre el
+Blueprint de la palanca (`BP_Lever`), que se encarga de reproducir su animación y de
+ejecutar el efecto asociado a su activación.
+
+// TODO: mencionar algo asi pos: "el funcionamiento interno de las palancas se detalle en..."
+/*l funcionamiento interno de las palancas se detalla
+en la sección @sec:elementos-nivel (o el label/número que corresponda a esa sección
+*/
+
+== Menú de pausa
+
+El acceso al menú de pausa está implementado en el componente `BPC_Combat` mediante el
+`Input Action` `IA_EscapeMenu`. Al recibirse el input, se comprueba si el juego ya se
+encuentra pausado; si no lo está, se procede a abrirlo: se instancia el widget del menú de
+pausa (`WB_PauseMenu`) y se añade al _viewport_, se cambia el modo de entrada a uno orientado
+exclusivamente a la interfaz (de forma que el movimiento del mouse deje de controlar la
+cámara), se habilita la visibilidad del cursor, y finalmente se pausa el juego.
+/*
+#figure(
+  image("imagenes/menu-pausa.png", width: 80%),
+  caption: [Menú de pausa del juego],
+) <fig:menu-pausa>
+*/
+
+
+== Widgets del jugador
+
+La interfaz de usuario asociada al jugador se compone de varios _Widget Blueprints_, cada
+uno encargado de mostrar un aspecto específico del estado del jugador o de gestionar una
+pantalla concreta. La mayoría de estos widgets se actualizan desde la lógica de juego ya
+descrita —principalmente desde el componente `BPC_Stats`—, por lo que su Blueprint interno
+es mínimo y se limitan a su composición visual.
+
+El widget principal es el HUD del jugador (`WB_PlayerHUD`), que actúa como contenedor de los
+elementos que se muestran de forma persistente durante el juego. Está compuesto por un
+_Canvas Panel_ que agrupa la barra de vida (`WB_PlayerHealth`), la barra de maná
+(`WB_PlayerMana`) y el widget de equipamiento (`WB_Equips`). Este widget no posee lógica en
+su grafo de eventos, ya que su única función es disponer espacialmente en pantalla a los
+sub-widgets que contiene.
+
+Los widgets de barra de vida (`WB_PlayerHealth`) y de maná (`WB_PlayerMana`) son
+estructuralmente simples: cada uno se compone de un _Canvas Panel_ que contiene un borde
+decorativo y una barra de progreso (_Progress Bar_). No poseen lógica en su grafo de
+eventos, ya que su valor se actualiza directamente desde la función `IncreaseVal` de
+`BPC_Stats`, la cual modifica el porcentaje de la barra cada vez que cambia la estadística
+correspondiente, tal como se describió en la sección de estadísticas del jugador.
+
+El widget de equipamiento (`WB_Equips`) muestra los consumibles y hechizos disponibles del
+jugador. Se compone de una caja horizontal con la imagen del hechizo de fuego
+(`Fireball_IMG`) y, superpuestos, la imagen de la poción (`Potion_IMG`) junto con un texto
+que indica la cantidad de pociones restantes (`PotionCountText`). Tampoco posee lógica en su
+grafo, pues tanto el ícono activo como el contador se actualizan desde `BPC_Combat`.
+
+Finalmente, el widget de fijado de objetivo (`WB_TargetLock`) consiste únicamente en una
+imagen (un ícono) que se ancla sobre el enemigo fijado, según lo descrito en la sección de
+_Target Lock_.
+
+=== Barra de stamina (`WB_PlayerStamina`)
+
+A diferencia de las barras de vida y maná, la barra de stamina sí posee lógica propia en su
+Blueprint, ya que se representa mediante un material en lugar de una _Progress Bar_ estándar.
+El widget se compone de una única imagen (`Image_176`) a la que se le aplica un material
+dinámico, lo que permite representar la barra de stamina con una forma circular.
+
+La actualización del nivel de stamina se realiza mediante la función `SetPercent`. Esta
+función primero comprueba si la instancia dinámica del material (`RoundStaminaBarInst`) ya
+fue creada: si es válida, simplemente actualiza el parámetro escalar `Percent` del material
+con el nuevo valor. Si aún no existe, crea una instancia dinámica a partir del material base
+(`M_StaminaBar_Inst`), la asigna como _brush_ de la imagen, y luego actualiza su parámetro
+`Percent`. De esta forma, la instancia del material se crea una sola vez (la primera vez que
+se actualiza la barra) y se reutiliza en las llamadas posteriores.
+
+=== Widget del menú de pausa (`WB_PauseMenu`)
+
+El widget del menú de pausa presenta dos botones dispuestos verticalmente: reanudar
+(`ResumeBtn`) y volver al menú principal (`MainMenuButton`). Su lógica responde a los eventos
+de pulsación de cada botón. Al presionar el botón de reanudar, se reanuda el juego
+(quitando la pausa), se restablece el modo de entrada a uno orientado exclusivamente al
+juego, se oculta el cursor del mouse, y se elimina el propio widget de la pantalla,
+devolviendo al jugador al combate. Al presionar el botón de menú principal, se reanuda el
+juego y se carga el nivel del menú principal (`Lvl_MainMenu`).
+
+=== Pantalla de derrota (`WB_TryAgain`)
+
+Esta pantalla se muestra cuando el jugador es derrotado e incluye un mensaje de "Game Over"
+junto con dos botones: reintentar (`Retry Button`) y volver al menú principal
+(`Main Menu Button`). Al presionar reintentar, se reanuda el juego, se incrementa el contador
+de intentos (`AttemptNumber`) almacenado en el `SlimeGameInstance` —dato relevante para el
+seguimiento del estudio— y se recarga el nivel actual, permitiendo al jugador volver a
+enfrentar el combate. Al presionar el botón de menú principal, se reanuda el juego y se carga
+el nivel del menú principal.
+
+== Enemigos
+   === Esqueleto normal
+   === Esqueleto mago
+   === Esqueleto caballero
+== Jefe (BP_Slime)
+== Sistema de métricas y telemetría
+== Niveles
+   === Lvl_Tutorial
+   === Lvl_PreBoss
+   === Lvl_ThirdPerson
+   === Elementos de nivel
+   === Widgets de tutorial
+== Widgets generales (MainMenu, WinnerScreen...)
+
 
 ]
 // ==========================================
