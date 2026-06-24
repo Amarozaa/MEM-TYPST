@@ -59,16 +59,100 @@
 #capitulo(title: "Diseño del videojuego")[
     #lorem(100)
     
-    == Género y mecánicas principales 
+    == Género y mecánicas principales
     #lorem(120)
-    
-    == Diseño de niveles y entornos de prueba 
-    #lorem(150)
-    
-    == Diseño y arquetipos de enemigos
-    #lorem(100)
 
-    asdadaasdas
+    == Diseño y arquetipos de enemigos
+
+    El diseño de los enemigos no buscó únicamente escalar la dificultad de forma
+    progresiva, sino representar distintos arquetipos de combate, cada uno pensado para
+    poner a prueba una forma distinta de jugar. En lugar de variar solo la vida o el daño
+    de un mismo tipo de enemigo, se optó por diferenciar a cada uno por su patrón de
+    comportamiento, de manera que el jugador deba ajustar su forma de jugar -y no solo su
+    nivel de atención- al enfrentar a cada arquetipo.
+
+    Esta decisión responde a dos objetivos que se buscó conciliar. El primero es
+    puramente de diseño de juego: un elenco pequeño de enemigos claramente diferenciados
+    resulta más legible para el jugador que uno numeroso pero homogéneo, ya que cada
+    encuentro comunica de inmediato qué tipo de respuesta espera de quien lo enfrenta. El
+    segundo objetivo, propio de este proyecto, es que esa misma diferenciación permite que
+    el comportamiento del jugador frente a cada arquetipo sea informativo: si los enemigos
+    fuesen variaciones menores entre sí, la forma en que el jugador los enfrenta no
+    distinguiría con claridad un estilo de juego de otro. Por ello, los tres enemigos
+    "regulares" del juego se diseñaron para ser, en la práctica, situaciones de prueba
+    distintas entre sí, mientras que el jefe se diseñó como un antagonista capaz de
+    responder a los resultados de esas pruebas. El detalle de cómo se llega a esa
+    progresión a lo largo de los niveles del juego se aborda en la siguiente sección.
+
+    El primer arquetipo, el esqueleto normal, corresponde al enemigo más básico del
+    juego: un enemigo cuerpo a cuerpo que persigue al jugador y ataca de forma directa, sin
+    variaciones ni segundas intenciones. Su rol es introducir el ciclo de combate
+    fundamental -acercarse, esquivar y golpear- sin agregar elementos adicionales que
+    puedan confundir al jugador mientras aún está aprendiendo los controles. Por este
+    motivo es el único enemigo presente durante el tutorial. Su segunda aparición, ya en
+    el nivel previo al combate y junto a los demás arquetipos, no busca representar un desafío en
+    sí mismo, sino servir de punto de comparación: al ser un enemigo "neutro", la forma en
+    que el jugador lo enfrenta funciona como una referencia base respecto a la cual
+    contrastar su comportamiento frente a los dos arquetipos siguientes, ambos más
+    especializados.
+
+    El segundo arquetipo, el esqueleto mago, se diseñó como contraparte directa del
+    anterior: en lugar de perseguir al jugador, privilegia el combate a distancia y
+    permanece en su posición lanzando ataques a rango, recurriendo al cuerpo a cuerpo
+    únicamente cuando es el propio jugador quien decide acortar el espacio entre ambos. Su
+    propósito es introducir una decisión táctica explícita que el esqueleto normal no
+    plantea -acercarse para forzar el combate cuerpo a cuerpo contra un enemigo que de otro
+    modo se mantiene a distancia, o permanecer lejos y lidiar con sus ataques a rango-, y
+    con ello exponer una primera diferencia de fondo entre estilos de juego: quienes
+    prefieren resolver los encuentros de forma agresiva y cercana, frente a quienes
+    prefieren un acercamiento más cauteloso y a distancia. Esta es, de los tres arquetipos
+    regulares, la diferencia de comportamiento más directa de observar.
+
+    El tercer arquetipo, el esqueleto caballero, se diseñó con un propósito distinto a los
+    dos anteriores: a diferencia del esqueleto normal y del mago, cuyos ataques se
+    resuelven con relativamente poca preparación visible, los dos ataques del caballero
+    están marcadamente telegrafiados, es decir, tienen una preparación larga y claramente
+    reconocible antes de conectar. Su rol no es presionar al jugador con velocidad o
+    cantidad de golpes, sino enseñarle a identificar una señal de ataque evidente y a
+    esquivarla con el timing correcto, en lugar de reaccionar de forma genérica ante
+    cualquier ataque. Pero ese rol no es solo pedagógico: junto con enseñarle al jugador a
+    leer este tipo de señal, el caballero es también el arquetipo a través del cual el
+    juego observa cómo responde efectivamente el jugador frente a ella -si esquiva o no,
+    hacia qué lado, y con qué consistencia-, comportamiento que pasa a formar parte del
+    perfil de juego utilizado más adelante para adaptar al jefe (capítulo 4). Al ser el
+    primer enemigo del juego que exige este tipo de lectura, su rol dentro de la
+    progresión es cerrar la preparación del jugador justo antes del enfrentamiento contra
+    el jefe, cuyos ataques son considerablemente más numerosos y
+    variados.
+
+    Tomados en conjunto, estos tres arquetipos no se diseñaron para ser superados de forma
+    aislada, sino como un pequeño catálogo de situaciones de combate -ritmo básico, gestión
+    de distancia y lectura de ataques telegrafiados- que, sumadas, dan una imagen
+    razonablemente completa de cómo juega quien los enfrenta. Por eso, antes que pensarlos
+    como tres enemigos sueltos, conviene entenderlos como las tres "preguntas" que el juego
+    le hace al jugador antes de llegar al jefe.
+
+    Finalmente, el jefe constituye un arquetipo distinto de los anteriores: en vez de
+    tratarse de un enemigo más dentro de la progresión, es un antagonista único, capaz de
+    adoptar distintas formas y de recurrir a un repertorio amplio de ataques. Aquí se
+    consideró deliberadamente la alternativa más habitual en juegos de este género -enfrentar
+    al jugador a varios jefes distintos, o a un mismo jefe dividido en fases marcadamente
+    diferentes entre sí- y se optó en su lugar por un solo jefe versátil. La razón de fondo
+    es que, bajo ese enfoque alternativo, la dificultad se ajustaría eligiendo qué jefe o
+    qué fase enfrenta cada jugador; en este proyecto, en cambio, se buscó que fuera el
+    comportamiento de un mismo antagonista -y no la elección de un enemigo distinto- el que
+    se ajustara según cómo se haya comportado el jugador frente a los tres arquetipos
+    anteriores. Esta decisión de diseño es la base sobre la cual se construye el sistema
+    adaptativo descrito en el capítulo 4: los arquetipos enfrentados antes del jefe no solo
+    entregan una progresión de dificultad, sino que permiten caracterizar el estilo de
+    juego de quien los enfrenta, perfil que luego se traduce en ajustes sobre el
+    comportamiento del jefe.
+
+    El detalle técnico de la implementación de cada uno de estos enemigos -estructura,
+    comportamiento e inteligencia artificial- se documenta en el capítulo 5.
+
+    == Diseño de niveles y entornos de prueba
+    #lorem(150)
 
 ]
 
