@@ -1754,12 +1754,94 @@ contenido como el nombre del archivo.
 
 
 == Niveles
-   === Lvl_Tutorial
-   === Lvl_PreBoss
-   === Lvl_ThirdPerson
-   === Elementos de nivel
-   === Widgets de tutorial
+
+Los niveles del juego comparten una ambientación de mazmorra, construida a partir de
+_assets_ obtenidos principalmente de una entrega gratuita de Fab (Unreal Engine
+Marketplace), complementados con _assets_ de otras fuentes. La estructura general de
+los niveles —cómo se distribuyen y conectan entre sí— se describe en la sección 3.3;
+a continuación se documentan los elementos reutilizables que los componen y, luego,
+la implementación particular de cada nivel.
+
+=== Elementos de nivel
+
+==== Maniquí
+
+// TODO: enemigo funcional usado como objetivo de práctica, con Blueprint propio;
+// pendiente el condensado de su lógica.
+
+==== Puerta (`BP_Door`)
+
+// TODO: pendiente el condensado de su lógica (activación, animación de apertura).
+
+==== Espinas
+
+// TODO: pendiente detallar el mecanismo (trampa de daño, plataforma, etc.).
+
+==== Puente
+
+// TODO: pendiente detallar si posee lógica propia o es únicamente geometría.
+
+==== Palanca
+
+// TODO: pendiente el condensado de su lógica (qué activa, a qué puerta u
+// obstáculo afecta).
+
+==== Escalera
+
+Corresponde únicamente a un _Static Mesh_ de escalera, sin lógica de Blueprint
+asociada.
+
+=== Lvl_Tutorial
+
+El nivel de tutorial consiste en un mapa de mazmorra que combina varios de los
+elementos descritos arriba —un maniquí, puertas (`BP_Door`), espinas y un puente—
+junto con un esqueleto normal que ronda libremente por el área. La sala inicial
+presenta al jugador con un maniquí; al derrotarlo, se abre una puerta que da paso
+al resto del nivel.
+
+// TODO: detallar la lógica propia del Level Blueprint de `Lvl_Tutorial` (qué
+// dispara la apertura de la puerta al matar al maniquí, secuencia del resto del
+// nivel, etc.) una vez se cuente con su condensado.
+
+=== Lvl_PreBoss
+
+El nivel previo al jefe combina palancas, puertas, escaleras (como elemento
+puramente visual/de navegación) y los tres tipos de enemigo esqueleto descritos
+anteriormente (esqueleto normal, esqueleto mago y esqueleto caballero).
+
+// TODO: detallar la lógica propia del Level Blueprint de `Lvl_PreBoss` (qué
+// activan las palancas, distribución de los enemigos, etc.) una vez se cuente con
+// su condensado.
+
+=== Lvl_ThirdPerson
+
+// TODO: pendiente describir este nivel.
+
+=== Widget de tutorial (`WB_PopChico`)
+
+El widget `WB_PopUpChico` muestra los textos de tutorial (controles del juego) como
+un popup centrado en la parte inferior de la pantalla. Su aparición y desaparición
+están controladas por zonas delimitadas mediante _Box Collision_ distribuidas en el
+nivel: al entrar a una de estas zonas se muestra el popup, y al salir de ella se
+oculta. El contenido mostrado depende únicamente de cuál `Box Collision` específica
+fue la que se activó —cada zona define directamente su propio texto—, sin depender
+de la dirección o el lado por el que el jugador haya entrado.
+
+// TODO: detallar el condensado del Blueprint de `WB_PopUpChico` / de las zonas de
+// activación, una vez se cuente con él.
+
 == Widgets generales (MainMenu, WinnerScreen...)
+
+=== Menú principal (`WB_MainMenu`)
+
+=== Pantalla de victoria (`WB_WinnerScreen`)
+
+=== Barra de vida del jefe (`WB_BossHealth`)
+
+=== Barra de vida de enemigos normales (`WB_NormalHealth`)
+
+// TODO: ya mencionada de pasada en la sección de los esqueletos (barra de vida que
+// rota hacia la cámara); detallar aquí su composición y lógica propia, si la tiene.
 
 
 ]
