@@ -254,7 +254,7 @@ en la sección anterior.
 
 Si el valor es positivo, se interpreta como daño recibido, y se ejecuta una secuencia más
 elaborada. En primer lugar, se intenta identificar si el causante del daño es el jefe
-(`BP_Slime`); de ser así, se consulta su _Behavior Tree_ para obtener cuál fue su último
+(`BP_Slime`); de ser así, se consulta su _Behaviour Tree_ para obtener cuál fue su último
 ataque (`LastAttack`) y se registra en el `PlayerMetricsComponent` mediante
 `RegisterBossAttackHit`, asociando así cada golpe recibido con el tipo de ataque que lo
 causó. A continuación, se distingue si el jugador se encontraba esquivando en el momento del
@@ -842,13 +842,917 @@ de intentos (`AttemptNumber`) almacenado en el `SlimeGameInstance` —dato relev
 seguimiento del estudio— y se recarga el nivel actual, permitiendo al jugador volver a
 enfrentar el combate. Al presionar el botón de menú principal, se reanuda el juego y se carga
 el nivel del menú principal.
-
 == Enemigos
-   === Esqueleto normal
-   === Esqueleto mago
-   === Esqueleto caballero
+
+
+=== Esqueleto normal
+
+El enemigo más simple del juego es el esqueleto normal (`BP_Skeleton`), un enemigo de
+combate cuerpo a cuerpo cuya estructura de componentes y comportamiento sientan la base
+sobre la cual se construyen los demás enemigos. Se compone de una cápsula de colisión como
+componente raíz, sobre la cual se ancla un componente de barra de vida (_Widget Component_);
+una malla esquelética (`Mesh`) que incluye dos componentes de escena (`StartOfTrace` y
+`EndOfTrace`) ubicados en la espada, utilizados para la detección de impacto del ataque, y
+un componente _Arrow_ como referencia direccional; un componente de movimiento de personaje;
+y un componente `PawnSensing`, encargado de la detección del jugador.
+
+
+#figure(
+  image("imagenes/BP_Skeleton.png", height: 40%),
+  caption: [Blueprint perteneciente al esqueleto normal],
+) <fig:bp-skeleton>
+
+
+==== Comportamiento general
+
+Durante el juego (`ReceiveTick`), la barra de vida rota constantemente para orientarse hacia
+la cámara del jugador, de modo que siempre se muestre de frente independientemente de la
+posición del enemigo.
+
+Al iniciarse (`ReceiveBeginPlay`), el esqueleto inicializa su barra de vida al 100% y
+almacena su posición de aparición en la _Blackboard key_ `spawnPoint`, la cual utiliza
+posteriormente para regresar a su punto de origen.
+
+La detección del jugador se gestiona mediante el evento `On See Pawn` del componente
+`PawnSensing`. Al detectar al jugador, el esqueleto invoca una función auxiliar
+(`hasseen`), la cual castea el Pawn detectado a `BP_ThirdPersonCharacter` —validando que
+corresponda efectivamente al jugador— y, de ser así, marca la _Blackboard key_
+`hasSeenPlayer?` como `true`. Esta misma función auxiliar es invocada también desde el
+evento de recepción de daño, descrito a continuación.
+
+Adicionalmente, al detectar al jugador se inicia un temporizador en bucle de 0.5 segundos
+que dispara el evento `REGISTER_DISTANCE`, el cual obtiene la referencia al
+`SlimeGameInstance` e invoca `RegisterDistance`, pasando como parámetro la distancia
+actual entre el esqueleto y el jugador. Este mecanismo —compartido con el esqueleto
+caballero, descrito más adelante— es el que alimenta las variables de distancia de la
+sección de métricas y telemetría durante la fase previa al combate contra el jefe.
+
+==== Recepción de daño y muerte
+
+El procesamiento de daño se centraliza en el evento `ReceiveAnyDamage`. Al recibir daño, en
+primer lugar se invoca `hasseen` sobre el causante del daño, de modo que un golpe del
+jugador también provoca que el esqueleto lo detecte (incluso si no lo había visto
+previamente). A continuación, se resta el daño recibido a la variable `health`, y se
+actualiza el porcentaje de la barra de vida correspondiente
+(`health` / `maxHealth`).
+
+Si la vida resultante es menor o igual a cero, el esqueleto reproduce un sonido de muerte
+(`SkeleDeath`) y se destruye. Adicionalmente, se obtiene la referencia al jugador
+(`BP_ThirdPersonCharacter`) y se invoca sobre él la función `RemoveWidget`, encargada de
+eliminar el indicador visual asociado a este enemigo (por ejemplo, el del sistema de _Target
+Lock_, en caso de que estuviera fijado sobre él al momento de morir).
+
+Internamente, `RemoveWidget` limpia la variable `Target Lock` del jugador y obtiene la
+referencia al widget asociado (`TargetLockWidget`), al cual destruye mediante
+`K2_DestroyActor`. A continuación, restablece las variables de movimiento del jugador
+(`bOrientRotationToMovement` a `true` y `bUseControllerDesiredRotation`), revirtiendo el
+cambio de orientación aplicado mientras el enemigo estaba fijado como objetivo, y finalmente
+destruye el componente del widget (`K2_DestroyComponent`).
+
+// TODO: verificar si existe lógica adicional de "dispatch"/delegate al morir
+// (aparece un `CallDelegate` en el condensado original junto al sonido de muerte,
+// no se determinó con certeza a qué delegate corresponde ni qué otros sistemas
+// lo escuchan).
+
+==== Ataque
+
+Al igual que en el ataque del jugador, el inicio y fin de la ventana de detección de
+impacto están delimitados por un _Anim Notify State_ anclado al montage de ataque, el
+cual invoca los eventos `BegomSwordTrace` y `EndSwordTrace` al comenzar y terminar
+dicha ventana respectivamente.
+
+El ataque del esqueleto utiliza el mismo patrón de detección por temporizador que el ataque
+del jugador, aunque con una diferencia en su mecanismo de corte. Al iniciar el ataque
+(`BegomSwordTrace`)
+#footnote[
+  Tal como aparece en el Blueprint; se mantiene el nombre original a pesar de la
+  inconsistencia de escritura respecto a `EndSwordTrace`.
+], se reproduce el sonido de ataque (`SFX_SwordSkele`) y se inicia un temporizador en bucle
+cada 0.01 segundos que ejecuta el evento `Damage Trace`. Este evento realiza un
+_Sphere Trace_ de radio 30 entre los componentes `StartOfTrace` y `EndOfTrace`; si detecta
+una colisión válida, aplica el daño definido en la variable `skeleton_damage` sobre el actor
+impactado y, a diferencia del ataque del jugador, **detiene inmediatamente el temporizador**
+mediante `K2_ClearAndInvalidateTimerHandle`, deteniendo la detección tras el primer impacto
+exitoso. Al finalizar la animación de ataque (`EndSwordTrace`), se invalida el temporizador
+si aún se encontraba activo, como medida de seguridad en caso de que el ataque no haya
+conectado con el jugador.
+
+==== Behaviour Tree
+
+El Behaviour Tree (árbol de comportamiento) es el sistema que se encarga de controlar
+todas las decisiones y acciones de un enemigo en el juego. Funciona evaluando
+constantemente la situación y eligiendo qué comportamiento ejecutar según la distancia
+del jugador y otras condiciones. La estructura se organiza en niveles jerárquicos donde
+cada nivel toma decisiones más específicas que el anterior.
+
+El esqueleto utiliza un Behaviour Tree (`BT_AI`) con una estructura simple de tipo
+Selector, que evalúa dos secuencias según el estado de la _Blackboard key_
+`hasSeenPlayer?`:
+
+- Si `hasSeenPlayer?` no está activa, se ejecuta la secuencia "Look Around": el esqueleto
+  deambula por el área cercana a su punto de aparición (`BTTask_RoamAround`) y espera 2
+  segundos antes de repetir el ciclo.
+- Si `hasSeenPlayer?` está activa, se ejecuta la secuencia "Chase Player": el esqueleto
+  persigue al jugador hasta alcanzar la distancia de ataque (`BTTask_ChaseB4Attack`) y luego
+  ejecuta su ataque con espada (`BT_TaskSWORDAttack`). El detalle de cada una de estas
+  tareas se describe a continuación.
+
+El Blackboard es una estructura de datos compartida utilizada por el sistema de
+inteligencia artificial de Unreal Engine para almacenar información que puede ser
+accedida y modificada tanto por el Behaviour Tree como por el AI Controller. Funciona
+como una pizarra donde se escriben y leen valores que representan el estado actual de
+la IA. Este sistema permite que diferentes componentes de la IA trabajen con la misma
+información sin necesidad de comunicarse directamente entre sí.
+
+El Blackboard asociado (`BBD_AI`) contiene las siguientes _keys_:
+
++ `SelfActor` (Object): referencia al propio enemigo.
++ `hasSeenPlayer?` (Bool): indica si el enemigo ha detectado al jugador.
++ `IsDead?` (Bool): indica si el enemigo está muerto.
++ `spawnPoint` (Vector): posición de origen, utilizada como punto de patrulla.
++ `distanceToPlayer` (Float): distancia actual respecto al jugador.
+
+==== Tareas del Behaviour Tree
+
+- `BTTask_RoamAround` selecciona, mediante `Get Random Reachable Point In Radius`, un punto
+  alcanzable aleatorio dentro de un radio de 500 unidades alrededor de la posición guardada
+  en `spawnPoint`, y mueve al esqueleto hacia dicho punto con un radio de aceptación de 120
+  unidades.
+
+- `BTTask_ChaseB4Attack` mueve al enemigo hacia el jugador hasta alcanzar una distancia
+  determinada por la variable `Acceptance Radius`, finalizando la tarea al llegar o al fallar
+  el movimiento. Esta tarea es compartida con el esqueleto mago, el cual altera su
+  comportamiento mediante la variable `infiniteRange` (descrito en la sección
+  correspondiente a dicho enemigo); el esqueleto normal no la utiliza.
+
+- `BT_TaskSWORDAttack` gestiona el ataque cuerpo a cuerpo del esqueleto en dos partes. Al
+  activarse la tarea (`ReceiveExecuteAI`), marca la variable interna `onRotate` como `true`
+  y reproduce el montage de ataque (`MO_Attack`) sobre el esqueleto; en el instante en que
+  la animación lo indica (_Animation Notify_), `onRotate` se marca nuevamente como `false`.
+  Por otro lado, mientras la tarea está activa (`ReceiveTickAI`), si `onRotate` es `true`,
+  el esqueleto rota suavemente hacia la posición del jugador en cada fotograma, interpolando
+  su rotación actual hacia la calculada. De esta forma, el esqueleto se orienta hacia el
+  jugador mientras se prepara para golpear, pero deja de hacerlo justo en el instante del
+  impacto, evitando que el golpe se desvíe por una rotación a mitad de la animación. Al
+  completarse el montage, la tarea finaliza exitosamente.
+
+
+
+=== Esqueleto mago
+
+El esqueleto mago (`BP_SkeletonMage`) comparte la base estructural y gran parte de la lógica
+del esqueleto normal, descrita en la sección anterior, por lo que a continuación solo se
+detallan las diferencias respecto a dicho enemigo.
+
+==== Estructura y detección
+
+La jerarquía de componentes es equivalente a la del esqueleto normal: cápsula de colisión
+con barra de vida, malla esquelética con componentes de escena para el trace de impacto
+cuerpo a cuerpo (`StartTrace`/`EndTrace`), componente de movimiento y `PawnSensing`.
+
+La detección del jugador, sin embargo, incorpora una verificación adicional. Al activarse el
+evento `On See Pawn`, antes de marcar al jugador como detectado se comprueba que la
+diferencia de altura (eje Z) entre el mago y el jugador no supere las 300 unidades. Esta
+verificación evita que el mago detecte y reaccione al jugador cuando este se encuentra en un
+piso o nivel de altura distinto.
+
+A diferencia del esqueleto normal, el mago no reproduce un sonido al morir.
+
+==== Behaviour Tree
+
+El Behaviour Tree del mago reutiliza la secuencia "Look Around" del esqueleto
+normal (`BTTask_RoamAround` + espera de 2 segundos) cuando no ha detectado al jugador. Una
+vez detectado, en lugar de una única secuencia de persecución y ataque, el mago evalúa un
+segundo Selector que distingue dos comportamientos según la distancia al jugador, mantenida
+actualizada mediante un servicio (`BTS_MageUpdt`) que corre en paralelo a ambas secuencias y
+que, en cada fotograma, calcula la distancia entre el mago y el jugador y la almacena en la
+_Blackboard key_ `distanceToPlayer`:
+
+- *Secuencia "FarSeq"* (distancia mayor a 280 unidades): el mago se acerca al jugador
+  mediante `BTTask_ChaseB4Attack` —la misma tarea utilizada por el esqueleto normal—, pero
+  con la variable `infiniteRange` activada. Esto provoca que el `AIMoveTo` subyacente reciba
+  un radio de aceptación extremadamente amplio, por lo que la tarea se da por completada de
+  inmediato sin que el mago efectivamente se desplace hacia el jugador; en la práctica, el
+  mago no persigue al jugador en esta secuencia. A continuación, ejecuta `MagicAttack`,
+  descrito más abajo.
+- *Secuencia "CloseSeq"* (distancia menor o igual a 280 unidades): el mago ejecuta
+  directamente `CloseMage`, su ataque cuerpo a cuerpo, descrito más abajo.
+
+La decisión entre ambas secuencias se evalúa mediante la tarea `Task_MageDist`, la cual
+comprueba si la distancia actual al jugador (_Blackboard key_ `distanceToPlayer`) se
+encuentra dentro de un rango definido por las variables `min_dist` y `max_dist` propias de
+cada secuencia, finalizando con éxito o fracaso según corresponda.
+
+// TODO: confirmar el detalle exacto de la condición evaluada en Task_MageDist;
+// el condensado del Blueprint no permitió resolver con certeza el branch que
+// antecede al cálculo de bSuccess.
+
+==== Ataque a distancia (`MagicAttack`)
+
+Al activarse esta tarea, se marca la variable `onRotate` como `true` y se reproduce el
+montage `MO_MagicAttack`. Mientras `onRotate` es `true` (evaluado en cada fotograma, en
+`ReceiveTickAI`), el mago interpola su rotación hacia la posición del jugador, de forma
+idéntica al sistema de orientación visto en el ataque del esqueleto normal. En el instante
+indicado por un _Animation Notify_ del montage, `onRotate` se marca como `false` —deteniendo
+la rotación— y se instancia un proyectil (`BP_SkeletonBall`) desde una posición desplazada
+300 unidades hacia adelante respecto al mago, con este último asignado como su dueño
+(_Owner_). El proyectil se configura con una velocidad de 800, sin influencia de gravedad,
+sin comportamiento de persecución (_Homing_ desactivado), y un daño base de 15. Al
+completarse el montage, la tarea finaliza exitosamente.
+
+==== Ataque cuerpo a cuerpo (`CloseMage`)
+
+Cuando el jugador se encuentra a corta distancia, el mago recurre a un ataque cuerpo a
+cuerpo con su cayado. La tarea `CloseMage` marca `onRotate` como `true`, reproduce el
+montage `MO_CloseStaff`, y rota hacia el jugador mediante el mismo mecanismo de
+interpolación que el resto de las tareas del mago. Al completarse el montage, `onRotate` se
+restablece a `false` y la tarea finaliza con éxito, siguiendo el mismo patrón de
+montage-completado-finalización empleado en el resto de las tareas de ataque del juego.
+
+Al igual que en los ataques cuerpo a cuerpo del esqueleto normal, la ventana de
+detección está delimitada por un _Anim Notify State_ en el montage `MO_CloseStaff`,
+que dispara `BegomSwordTrace` y `EndSwordTrace`. Este mecanismo no aplica al ataque a
+distancia (`MagicAttack`), cuya detección de impacto recae en el propio proyectil al
+colisionar.
+
+La detección de impacto de este ataque reutiliza el mismo sistema de _trace_ por
+temporizador descrito para el esqueleto normal (`BegomSwordTrace`, `Damage Trace` y
+`EndSwordTrace`), empleando los componentes `StartTrace` y `EndTrace` del mago. A diferencia
+del esqueleto normal, donde el daño se obtiene de una variable (`skeleton_damage`), en el
+mago el daño del ataque cuerpo a cuerpo está definido como un valor fijo de 11.
+
+   
+=== Esqueleto caballero
+
+El esqueleto caballero (`BP_KnightSkele`) comparte la estructura de componentes y gran
+parte del comportamiento base del esqueleto normal —cápsula de colisión con barra de
+vida, malla esquelética con componentes de escena para el _trace_ de impacto
+(`StartTrace`/`EndTrace`), componente de movimiento y `PawnSensing`—, por lo que a
+continuación solo se detallan las diferencias respecto a dicho enemigo. Este enemigo se
+ubica en el nivel `Lvl_PreBoss`, donde —junto con el esqueleto normal— alimenta la
+métrica de distancia previa al combate contra el jefe.
+
+==== Detección y registro de distancia
+
+Al igual que el esqueleto normal, la barra de vida rota en cada fotograma (`ReceiveTick`)
+para orientarse hacia la cámara del jugador.
+
+La detección del jugador mediante el evento `On See Pawn` de `PawnSensing` invoca
+`hasseen`, igual que en los demás esqueletos, e inicia el mismo temporizador en bucle de
+0.5 segundos que dispara el evento `REGISTER_DISTANCE`, descrito en la sección del
+esqueleto normal. La única diferencia es que, naturalmente, la distancia que se calcula y
+registra corresponde a la posición del esqueleto caballero respecto al jugador, en lugar
+de la del esqueleto normal.
+
+==== Recepción de daño y muerte
+
+El procesamiento de daño sigue el mismo patrón general que el esqueleto normal (`hasseen`
+sobre el causante, resta a `health`, actualización de la barra de vida y destrucción al
+llegar a cero, con la consecuente llamada a `RemoveWidget` sobre el jugador). A diferencia
+del esqueleto normal, el caballero no reproduce ningún sonido de muerte, igual que el
+esqueleto mago.
+
+// TODO: igual que en el esqueleto normal, aparece un `CallDelegate` junto a la
+// destrucción del actor cuyo destino no se determinó con certeza.
+
+==== Ataque cuerpo a cuerpo (trace por temporizador)
+
+Como en los demás enemigos melee, la ventana de detección está delimitada por un
+_Anim Notify State_ en cada montage de ataque, que dispara `BegomSwordTrace` y
+`EndSwordTrace`.
+
+El esqueleto caballero también posee, heredado del mismo patrón del esqueleto normal, un
+ataque cuerpo a cuerpo basado en _trace_ por temporizador (`BegomSwordTrace`,
+`Damage Trace`, `EndSwordTrace`), idéntico en su funcionamiento: temporizador en bucle de
+0.01 segundos, _Sphere Trace_ de radio 30 entre `StartTrace` y `EndTrace`, y detención
+inmediata del temporizador tras el primer impacto exitoso. La única diferencia es el
+nombre de la variable de daño utilizada, `KnightDamage`, en lugar de `skeleton_damage`.
+
+==== Behaviour Tree
+
+El Behaviour Tree del caballero reutiliza la secuencia "Look Around"
+(`BTTask_RoamAround` + espera de 2 segundos) cuando no ha detectado al jugador, y la tarea
+`BTTask_ChaseB4Attack` —sin la variable `infiniteRange`, al igual que el esqueleto
+normal— para acercarse a él una vez detectado. A diferencia de los esqueletos anteriores,
+tras la persecución el caballero no ejecuta una única tarea de ataque, sino que entra a un
+nodo compuesto personalizado llamado "Alternating Selector", con dos ramas: `Attack 1`
+(tarea `KnightAttack1` seguida de una espera de 1 segundo) y `Attack 2` (tarea
+`KnightAttack2` seguida de una espera de 1 segundo).
+
+===== Selector alternante de ataques
+
+El nodo "Alternating Selector" corresponde a la clase `UBTComposite_RandomSelector`,
+implementada en C++. A pesar de que el nombre de la clase sugiere una selección
+aleatoria, su lógica (`GetNextChildHandler`) no es aleatoria: en cada ejecución elige el
+hijo siguiente al último ejecutado mediante el operador módulo sobre la cantidad de
+hijos (`(LastExecutedChild + 1) % GetChildrenNum()`), partiendo del hijo 0 la primera vez.
+Es decir, el nodo alterna de forma determinística entre `Attack 1` y `Attack 2` en cada
+ciclo, en lugar de elegir entre ellos al azar.
+
+===== Tareas `KnightAttack1` y `KnightAttack2`
+
+Ambas tareas comparten una misma estructura. Al activarse (`ReceiveExecuteAI`), se marca
+`onRotate` como `true` y se guarda una referencia casteada al propio caballero
+(`SkelePawn`), utilizada luego en el cálculo del _trace_ de daño. A continuación se
+reproduce un _Animation Montage_: `MO_AvanceV3` con velocidad de reproducción 1.0 en
+`KnightAttack1`, y `MO_AOEKnightV3` con velocidad de reproducción 1.2 en `KnightAttack2`.
+
+Al completarse el montage (`OnCompleted`), la tarea finaliza con éxito (`FinishExecute`).
+En el instante señalado por un único _Animation Notify_ del montage (`OnNotifyBegin`), se
+marca `onRotate` como `false` —deteniendo la rotación hacia el jugador, igual que en el
+resto de las tareas de ataque del juego— y, a diferencia del ataque con espada por
+temporizador, se ejecuta un único _Box Trace_ (sin temporizador en bucle) entre dos puntos
+ubicados 150 y 225 unidades respectivamente delante del caballero, en la dirección de su
+vector hacia adelante. La forma de la caja del trace difiere entre ambas tareas: en
+`KnightAttack1` es un cubo de 50×50×50 unidades, mientras que en `KnightAttack2` es una
+caja de 30×80×50 unidades, más ancha. De detectarse una colisión válida, se aplica daño
+mediante `ApplyDamage`, con un valor fijo de 20 en ambas tareas (a diferencia del
+`KnightDamage` variable utilizado en el ataque con espada).
+
+Mientras la tarea está activa (`ReceiveTickAI`), y siguiendo el mismo patrón visto en el
+resto de los enemigos, el caballero rota suavemente hacia el jugador mediante `RInterpTo`
+(con una velocidad de interpolación de 3.0) mientras `onRotate` sea `true`, deteniéndose
+justo en el instante del impacto.
+
 == Jefe (BP_Slime)
-== Sistema de métricas y telemetría
+
+=== Modelo y animaciones <sec:modelo-animaciones-jefe>
+
+El modelo y las animaciones del jefe fueron creados desde cero en Blender, en lugar de
+recurrir a assets externos como en el resto de los enemigos. La motivación principal fue
+contar con un control total sobre el resultado, de modo que el modelo y sus animaciones
+pudieran ajustarse específicamente a los requerimientos de _gameplay_ del jefe —en
+particular, a los _Anim Notify States_ que delimitan las ventanas de ataque y a las
+distintas formas que necesita adoptar durante el combate.
+
+Dado que el slime no posee un esqueleto tradicional, gran parte de sus deformaciones se
+modelaron mediante _shape keys_, tanto para las distintas formas que puede adoptar el
+cuerpo (por ejemplo, su forma de charco, o su forma donde de espinas) como para las acciones propias
+de cada ataque.
+
+=== Componentes y variables
+
+La jerarquía de componentes de `BP_Slime` es la siguiente:
+
++ `CollisionCylinder`: cápsula de colisión, raíz del actor.
++ `PULL_OUT`: componente de colisión de tipo esfera, utilizado para detectar si el
+  jugador quedó atrapado dentro del jefe tras ciertos ataques (ver @sec:tareas-ataque-jefe).
++ `CharacterMesh0`: malla esquelética del jefe.
+  + `StartTracePos`: componente de escena, punto de inicio del _trace_ de impacto
+    cuerpo a cuerpo.
+  + `EndTracePos`: componente de escena, punto de fin del _trace_ de impacto cuerpo a
+    cuerpo.
+  + `Arrow`: componente de flecha, referencia direccional.
++ `PlayerMetrics` (`PlayerMetricsComponent`): descrito en @sec:metricas.
++ `CharMoveComp`: componente de movimiento de personaje.
+
+Adicionalmente, `BP_Slime` implementa la interfaz `BPI_Lockable`, consultada por el
+sistema de fijado de objetivo del jugador (_Target Lock_, descrito en la sección
+correspondiente) para obtener el punto exacto al que debe apuntar la cámara mientras
+el jefe está fijado. Esto permite compensar el desplazamiento visual que sufre el
+jefe durante su animación de ataque de charco, donde se hunde visualmente sin que
+ese desplazamiento se traduzca en un movimiento real del actor. Su función
+`Get Lock On Target` retorna una posición desplazada hacia abajo respecto a la
+ubicación del actor: 300 unidades en el eje Z si `bIsCharco` es `true`, o 100
+unidades si es `false`.
+
+Las variables propias del Blueprint son:
+
++ `health` (Float): vida actual del jefe.
++ `max_health` (Float): vida máxima del jefe.
++ `progressbarref` (Progress Bar): referencia al widget de la barra de vida.
++ `bIsCharco` (Bool): indica si el jefe se encuentra en su forma de charco.
+
+=== AI Controller
+
+El AI Controller del jefe (`BP_SlimeBossController`) expone una función llamada
+`ActivateBossController`, invocada desde una zona de activación (_trigger_) al
+inicio de la arena del jefe. Al ejecutarse, esta función arranca el Behaviour Tree
+(`BT_BaseSlimeBoss`), registra la referencia al jugador en el Blackboard
+(`PlayerActor`) e invoca `ApplyPreCombatAdaptation` sobre el
+`PlayerMetricsComponent`, aplicando los ajustes de pesos de ataque derivados de
+las métricas recolectadas durante la fase previa al combate. Finalmente, vuelca
+el estado resultante de los pesos a archivo mediante `DumpFinalTreeToFile`, tal
+como se describió en la sección @sec:metricas.
+
+// TODO: mencioar especificamente el trigger, el cual esetara detallado en la parte de los niveles
+
+=== Blackboard
+
+El Blackboard del jefe (`BBD_SlimeBoss`) contiene las siguientes _keys_:
+
++ `SelfActor`: Tipo _Actor_. Referencia al propio actor controlado por la IA, utilizada
+  para acceder a sus datos y ejecutar acciones sobre sí mismo.
++ `PlayerActor`: Tipo _Actor_. Referencia al jugador detectado por la IA, empleada para
+  seguimiento, persecución y ataques.
++ `PlayerDistance`: Tipo _Float_. Almacena la distancia actual entre la IA y el jugador.
++ `LastAttack`: Tipo _Enum_ (`EBossAttackType`). Guarda el último ataque ejecutado por
+  el jefe.
++ `LastAttackCount`: Tipo _Integer_. Cuenta cuántas veces consecutivas se ha
+  seleccionado el mismo ataque almacenado en `LastAttack`.
++ `AttackWeightsJSON`: Tipo _String_. Contiene datos de configuración de pesos de
+  ataques almacenados en formato JSON.
++ `CloseRange`: Tipo _Float_. Distancia considerada como rango cercano para la toma de
+  decisiones de combate.
++ `FarRange`: Tipo _Float_. Distancia considerada como rango lejano para la toma de
+  decisiones de combate.
++ `0-KEY`: Tipo _Float/Integer_. Valor asociado a la clave "0" dentro de una estructura
+  de configuración o tabla de pesos.
++ `FAR-KEY`: Tipo _Float/Integer_. Valor asociado a la clave de comportamiento o ataque
+  de larga distancia.
++ `BossChaseDur`: Tipo _Float_. Duración durante la cual el jefe mantiene el estado de
+  persecución antes de cambiar de comportamiento.
+
+// TODO: `0-KEY` y `FAR-KEY` son variables "límite" dentro de la tabla de pesos de
+// ataque (ej. `FAR-KEY` toma un valor del orden de 9999); pendiente explicar su rol
+// exacto en el mecanismo de pesos (@sec:pesos-ataque) más adelante.
+
+=== Behaviour Tree
+
+El Behaviour Tree del jefe se organiza en niveles jerárquicos. El nodo raíz conecta con
+un Selector principal que evalúa tres secuencias según la distancia al jugador
+(_Blackboard key_ `PlayerDistance`, actualizada por el service `BTS_UPDTPlayerDistance`
+descrito más arriba), intentando cada una en orden hasta que alguna tiene éxito:
+
++ *Secuencia lejana*: distancia mayor a `FarRange`.
++ *Secuencia media*: distancia entre `CloseRange` y `FarRange`.
++ *Secuencia cercana*: distancia menor a `CloseRange`.
+
+Dentro de cada secuencia, un nodo `Task_SelectDistance` confirma que la distancia
+actual cumple el rango correspondiente y, a continuación, un nodo
+`BTComposite_RandomSelector` —descrito en la siguiente sección, con una instancia por
+cada secuencia— reparte mediante selección aleatoria ponderada entre un subconjunto de
+los nueve ataques del jefe:
+
++ Secuencia lejana: Charco (`BA_Poddle`), Persecución (`BA_BossChase`), proyectil en
+  línea recta (`BA_ProjectilAttack`) y proyectil homing (`BA_HomingAttack`).
++ Secuencia media: Básico (`BA_BasicAttack`), salto (`BA_HeavyAttack`) y giro
+  (`BA_WhipAttack`).
++ Secuencia cercana: Básico (`BA_BasicAttack`), espinas (`BA_AOEAttack`) y muro
+  (`BA_WallAttack`).
+
+==== BTComposite_RandomSelector (C++)
+
+La elección del ataque dentro de cada secuencia de rango se gestiona mediante un nodo
+compuesto personalizado implementado en C++ (`UCustomCompositeNode`, mostrado en el
+editor como "RandomSelectWeight"). A diferencia de un Selector convencional, que
+recorre sus hijos en orden hasta que uno tiene éxito, este nodo elige un único hijo
+mediante una selección aleatoria ponderada y, una vez que dicho hijo termina de
+ejecutarse, retorna directamente a su padre (`GetNextChildHandler` siempre devuelve
+`ReturnToParent` tras la primera ejecución), sin intentar el resto de sus hijos.
+
+La selección (`ChooseWeightedChild`) asigna a cada hijo un peso base de 1.0, el cual es
+sobrescrito si existe una entrada con su nombre dentro del JSON almacenado en la
+_Blackboard key_ `AttackWeightsJSON` (ver @sec:pesos-ataque). Sobre estos pesos se
+aplica además una regla anti-repetición: si el último ataque ejecutado
+(`LastAttack`) se repitió dos veces consecutivas (`LastAttackCount >= 2`), el peso del
+hijo correspondiente a ese mismo ataque se fuerza a 0, impidiendo que se seleccione una
+tercera vez consecutiva. Sobre el arreglo de pesos resultante se realiza un sorteo
+aleatorio ponderado para elegir el hijo a ejecutar.
+
+Tras la selección, se actualiza el Blackboard: si el ataque elegido es el mismo que el
+anterior, se incrementa `LastAttackCount`; en caso contrario, `LastAttack` se actualiza
+al nuevo ataque y `LastAttackCount` se reinicia a 1.
+
+En la raíz del Behaviour Tree corre un service (`BTS_UPDTPlayerDistance`), análogo
+al `BTS_MageUpdt` del esqueleto mago, que en cada fotograma calcula la distancia
+entre el jefe y el jugador y la almacena en la _Blackboard key_ `PlayerDistance`.
+
+==== Tareas de ataque <sec:tareas-ataque-jefe>
+
+El jefe cuenta con nueve tareas de ataque distintas, identificadas mediante el enum
+`EBossAttackType` (`BA_BasicAttack`, `BA_AOEAttack`, `BA_HeavyAttack`,
+`BA_ProjectilAttack`, `BA_BossChase`, `BA_Poddle`, `BA_HomingAttack`, `BA_WhipAttack`,
+`BA_WallAttack`), seleccionadas por el `BTComposite_RandomSelector` descrito en la
+sección anterior.
+
+===== Ataque básico (`BA_BasicAttack`)
+
+Al activarse la tarea (`ReceiveExecuteAI`), se registra el intento de ataque
+(`RegisterBossAttackAttempt`, con tipo `BA_BasicAttack`) y se reproduce el montage
+`MO_FixBasicAttack`, deteniendo cualquier otro montage en reproducción
+(`bShouldStopAllMontages`). Al completarse o interrumpirse el montage, la tarea
+finaliza con éxito. En el instante señalado por un único _Animation Notify_, se
+ejecuta un único _Box Trace_ (sin temporizador en bucle) sobre una caja estática de
+100×100×100 unidades, centrada 200 unidades hacia adelante de la posición del jefe y
+orientada según su rotación; de detectarse una colisión válida, se aplica un daño
+fijo de 10.
+
+/*
+#figure(
+  image("imagenes/slime-basic-attack.png", width: 80%),
+  caption: [Montage del ataque básico del jefe],
+) <fig:slime-basic-attack>
+*/
+
+===== Ataque de área (`BA_AOEAttack`)
+
+Al activarse, se registra el intento de ataque y se reproduce el montage
+`MO_SpykeV4`. Al completarse o interrumpirse, la tarea finaliza con éxito. En el
+instante señalado por el _Animation Notify_, se ejecuta un _Sphere Trace_ de radio
+370 unidades centrado en la posición del jefe; de detectarse una colisión válida, se
+aplica un daño definido por la variable `SpykeDmg`.
+
+/*
+#figure(
+  image("imagenes/slime-aoe-attack.png", width: 80%),
+  caption: [Montage del ataque de área del jefe],
+) <fig:slime-aoe-attack>
+*/
+
+===== Ataque pesado (`BA_HeavyAttack`)
+
+El ataque pesado corresponde a un ataque con salto. Al activarse, se registra el
+intento de ataque y se almacenan, como instantánea (_snapshot_, sin actualizarse
+posteriormente), la posición inicial del jefe y la posición del jugador en ese
+momento. El jefe pasa a modo de movimiento `Flying` y deja de colisionar con Pawns,
+y reproduce el montage `MO_JumpAttackV3`. Transcurridos 0.9 segundos desde el inicio
+del montage, se marca la variable `bMove` como `true`; mientras esta sea `true`, en
+cada fotograma (`ReceiveTickAI`) el jefe se desplaza hacia la posición guardada del
+jugador y rota hacia ella. En el instante señalado por el _Animation Notify_, se
+invoca la función `Hitbox&KnockBack`.
+
+// TODO: detallar la implementación de `Hitbox&KnockBack` una vez se aclare su
+// contenido.
+
+Al completarse o interrumpirse el montage, el jefe vuelve a modo `Walking`, restaura
+su colisión con Pawns y, si completó normalmente, comprueba si quedó atrapado contra
+algún actor mediante el componente `PULL_OUT` —de la misma forma descrita para el
+ataque de charco (`BA_Poddle`), más abajo— antes de finalizar la tarea con éxito.
+
+/*
+#figure(
+  image("imagenes/slime-heavy-attack.png", width: 80%),
+  caption: [Montage del ataque con salto del jefe],
+) <fig:slime-heavy-attack>
+*/
+
+===== Ataque de proyectil (`BA_ProjectilAttack`)
+
+Al activarse, se reproduce el montage `MO_ProjectileAttack`. Al completarse o
+interrumpirse, la tarea finaliza con éxito. En el instante señalado por el
+_Animation Notify_, se recorre un arreglo fijo de desviaciones angulares (0°, 15°,
+-15°, 30°, -30°, 45° y -45°) y, por cada una, se instancia un proyectil
+(`BP_BossSlimeBall_C`) 100 unidades por debajo de la posición del jefe, con su
+rotación compuesta a partir de la desviación correspondiente y la rotación del
+jefe, generando un disparo en abanico de siete proyectiles. Cada proyectil se
+configura con el jefe como dueño (_Owner_), velocidad 1000, sin gravedad, sin
+comportamiento de persecución (_Homing_ desactivado) y un daño base de 10. Mientras
+la tarea está activa (`ReceiveTickAI`), el jefe rota hacia el jugador con una
+velocidad de interpolación de 0.5.
+
+A diferencia del resto de las tareas de ataque, ni esta ni el ataque homing
+(`BA_HomingAttack`, descrito más abajo) invocan `RegisterBossAttackAttempt`: al
+tratarse de ataques a distancia, no es directo determinar si efectivamente
+conectaron con el jugador, por lo que no se registran en las métricas de ataque.
+
+/*
+#figure(
+  image("imagenes/slime-projectil-attack.png", width: 80%),
+  caption: [Montage del ataque de proyectil del jefe],
+) <fig:slime-projectil-attack>
+*/
+
+===== Persecución (`BA_BossChase`)
+
+Al activarse, esta tarea inicia un `AIMoveTo` hacia el jugador (`TargetActor`), con
+un radio de aceptación propio de la tarea (`Acceptance Radius`). En paralelo, corre
+un `Delay` de una duración también propia de la tarea (`Duration`), que actúa como
+límite de tiempo. Si el `Delay` se completa primero, se detiene el movimiento y la
+tarea finaliza con éxito. Si el `AIMoveTo` tiene éxito primero, se ejecuta ese mismo
+bloque de detención de movimiento y finalización.
+
+/*
+#figure(
+  image("imagenes/slime-boss-chase.png", width: 80%),
+  caption: [Montage de la persecución del jefe],
+) <fig:slime-boss-chase>
+*/
+
+===== Charco (`BA_Poddle`)
+
+Esta tarea hace uso de la forma de charco del jefe, modelada mediante _shape keys_
+(ver @sec:modelo-animaciones-jefe). Al activarse, se registra el intento de ataque,
+se ajusta la velocidad de movimiento a 600 y se desactiva la colisión del jefe
+contra Pawns y contra dos canales de colisión adicionales del proyecto. Se
+reproduce el montage `MO_PoddleStart`, se inicia un `AIMoveTo` hacia el jugador (sin
+radio de aceptación), y se programan dos temporizadores: uno a 4 segundos
+(`StartDetecting`) y otro a 7 segundos (`TimeoutdeAtaque`). Finalmente, se marca
+`bIsCharco` como `true` y se reproduce el montage `MO_PoddleDown`, quedando el jefe
+en su forma de charco.
+
+Al dispararse `StartDetecting` (4 segundos después de iniciada la tarea), se marca
+`bIsDetectingPlayer` como `true`. A partir de ese momento, en cada fotograma
+(`ReceiveTickAI`) se comprueba, mientras `bIsDetectingPlayer` sea `true`, si el
+jugador se encuentra a menos de 250 unidades del jefe; de ser así, se marca
+`bIsDetectingPlayer` nuevamente como `false`, se cancela el temporizador de
+`TimeoutdeAtaque` y se invoca dicho evento manualmente, adelantando el fin del
+ataque a que el jugador se haya acercado lo suficiente.
+
+`TimeoutdeAtaque` —ya sea disparado por su propio temporizador a los 7 segundos, o
+adelantado desde el `Tick` como se describió arriba— detiene el movimiento del
+jefe, reduce su velocidad a 285 y reproduce el montage `MO_PoddleUp`. En el instante
+señalado por el _Animation Notify_ de este montage, se ejecuta un _Sphere Trace_ de
+radio 225 alrededor del jefe; de detectarse al jugador, se le aplica un daño
+definido por la variable `PoddleDamage`, se cancelan sus montages de esquive en las
+cuatro direcciones, y se lo lanza por los aires (_launch_). Al completarse el
+montage, se restaura la colisión del jefe (bloqueo contra Pawns, bloqueo contra uno
+de los canales adicionales y _overlap_ contra el otro) y se marca `bIsCharco`
+nuevamente como `false`.
+
+Finalmente, se comprueba si el jefe quedó atrapado dentro de otro actor durante la
+transformación: se obtienen los actores que se superponen con el componente
+`PULL_OUT` y se evalúa si dicho arreglo está vacío. Si está vacío, la tarea finaliza
+con éxito directamente. Si no lo está, el jefe se reposiciona, desplazándose en la
+dirección normalizada desde el actor encontrado hacia el jefe (a 1000 unidades de
+distancia, con la altura igualada a la del jugador), y la tarea finaliza con éxito a
+continuación.
+
+/*
+#figure(
+  image("imagenes/slime-poddle.png", width: 80%),
+  caption: [Montage del ataque de charco del jefe],
+) <fig:slime-poddle>
+*/
+
+===== Ataque homing (`BA_HomingAttack`)
+
+Esta tarea es idéntica en estructura al ataque de proyectil (`BA_ProjectilAttack`,
+descrito más arriba): reproduce el mismo montage (`MO_ProjectileAttack`) y, en su
+_Animation Notify_, instancia proyectiles (`BP_BossSlimeBall_C`) en abanico. Las
+diferencias son el arreglo de desviaciones angulares utilizado —0°, 60° y -60°, es
+decir, tres proyectiles en lugar de siete—, la velocidad de los proyectiles (850 en
+vez de 1000) y que estos sí tienen activado el comportamiento de persecución
+(_Homing_). Al igual que el ataque de proyectil normal, esta tarea no invoca
+`RegisterBossAttackAttempt`.
+
+/*
+#figure(
+  image("imagenes/slime-homing-attack.png", width: 80%),
+  caption: [Montage del ataque homing del jefe],
+) <fig:slime-homing-attack>
+*/
+
+===== Ataque de látigo (`BA_WhipAttack`)
+
+El ataque de látigo corresponde a un ataque tipo espada/látigo. Al activarse, se
+registra el intento de ataque y se reproduce el montage `MO_SwordSlimeAttack`.
+Mientras la tarea está activa (`ReceiveTickAI`), el jefe rota hacia el jugador con
+una velocidad de interpolación de 1.0.
+
+// TODO: en el condensado de esta tarea se perdió la rama `OnCompleted` del
+// montage; a confirmar si la finalización sigue el mismo patrón
+// montage-completado-finalización del resto de las tareas.
+
+A diferencia del resto de los ataques del jefe, la detección de impacto de este
+ataque no se resuelve mediante un trace dentro de esta misma tarea, sino a través
+de una interfaz de notificación de daño aparte.
+
+/*
+#figure(
+  image("imagenes/slime-whip-attack.png", width: 80%),
+  caption: [Montage del ataque de látigo del jefe],
+) <fig:slime-whip-attack>
+*/
+
+===== Ataque de muro (`BA_WallAttack`)
+
+Al activarse, se marca la variable `canRotate` como `true`, se registra el intento
+de ataque y se reproduce el montage `MO_WallAttack`. En el instante señalado por el
+_Animation Notify_, se marca `canRotate` como `false` —deteniendo la rotación hacia
+el jugador— y se ejecuta un único _Box Trace_ entre la posición del jefe y un punto
+520 unidades hacia adelante, con una caja de 100×100×100 unidades orientada según su
+rotación; de detectarse una colisión válida, se aplica un daño fijo de 10. Al
+completarse el montage, la tarea finaliza con éxito. Mientras la tarea está activa y
+`canRotate` sea `true`, el jefe rota hacia el jugador en cada fotograma con una
+velocidad de interpolación de 1.0.
+
+/*
+#figure(
+  image("imagenes/slime-wall-attack.png", width: 80%),
+  caption: [Montage del ataque de muro del jefe],
+) <fig:slime-wall-attack>
+*/
+
+=== PlayerMetricsComponent
+
+El jefe cuenta con un componente `PlayerMetricsComponent`, encargado de registrar la
+efectividad de sus ataques durante el combate y de traducir las métricas recolectadas
+en ajustes sobre su propio comportamiento (los pesos de selección de ataque descritos
+en @sec:pesos-ataque). Su funcionamiento se detalla en profundidad en
+@sec:metricas, sección transversal a varios sistemas del juego.
+
+=== Secuencia de introducción
+
+== Sistema de métricas y telemetría <sec:metricas>
+
+De forma transversal a varios de los sistemas descritos en este capítulo, el juego
+incorpora una infraestructura de recolección y uso de métricas sobre el comportamiento del
+jugador, implementada principalmente en dos clases de C++: `SlimeGameInstance`, encargada
+de recolectar las métricas y persistirlas, y `PlayerMetricsComponent`, anclado al jefe,
+encargado de registrar la efectividad de sus ataques y de traducir las métricas recolectadas
+en ajustes sobre su comportamiento.
+
+=== Variables de `SlimeGameInstance`
+
+Como se mencionó, `SlimeGameInstance` recolecta sus datos en dos fases paralelas,
+controladas mediante la variable `isInCombat`: una fase previa al combate (en `Lvl_PreBoss`),
+condicionada además a que `bMetricsEnabled` esté activo, y una fase durante el combate
+contra el jefe, cuyas variables llevan el prefijo `Combat`. A continuación se detallan las
+variables principales, agrupadas por categoría.
+
+Cabe precisar de antemano el rol efectivo de estas variables con prefijo `Combat` dentro del
+sistema de adaptación. Si bien se registran de forma paralela a sus contrapartes sin
+prefijo —mediante el mismo flag `isInCombat`— y forman parte del diseño original de la
+infraestructura de métricas, que contemplaba adaptar también el comportamiento del jefe
+durante el combate en base a estas métricas, dicha adaptación en tiempo real no se llegó a
+implementar. La adaptación pre-combate (`ApplyPreCombatAdaptation` y sus subfunciones, ver
+@sec:pesos-ataque) lee exclusivamente las variables sin prefijo; ningún punto del sistema
+consulta las variables `Combat*` para tomar decisiones. Las únicas excepciones, es decir, las
+únicas métricas recolectadas durante el combate que sí tienen un efecto real sobre el
+comportamiento del jefe, son el registro de aciertos por tipo de ataque
+(`TotalAttemptsPerType` y `SuccessfulHits`, en `PlayerMetricsComponent`), que alimenta
+`ApplyInCombatSuccessfulHits`, y el monitoreo de curación en combate vía
+`ApplyInCombatHealing`, que compara la vida actual del jugador contra `AverageHealingHP`
+—calculada en la fase pre-combate— para ajustar la presión de ataque cuando el jugador entra
+en su rango habitual de curación.
+
+*Distancia*
++ `DistanceAccum`, `DistanceSamples`: acumulador y contador de muestras de distancia
+  (pre-combate).
++ `AverageDistance`: promedio de distancia, recalculado en cada muestra (pre-combate).
++ `CombatDistanceAccum`, `CombatDistanceSamples`, `CombatAverageDistance`: equivalentes
+  durante el combate.
+
+*Ataques*
++ `MeleeAttacks`, `RangedAttacks`: conteo de ataques melee y a distancia (pre-combate).
++ `CombatMeleeAttacks`, `CombatRangedAttacks`: equivalentes durante el combate.
++ `MeleeAttacksInRangedZone`, `RangedAttacksInRangedZone`: conteo de cada tipo de ataque
+  realizado dentro de una zona de rango.
+
+*Curación*
++ `HealsAtHighHP`, `HealsAtMidHP`, `HealsAtLowHP`: conteo de curaciones según el rango de
+  vida del jugador al curarse (pre-combate).
++ `HealingHPAccum`, `HealingCount`: acumulador y contador para el promedio de vida al
+  curarse.
++ `AverageHealingHP`: promedio del porcentaje de vida del jugador al momento de curarse.
++ `CombatHealsAtHighHP`, `CombatHealsAtMidHP`, `CombatHealsAtLowHP`,
+  `CombatHealingHPAccum`, `CombatHealingCount`, `CombatAverageHealingHP`: equivalentes
+  durante el combate.
+
+*Esquivas y daño*
++ `TotalDodges`, `TotalDodgesTankZone`: conteo total de esquivas, y de aquellas realizadas
+  en la zona de tanque (pre-combate).
++ `SuccessfulDodges`: conteo de esquivas marcadas explícitamente como exitosas.
++ `DamageTaken`, `TotalDamageReceived`: conteo de impactos recibidos y daño total acumulado
+  (pre-combate).
++ `CombatTotalDodges`, `CombatSuccessfulDodges`: equivalentes durante el combate.
++ `CombatDamageTaken`, `CombatTotalDamageReceived`: equivalentes durante el combate.
++ `LateralDodgesFromDash`, `BackwardDodgesFromDash`: esquivas laterales o hacia atrás frente
+  a el ataque de embestida del caballero esqueleto.
++ `DodgesFromDelayAttack`, `DodgesFromDelayAttack_TankZone`: esquivas frente a un ataque con
+  retardo, en general y en zona de tanque.
++ `CombatDodgesFromDelayAttack`: equivalente durante el combate.
+
+*Zona de tanque*
++ `isInTankZone`: flag de si el jugador se encuentra actualmente en la zona de tanque.
++ `DamageTakenInTankZone`: conteo de daño recibido en dicha zona.
+
+*Estudio*
++ `bAdaptiveEnabled`: condición experimental del jugador (`true` = adaptativo, `false` =
+  control).
++ `bMetricsEnabled`: habilita o no la recolección durante el nivel.
++ `SessionId`: identificador de sesión, generado a partir de fecha y hora.
++ `AttemptNumber`: número de intento actual contra el jefe.
+
+=== Funciones de registro (`SlimeGameInstance`)
+
+Sobre las variables anteriores operan las siguientes funciones, todas siguiendo el mismo
+patrón: bifurcan su comportamiento según `isInCombat`, actualizando el conjunto de variables
+de la fase correspondiente.
+
++ `RegisterDistance(Distance)`: acumula `Distance` en `DistanceAccum` (o su equivalente de
+  combate), incrementa el contador de muestras, y recalcula el promedio dividiendo el
+  acumulador entre el número de muestras.
++ `RegisterMeleeAttack()` y `RegisterRangeAttack()`: incrementan `MeleeAttacks` o
+  `RangedAttacks` respectivamente (o sus equivalentes de combate); adicionalmente, si
+  `isInRangedZone` es verdadero, incrementan también `MeleeAttacksInRangedZone` o
+  `RangedAttacksInRangedZone` según corresponda.
++ `RegisterHealingMoment(PlayerHealth, PlayerMaxHealth)`: calcula
+  `(PlayerHealth / PlayerMaxHealth) * 100`, incrementa `HealingCount` y acumula el porcentaje
+  en `HealingHPAccum` para recalcular `AverageHealingHP`; según el porcentaje resultante,
+  incrementa `HealsAtHighHP` (> 70%), `HealsAtMidHP` (> 30%) o `HealsAtLowHP` (<= 30%).
++ `RegisterTotalDodge()`: incrementa `TotalDodges`; si `isInTankZone` es verdadero, incrementa
+  además `TotalDodgesTankZone`.
++ `RegisterDodgeResult(bWasSuccessful)`: si `bWasSuccessful` es verdadero, incrementa
+  `SuccessfulDodges`. Si es falso, la función no realiza ninguna acción.
++ `RegisterDamageTaken(Damage)`: incrementa `DamageTaken` y acumula `Damage` en
+  `TotalDamageReceived`.
++ `RegisterDashDodge(bWasLateral)`: incrementa `LateralDodgesFromDash` o
+  `BackwardDodgesFromDash` según `bWasLateral`. A diferencia de las anteriores, no bifurca
+  por `isInCombat`; solo depende de `bMetricsEnabled`.
++ `RegisterDodgeFromDelayAttack()`: incrementa `DodgesFromDelayAttack` (o
+  `CombatDodgesFromDelayAttack` en combate); si `isInTankZone` es verdadero, incrementa
+  además `DodgesFromDelayAttack_TankZone` en ambos casos.
++ `RegisterDamageTakenInTankZone()`: incrementa `DamageTakenInTankZone`. No bifurca por
+  `isInCombat`, solo depende de `bMetricsEnabled`.
+
+=== Registro de ataques del jefe (`PlayerMetricsComponent`)
+
+`PlayerMetricsComponent` lleva un registro independiente mediante dos mapas indexados por
+tipo de ataque (`EBossAttackType`): `TotalAttemptsPerType` y `SuccessfulHits`.
+
+`RegisterBossAttackAttempt(AttackType)` incrementa el contador de intentos correspondiente
+en `TotalAttemptsPerType`, además de un contador global `TotalAttacksPerformed`. Cada 15
+ataques realizados (`TotalAttacksPerformed % 15 == 0`), se dispara automáticamente
+`ApplyInCombatSuccessfulHits`.
+
+`RegisterBossAttackHit(AttackType)` incrementa el contador de aciertos correspondiente en
+`SuccessfulHits`.
+
+=== Adaptación pre-combate
+
+Al finalizar la fase previa al combate, `ApplyPreCombatAdaptation` analiza las variables de
+`SlimeGameInstance` y ajusta los pesos de selección de ataques del jefe (mecanismo descrito
+en @sec:pesos-ataque) en cuatro dimensiones independientes, llamando para ello a las
+funciones `ApplyPreCombatDistance`, `ApplyPreCombatMeleeVsRanged`, `ApplyPreCombatDodges` y
+`ApplyPreCombatTankZone`, descritas a continuación. Todo el sistema de adaptación
+solo se ejecuta si `IsAdaptiveEnabled` retorna verdadero, lo cual depende de
+`bAdaptiveEnabled`.
+
+*Distancia* (`ApplyPreCombatDistance`): requiere `DistanceSamples` >=; 20. Si
+`AverageDistance` < 550, reduce en 50 la variable de Blackboard `CloseRange`. Si
+`AverageDistance` > 1100, reduce en 75 `FarRange` e incrementa en 2 segundos `BossChaseDur`.
+Entre ambos umbrales, no hay ajuste.
+
+*Melee versus a distancia* (`ApplyPreCombatMeleeVsRanged`): requiere
+`MeleeAttacks` + `RangedAttacks` >= 5. Calcula `RangedRatio = RangedAttacks / Total`. Si
+`RangedRatio` > 0.65, incrementa en 15 los pesos de `BA_Poddle`, `BA_BossChase` y
+`BA_HeavyAttack`. Si `RangedRatio` < 0.35, incrementa en 15 los pesos de `BA_AOEAttack` y
+`BA_WhipAttack`. Adicionalmente, si `MeleeAttacksInRangedZone` + `RangedAttacksInRangedZone`
+>= 3, incrementa en 10 el peso de `BA_AOEAttack` si predominó el melee en zona de rango, o
+el de `BA_Poddle` si predominó el ataque a distancia.
+
+*Esquiva* (`ApplyPreCombatDodges`): requiere `TotalDodges` >= 5. Calcula
+`DodgeRatio = DodgesFromDelayAttack / TotalDodges`. Si `DodgeRatio` > 0.6, incrementa en 15
+el peso de `BA_BasicAttack`. Si `DodgeRatio` < 0.3, incrementa en 15 los pesos de
+`BA_AOEAttack`, `BA_WallAttack` y `BA_HeavyAttack`. Entre ambos umbrales, no hay ajuste.
+
+*Zona de tanque* (`ApplyPreCombatTankZone`): evalúa dos aspectos. Si
+`LateralDodgesFromDash` + `BackwardDodgesFromDash` >= 3, incrementa en 10 el peso de
+`BA_WhipAttack` (si predominaron las laterales) o de `BA_HeavyAttack` (si predominaron las
+de retroceso). Si `TotalDodgesTankZone` >= 3, compara si
+`DodgesFromDelayAttack_TankZone * 2` >= `TotalDodgesTankZone`: de ser así, incrementa en 10
+el peso de `BA_BasicAttack`; en caso contrario, incrementa en 10 los pesos de
+`BA_HeavyAttack` y `BA_WhipAttack`.
+
+=== Adaptación durante el combate
+
+`ApplyInCombatSuccessfulHits`, disparada cada 15 ataques del jefe, evalúa cada tipo de ataque
+con `TotalAttemptsPerType` >= 3, calculando `Ratio = SuccessfulHits / TotalAttemptsPerType`.
+Si `Ratio` > 0.6, incrementa el peso de ese ataque en 15. Si `Ratio` < 0.3, lo reduce en 15.
+Entre ambos umbrales, no hay ajuste.
+
+`ApplyInCombatHealing(PlayerHealthPercent)` requiere `HealingCount` >= 2. Compara
+`PlayerHealthPercent` contra `AverageHealingHP` con un margen de 10 puntos porcentuales. Al
+entrar en dicho margen (controlado por la variable interna `bIsInHealingRange`, para evitar
+reaplicar el ajuste en cada frame), incrementa en 15 los pesos de `BA_BasicAttack`,
+`BA_HeavyAttack`, `BA_HomingAttack` y `BA_Poddle`. Al salir del margen, revierte los mismos
+ajustes en -15.
+
+=== Mecanismo de pesos de ataque <sec:pesos-ataque>
+
+Los pesos de selección de ataques del jefe, utilizados por el nodo compuesto de selección
+aleatoria ponderada del Behaviour Tree, se almacenan como una única cadena en formato JSON
+dentro de la variable de Blackboard `AttackWeightsJSON`, en lugar de como variables
+individuales. `SetAttackWeight(AttackType, NewWeight)` deserializa dicha cadena, actualiza el
+peso correspondiente al tipo de ataque indicado, y vuelve a serializarla y almacenarla.
+`GetAttackWeight(AttackType)` realiza el proceso inverso, retornando el peso actual de un
+tipo de ataque (o -1 si no se encuentra).
+
+=== Persistencia de datos para el estudio
+
+Los datos se persisten en archivos JSON dentro de `Saved/StudyLogs`:
+
++ `DumpMetricsToFile` (`SlimeGameInstance`): vuelca las variables de la fase pre-combate
+  (`AverageDistance`, `DistanceSamples`, `MeleeAttacks`, `RangedAttacks`,
+  `MeleeAttacksInRangedZone`, `RangedAttacksInRangedZone`, `TotalDodges`,
+  `SuccessfulDodges`, `AverageHealingHP`, `HealingCount`, `LateralDodgesFromDash`,
+  `BackwardDodgesFromDash`, `DodgesFromDelayAttack`, `DamageTakenInTankZone`,
+  `TotalDodgesTankZone`, `DodgesFromDelayAttack_TankZone`) a
+  `session_{SessionId}_{condición}_metrics.json`.
++ `DumpCombatResultToFile(bPlayerWon)` (`PlayerMetricsComponent`): vuelca `bPlayerWon`,
+  `AttemptNumber` y el contenido de `AttackWeightsJSON` a `session_{SessionId}_{condición}_win.json`
+  o `_retry_{AttemptNumber}.json`, según corresponda.
++ `DumpFinalTreeToFile` (`PlayerMetricsComponent`): vuelca únicamente `AttackWeightsJSON` a
+  `session_{SessionId}_{condición}_tree.json`.
+
+En todos los casos, `SessionId` (generado a partir de fecha y hora) y la condición
+experimental (`adaptive` o `control`, según `bAdaptiveEnabled`) identifican tanto el
+contenido como el nombre del archivo.
+
+
+
 == Niveles
    === Lvl_Tutorial
    === Lvl_PreBoss
