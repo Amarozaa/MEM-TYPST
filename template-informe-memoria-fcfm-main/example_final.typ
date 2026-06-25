@@ -60,9 +60,8 @@
     perciba más como un ejercicio de memorización que como un desafío dinámico y en
     constante evolución.
 
-    // TODO: agregar capturas de Elden Ring y Alien: Isolation si se desea; las imágenes
-    // referidas en la propuesta original (imagenes/elden.jpg, imagenes/alien.jpg) no
-    // están disponibles en este proyecto.
+    // TODO: agregar captura de Elden Ring si se desea (la propuesta original incluía
+    // aquí una figura, imagenes/elden.jpg, que no está disponible en este proyecto).
 
     Aunque existen técnicas para ajustar la dificultad, la mayoría de los acercamientos a
     la dificultad dinámica se limitan a modificar parámetros generales del juego -vida,
@@ -76,6 +75,10 @@
       #link("https://www.sega.com/es/alien-isolation/alien-isolation")[Disponible en sitio web].
     ], donde el antagonista aprende los patrones de escondite del jugador y ajusta sus
     rutas de patrullaje para mantener la tensión en cada encuentro.
+
+    // TODO: agregar captura de Alien: Isolation si se desea (la propuesta original
+    // incluía aquí una figura, imagenes/alien.jpg, que no está disponible en este
+    // proyecto).
 
     Este problema general -la falta de enemigos que aprendan del estilo de juego de cada
     jugador, en lugar de limitarse a ejecutar rutinas fijas o a escalar parámetros
@@ -158,9 +161,10 @@
     frente a los enemigos regulares previos al combate (capítulos 3 y 4).
 
     La evaluación del sistema contempla dos dimensiones. Desde una perspectiva técnica, se
-    revisa el funcionamiento del propio mecanismo de adaptación -cómo se traduce el
-    comportamiento del jugador en ajustes concretos sobre los pesos de ataque del jefe-,
-    documentado en el capítulo 4. Desde la perspectiva de experiencia de usuario, se
+    verifica la corrección del propio mecanismo de adaptación: a partir de los pesos de
+    ataque volcados a archivo al iniciar cada combate (capítulo 4), se revisa que el
+    perfil construido sobre el comportamiento del jugador se traduzca efectivamente en los
+    ajustes esperados sobre dichos pesos. Desde la perspectiva de experiencia de usuario, se
     diseñaron pruebas de jugabilidad mediante un experimento controlado, en el que cada
     participante juega tanto la versión de control como la versión adaptativa en sesiones
     separadas, utilizando el Game Experience Questionnaire @GEQuestionare para medir las
@@ -372,7 +376,44 @@
     #lorem(100)
     
     == Género y mecánicas principales
-    #lorem(120)
+
+    El juego corresponde a un _action-RPG_ en tercera persona del género _souls-like_,
+    mencionado ya en el capítulo 1: combate en tiempo real, estadísticas de vida, stamina
+    y maná, y una dificultad pensada para premiar la lectura atenta de cada enemigo por
+    sobre la repetición de un mismo botón. Esta elección de género no es incidental: es
+    precisamente en este tipo de juegos donde la previsibilidad de los enemigos se vuelve
+    más notoria -el jugador aprende a memorizar patrones de ataque tras unos pocos
+    intentos-, por lo que resulta el escenario más exigente para poner a prueba un enemigo
+    que efectivamente se adapte a quien lo enfrenta.
+
+    Sobre esa base, el juego se construyó alrededor de un pequeño conjunto de mecánicas
+    que definen lo que el jugador puede hacer en cada encuentro:
+
+    - *Combate cuerpo a cuerpo*: el jugador ataca con una secuencia de golpes
+      consecutivos, pudiendo encadenarlos en un combo si continúa atacando a tiempo.
+    - *Esquiva*: el jugador puede rodar para evadir un ataque, quedando brevemente
+      invulnerable durante el movimiento; es la principal herramienta defensiva del juego.
+    - *Fijado de objetivo*: el jugador puede fijar la cámara sobre un enemigo específico,
+      orientándose automáticamente hacia él durante el combate.
+    - *Hechizos*: el jugador dispone de dos hechizos intercambiables -un ataque a
+      distancia y uno de curación- que ofrecen una vía alternativa al combate cuerpo a
+      cuerpo puro.
+    - *Carrera*: el jugador puede desplazarse más rápido de lo normal, útil para ganar o
+      mantener distancia frente a un enemigo.
+
+    Estas acciones se sostienen sobre tres estadísticas que limitan su uso: la vida, que
+    termina el encuentro si llega a cero; la stamina, que se consume al esquivar o correr;
+    y el maná, que se consume al lanzar hechizos. Esta limitación de recursos obliga al
+    jugador a tomar decisiones constantes -cuándo esquivar en lugar de atacar, cuándo
+    curarse en lugar de seguir presionando, cuándo alejarse en lugar de arriesgar un
+    golpe-, en lugar de simplemente repetir una única acción óptima.
+
+    Esta variedad de decisiones es, además, lo que hace posible el resto del diseño
+    descrito en este capítulo: si el juego solo permitiera atacar y nada más, todos los
+    jugadores jugarían igual y no habría comportamiento que perfilar. Son estas mismas
+    mecánicas -la preferencia por el cuerpo a cuerpo o los hechizos a distancia, el uso
+    más o menos frecuente de la esquiva, el momento en que se decide curar- las que los
+    arquetipos de enemigos descritos a continuación están pensados para poner a prueba.
 
     == Diseño y arquetipos de enemigos
 
@@ -473,7 +514,11 @@
     que en ese esquema la dificultad se resuelve eligiendo qué enemigo o qué fase enfrenta
     cada jugador, una variable externa a su propio desempeño. Aquí, en cambio, es un único
     antagonista versátil el que cambia, y lo hace en función de cómo se comportó quien lo
-    enfrenta: el mismo jefe puede presionar la distancia, multiplicar los ataques
+    enfrenta. A diferencia de los demás enemigos, que reutilizan assets ya existentes, el
+    jefe se construyó como un personaje propio, lo que permitió darle distintas formas y
+    diseñar cada uno de sus ataques a la medida de las necesidades del combate, en lugar
+    de adaptarse a las limitaciones de un modelo externo: el mismo jefe puede presionar la
+    distancia, multiplicar los ataques
     telegrafiados o variar su agresividad según el perfil construido a partir de los
     arquetipos anteriores. Este diseño es lo que hace posible el sistema adaptativo del
     capítulo 4 -el jefe no es un desafío fijo al final de la progresión, sino su
