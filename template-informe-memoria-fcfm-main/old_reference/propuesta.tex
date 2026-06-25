@@ -1,0 +1,847 @@
+\documentclass[informe]{upropuesta}
+
+\title{Diseño e Implementación de Enemigos Adaptativos en Videojuegos}
+
+\author{Amaro Zurita}
+\guia{Francisco J. Gutiérrez, Elías Zelada}
+
+
+% Solo en el caso de práctica extendida,
+% llenar supervisor; en otro caso de
+% puede dejarlo en blanco o borrar
+% este comado
+
+
+% Puede ser 
+% Memoria
+% Práctica Extendida
+% Doble Titulación con Magíster
+% Doble Titulación de Dos Especialidades
+\modalidad{Memoria}
+
+
+\date{2025}
+
+\bibliographystyle{babunsrt}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+
+\usepackage[fixlanguage]{babelbib}
+\usepackage{url}
+
+\graphicspath{{imagenes/}}
+
+\begin{document}
+
+\maketitle
+
+	\begin{pauta}
+	Se debe quitar todas las guías (estas cajas rosas) antes de entregar el documento.
+	
+	Para quitar las guías, en la primera línea del \TeX: 
+	
+	\begin{verbatim}
+		\documentclass[informe,guia]{upropuesta}
+	\end{verbatim}
+	
+	Quitar la opción \texttt{guia}:
+	
+	\begin{verbatim}
+		\documentclass[informe]{upropuesta}
+	\end{verbatim}
+	
+	Además, hay que reemplazar los datos acá (se puede especificar uno o dos profesores guías; solo hay que dar el nombre del supervisor en el caso de la práctica extendida; en otro caso dejarlo en blanco o borrar la línea):
+	
+	\begin{verbatim}
+		\author{Juan Peréz}
+		\guia{Juana Peréz, José Peréz}
+		\supervisor{Julian Peréz}
+		\modalidad{Memoria}
+		\date{20XX}
+	\end{verbatim}
+	
+	Como una aproximación, se espera que el informe sea de 12--25 páginas.
+	
+	[No hay que poner texto acá. Se puede empezar directamente con la introducción.]
+\end{pauta}
+
+\section{Introducción}\label{sec:intro}
+
+
+El diseño de la inteligencia artificial en los videojuegos ha avanzado notablemente en las últimas décadas, evolucionando desde simples máquinas de estados finitos hacia sistemas que incorporan algoritmos de navegación más sofisticados, árboles de comportamiento complejos entre otras cosas \cite{IAVideogames}. No obstante, muchos títulos todavía emplean enemigos con rutinas predefinidas y comportamientos relativamente previsibles, como se observa en juegos como 
+\textit{Elden Ring}\footnote{Elden Ring es un videojuego de rol de acción en mundo abierto desarrollado por FromSoftware y publicado por Bandai Namco, ambientado en un universo creado junto a George R. R. Martin. \href{https://en.bandainamcoent.eu/elden-ring/elden-ring}{Disponible en sitio web}}
+o \textit{Hollow Knight}\footnote{Hollow Knight es un videojuego de acción y aventuras en 2D, desarrollado por Team Cherry. Ambientado en el reino subterráneo de Hallownest, el jugador explora cavernas, enfrenta criaturas y descubre secretos mientras adquiere nuevas habilidades que permiten acceder a zonas previamente inaccesibles. 
+\href{https://www.hollowknight.com/}{Disponible en sitio web}}, donde ciertos enemigos y jefes siguen patrones de ataque que los jugadores pueden memorizar tras varios intentos. En géneros exigentes como los \textit{Soulslike}\footnote{Subgénero inspirado en la serie Dark Souls, caracterizado por combate desafiante, penalizaciones por muerte, y patrones de ataque memorizables en jefes} o los \textit{Roguelike}\footnote{Género de videojuegos caracterizado por dungeons generados aleatoriamente, permadeath (muerte permanente del personaje) y elementos RPG. Nombrado así por el juego Rogue (1980)} , esta previsibilidad puede limitar la rejugabilidad, haciendo que la dificultad se perciba más como un desafío de memorización que como un reto dinámico y en constante evolución.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{imagenes/elden.jpg}
+    \caption{Pelea contra jefe en Elden Ring}
+    \label{fig:placeholder}
+\end{figure}
+
+Aunque existen técnicas para ajustar la dificultad, la mayoría de los acercamientos a dificultad dinámica solo modifica parámetros generales del juego, como vida, daño o velocidad de los enemigos \textbf{\cite{Zohaib18}}. Muy pocos títulos implementan sistemas donde los enemigos puedan adaptarse activamente a las acciones específicas del jugador. Un ejemplso destacado es \textit{Alien: Isolation}\footnote{Alien: Isolation es un juego de sigilo y supervivencia en primera persona desarrollado por Creative Assembly y publicado por SEGA. Ambientado en el universo de la película Alien, el jugador debe evadir a un xenomorfo que aprende de sus acciones y ajusta su comportamiento dinámicamente. \href{https://www.sega.com/es/alien-isolation/alien-isolation}{Disponible en sitio web}} 
+, donde el antagonista aprende los patrones de escondite del jugador y ajusta sus rutas de patrullaje, manteniendo tensión y sorpresa en cada encuentro.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{imagenes/alien.jpg}
+  \caption{\textit{Screenshot de Alien: Isolation}}
+  \label{fig:alien}
+\end{figure}
+
+En este contexto, surge la necesidad de explorar nuevas formas de construir enemigos adaptativos,  porque cuando los jugadores logran memorizar los patrones de ataque o movimiento, los enfrentamientos pierden parte de su tensión y sorpresa. La idea es que los adversarios no respondan de manera estática, sino que identifiquen patrones en las acciones del jugador y ajusten sus estrategias para mantener un nivel de desafío constante. Con este enfoque, los mismos enemigos podrían ofrecer combates diferentes según el estilo de juego de cada persona, generando experiencias más dinámicas y personalizadas. De esta forma, cada enfrentamiento se sentiría único, lo que aumentaría la inmersión, la tensión y la rejugabilidad.
+
+La presente propuesta se enfoca en implementar este enfoque en Unreal Engine, un motor ampliamente utilizado en la industria de los videojuegos y reconocido por su robusto sistema de inteligencia artificial (Behavior Trees, Blackboard y EQS), su escalabilidad y su capacidad de prototipado rápido mediante Blueprints. Estas características lo convierten en una plataforma idónea para experimentar con sistemas adaptativos, ya que permite integrar fácilmente tanto enfoques tradicionales como tecnologías emergentes.
+
+El objetivo es desarrollar un sistema de enemigos adaptativos que enriquezca la jugabilidad y genere interacciones más sofisticadas entre el jugador y el sistema. Como parte de la exploración, se considerará la posible utilización de NVIDIA ACE (Avatar Cloud Engine) como soporte para el aprendizaje y adaptación de los enemigos; no obstante, el núcleo del trabajo se basará en los recursos nativos de Unreal Engine, asegurando así independencia tecnológica y viabilidad del prototipo.
+
+Este estudio es relevante porque abre la puerta a diseñar experiencias más dinámicas y retadoras, donde el desafío evoluciona de manera orgánica según el estilo de juego del usuario. Además, representa un aporte al campo de la inteligencia artificial en videojuegos, al proponer soluciones que trascienden los comportamientos predecibles y fomentan un vínculo activo entre jugador y sistema.
+
+\begin{pauta}
+Dar una introducción al contexto del tema.
+
+Explicar, en términos generales, el problema abordado.
+
+Motivar la necesidad, la importancia y/o el valor, de tener una (mejor) solución.
+
+En el caso de la práctica extendida, incluir detalles de la organización, su quehacer, el equipo y el supervisor con los cuales se va a trabajar, la relevancia del problema a la organización, etc.
+
+[2--4 páginas]
+\end{pauta}
+
+\section{Estado del Arte}\label{sec:sa}
+
+\subsection{Técnicas Tradicionales de IA en Videojuegos}
+
+Actualmente, la mayoría de los videojuegos implementa la inteligencia de los enemigos mediante técnicas como árboles de comportamiento (Behavior Trees) o máquinas de estados finitos (FSM) \cite{IOVINO2022104096}. Un Behavior Tree es una estructura jerárquica que organiza decisiones y acciones mediante nodos que retornan éxito, fallo o en ejecución, permitiendo definir comportamientos de forma modular.
+
+Estas metodologías permiten establecer patrones y reglas claras de reacción, ofreciendo control sobre el comportamiento de los enemigos. Sin embargo, carecen de capacidad de adaptación real: los enemigos suelen repetir las mismas rutinas y no aprenden de las acciones del jugador, lo que los hace predecibles tras algunos intentos y disminuye la rejugabilidad y el desafío.
+\subsection{Enfoques de Ajuste Dinámico de Dificultad}
+
+En el ámbito de la investigación se han desarrollado diversos enfoques para el ajuste dinámico de dificultad \cite{Zohaib18}, incluyendo métodos probabilísticos que optimizan el engagement del jugador mediante funciones matemáticas complejas, y sistemas basados en redes neuronales que han logrado predecir estados emocionales del jugador con alta precisión. También se han explorado técnicas de aprendizaje por reforzamiento donde controladores adaptativos ajustan el comportamiento de los enemigos basándose en el rendimiento del jugador, manteniendo experiencias equilibradas sin volverse predecibles. Aun así, estos casos siguen siendo excepcionales debido a diversos desafíos técnicos y de recursos, además de la limitada adopción por parte de la industria, y no representan una metodología estandarizada para lograr adaptación en tiempo real en los videojuegos modernos.
+
+En esa misma línea, Zohaib (2018) describe otros enfoques complementarios, como sistemas donde grupos de personajes no jugables forman comportamientos adaptativos de manera descentralizada, ajustando sus parámetros según la retroalimentación del jugador —por ejemplo, patrones de movimiento e interacciones. Asimismo, se incluyen técnicas de scripting dinámico que modifican reglas de comportamiento en tiempo real basándose en tasas de éxito y fracaso, lo que permite que los enemigos evolucionen sus tácticas durante el juego. Investigaciones más recientes, también recopiladas por el autor, han combinado algoritmos de búsqueda en árboles con redes neuronales para crear oponentes que adaptan su nivel de desafío según los recursos computacionales disponibles, demostrando que es posible correlacionar directamente la dificultad percibida con el tiempo de procesamiento asignado.
+
+\subsection{Tecnologías Emergentes y Aplicaciones Recientes}
+
+En paralelo, tecnologías emergentes, como NVIDIA ACE (Avatar Cloud Engine), han mostrado posibilidades interesantes de aprendizaje dinámico. Por ejemplo, en el juego MIR5\footnote{MIR5 es un próximo MMORPG (Juego de Rol Multijugador Masivo en Línea) desarrollado por Wemade Next. \href{https://www.invenglobal.com/articles/19158/wemade-next-to-develop-an-ai-boss-in-mir5-in-collaboration-with-nvidia}{Sitio web}.}, un jefe conocido como \textit{Asterion} utiliza esta tecnología para evaluar tácticas, habilidades y equipo del jugador en tiempo real, adaptando sus estrategias para mantener un desafío personalizado y constante. Aunque el enfoque principal de NVIDIA ACE ha sido mejorar la interacción con personajes no jugables mediante conversaciones naturales, su aplicación en MIR5 evidencia que es posible diseñar enemigos que aprenden y modifican su comportamiento según el jugador, ofreciendo experiencias más inmersivas y retadoras.
+
+A pesar de estos avances, no existe una metodología ampliamente adoptada que permita implementar enemigos adaptativos de manera general en motores de juego comunes como Unreal Engine. La mayoría de las soluciones actuales dependen de tecnologías externas o están restringidas a casos específicos. Las técnicas más sofisticadas permanecen principalmente en el ámbito de investigación sin traducirse a herramientas accesibles para desarrolladores. Esto abre un espacio de investigación y desarrollo para crear sistemas de inteligencia artificial que no solo reaccionen, sino que aprendan y se ajusten al estilo de juego del usuario, mejorando la rejugabilidad, la inmersión y la complejidad del desafío.
+
+\subsection{Casos Destacados de Adaptación en la Industria}
+
+Más allá de Alien: Isolation y MIR5, existen otros casos notables en la industria que han explorado diferentes formas de adaptación y personalización de la experiencia de juego:
+
+\subsubsection*{Left 4 Dead y el AI Director}
+
+\textit{Left 4 Dead}\footnote{Left 4 Dead es un videojuego cooperativo de supervivencia y terror desarrollado por Valve Corporation y publicado en 2008. El juego se centra en cuatro supervivientes que deben atravesar escenarios infestados de zombis, enfrentándose a hordas dinámicas controladas por el sistema AI Director. \href{https://www.l4d.com/}{Disponible en sitio web}} introdujo un sistema revolucionario conocido como ``AI Director'', diseñado para crear experiencias dinámicas de terror y supervivencia cooperativa. A diferencia de los sistemas tradicionales donde los enemigos aparecen en ubicaciones predefinidas, el AI Director analiza constantemente el estado del equipo de jugadores ---incluyendo salud, munición, posición y nivel de estrés--- para ajustar la intensidad del juego en tiempo real \cite{Booth09}.
+
+El sistema funciona mediante la manipulación de varios parámetros: la frecuencia y tamaño de las hordas de zombis, la aparición de ``infectados especiales'' (enemigos con habilidades únicas), la colocación de recursos como botiquines y munición, e incluso elementos ambientales como música y efectos de sonido. Cuando el equipo está funcionando bien, el Director incrementa la presión mediante encuentros más desafiantes; cuando los jugadores están al borde del colapso, reduce temporalmente la intensidad para permitir momentos de respiro y recuperación. Esta aproximación se basa en la teoría del ``flow'' de Csikszentmihalyi, buscando mantener a los jugadores en un estado óptimo entre el aburrimiento y la frustración.
+
+Sin embargo, el AI Director presenta limitaciones importantes para el contexto de combate contra jefes individuales: opera principalmente a nivel macro, ajustando parámetros globales del encuentro en lugar de modificar tácticas específicas de enemigos individuales. No aprende de las estrategias particulares de cada jugador ---por ejemplo, si un jugador prefiere el combate a distancia o cuerpo a cuerpo--- ni adapta patrones de ataque específicos. Su enfoque se centra en el pacing y la intensidad general de la experiencia, no en la creación de adversarios que evolucionen tácticamente en respuesta al estilo de juego individual.
+
+\subsubsection*{Middle-earth: Shadow of Mordor y el Sistema Nemesis}
+
+El Sistema Nemesis, introducido en \textit{Middle-earth: Shadow of Mordor}\footnote{Middle-earth: Shadow of Mordor es un videojuego de acción y aventuras en mundo abierto desarrollado por Monolith Productions y publicado por Warner Bros. Interactive Entertainment en 2014. Ambientado en el universo de El Señor de los Anillos, el juego presenta el innovador Sistema Nemesis, que genera enemigos dinámicos con memoria persistente de sus encuentros con el jugador. \href{https://www.shadowofmordor.com/}{Disponible en sitio web}} (Monolith Productions, 2014) y expandido en su secuela Shadow of War (2017), representa un enfoque diferente hacia la personalización de enemigos. Este sistema genera una jerarquía dinámica de capitanes orcos, cada uno con personalidad, fortalezas, debilidades y apariencia únicas generadas proceduralmente.
+
+La característica más innovadora del sistema es su memoria persistente: cuando el jugador se enfrenta a un capitán, el resultado del encuentro tiene consecuencias permanentes. Si el jugador es derrotado, el capitán que lo mató asciende en rango, gana confianza, y puede desarrollar nuevas habilidades o inmunidades. En encuentros posteriores, ese mismo capitán recordará la victoria anterior, mencionándola mediante diálogos contextuales y mostrando cicatrices o modificaciones físicas resultado del combate previo. Si el jugador logra herir pero no matar a un capitán que luego escapa, este puede regresar más tarde con vendajes, quemaduras o prótesis mecánicas que reflejan cómo fue herido, y potencialmente habiendo desarrollado resistencias a las tácticas que el jugador empleó.
+
+El sistema también permite relaciones emergentes entre los propios capitanes: pueden desarrollar rivalidades, alianzas, buscar venganza por camaradas caídos, o incluso traicionar a sus superiores. Esto crea narrativas personalizadas donde cada jugador desarrolla su propia galería de némesis con historias únicas. El juego incluso permite que capitanes de bajo rango que mataron al jugador por casualidad se conviertan en antagonistas recurrentes, generando conexiones emocionales inesperadas.
+
+No obstante, desde la perspectiva de adaptación táctica en combate, el Sistema Nemesis opera principalmente en la dimensión narrativa y estratégica más que en la táctica inmediata. Las adaptaciones de los capitanes son cambios de configuración entre encuentros (nuevas inmunidades, nuevas armas, nuevas habilidades) en lugar de ajustes dinámicos durante el combate mismo. Un capitán no modifica sus patrones de ataque a mitad de pelea según observe que el jugador esquiva siempre hacia la derecha o abusa de cierta habilidad. Las ``adaptaciones'' son más bien evoluciones preprogramadas que se activan por condiciones específicas (fue quemado $\rightarrow$ desarrolla inmunidad al fuego) en lugar de aprendizaje genuino de patrones de comportamiento del jugador.
+
+\subsubsection*{Limitaciones comunes y espacio de oportunidad}
+
+Ambos sistemas, aunque innovadores en sus respectivos dominios, comparten una limitación fundamental: ninguno implementa adaptación táctica en tiempo real basada en el análisis de patrones específicos del estilo de combate del jugador. Left 4 Dead ajusta la experiencia global pero no personaliza comportamientos enemigos individuales; Shadow of Mordor crea evolución narrativa y estratégica entre encuentros pero no adaptación táctica durante los combates.
+
+Esto evidencia el espacio de oportunidad que motiva el presente trabajo: desarrollar enemigos (específicamente jefes)capaces de identificar y responder a las preferencias tácticas del jugador (patrones de ataque, timing de esquivas, uso de habilidades específicas, posicionamiento) modificando su comportamiento de forma dinámica tanto antes como durante el combate. Esta aproximación complementaría los enfoques existentes al enfocarse en la adaptación a nivel micro-táctico, donde cada encuentro individual se vuelve un desafío personalizado que evoluciona según las decisiones momento a momento del jugador.
+
+\subsection{Consideraciones de Experiencia de Usuario}
+
+Más allá de la implementación técnica de sistemas adaptativos, es fundamental considerar cómo estos sistemas impactan la experiencia del usuario. Pinelle et al. \cite{Pinelle08} desarrollaron un conjunto de heurísticas específicas para evaluar la usabilidad en videojuegos, derivadas del análisis de 108 reseñas profesionales que cubrieron seis géneros principales. Su trabajo identificó doce categorías de problemas de usabilidad comunes, entre las cuales destacan: respuestas impredecibles a las acciones del usuario, falta de información sobre el estado del juego, controles difíciles de manejar, y representaciones visuales difíciles de interpretar.
+
+Estas heurísticas son particularmente relevantes para el desarrollo de enemigos adaptativos, ya que varias se relacionan directamente con cómo el jugador percibe y entiende el comportamiento de la IA. Por ejemplo, la heurística \textit{proporcionar respuestas consistentes a las acciones del usuario} establece que los enemigos deben comportarse de manera predecible y apropiada para la situación. Esto plantea un desafío importante: ¿cómo lograr que un enemigo sea adaptativo sin volverse impredecible o frustrante? El sistema propuesto debe balancear la adaptación dinámica con la consistencia percibida, asegurando que los jugadores puedan entender las ``reglas'' del comportamiento enemigo incluso cuando este evolucione.
+
+
+
+\subsection{Síntesis y Brecha Identificada}
+
+La revisión del estado del arte muestra que, aunque existen enfoques tradicionales y avances recientes en IA de videojuegos, ninguno ofrece una solución general ni fácilmente integrable para lograr adaptación táctica en tiempo real en enemigos individuales dentro de motores como Unreal Engine. Las técnicas clásicas no aprenden del jugador, los métodos de investigación suelen requerir recursos elevados o no están diseñados para su aplicación práctica en juegos comerciales, y los casos industriales corresponden a soluciones específicas difíciles de replicar.
+
+Esta situación evidencia una brecha concreta: la falta de un sistema que permita que un enemigo, en particular un jefe, pueda registrar el comportamiento del jugador y ajustar sus patrones de combate de manera dinámica. El trabajo propuesto en esta memoria busca abordar directamente este vacío mediante el desarrollo de un sistema de adaptación táctica integrable y práctico.
+
+
+
+
+\begin{pauta}
+Describe en más detalle la literatura, las técnicas, las soluciones existentes, etc., relacionadas con el tema del trabajo. Justificar por qué es necesario un trabajo novedoso.
+
+[3--8 páginas con varias subsecciones]
+\end{pauta}
+
+
+
+% DBLP es una buena fuente de referencias en formata "BibTeX"
+% en Ciencias de la Computación
+% p.ej., https://dblp.org/pers/hd/t/Turing:Alan_M=
+
+\section{Objetivos}\label{chap:obj}
+
+\subsection*{Objetivo General}
+Desarrollar e implementar un sistema de enemigos adaptativos en Unreal Engine, capaces de aprender y responder a las estrategias del jugador, evaluando tanto métodos tradicionales como tecnologías emergentes, con el fin de enriquecer la experiencia de juego, aumentar la rejugabilidad y ofrecer un desafío dinámico.
+
+\subsection*{Objetivos Específicos}
+\begin{enumerate}
+    \item Investigar y analizar diferentes enfoques existentes para el diseño de inteligencia artificial adaptativa en videojuegos.
+    \item Construir una versión base del juego con enemigos tradicionales (sin mecanismos adaptativos), que sirva como referencia y punto de comparación en las pruebas.
+    \item Implementar un prototipo de enemigos que detecten patrones en las acciones del jugador y adapten sus comportamientos en consecuencia.
+    \item Evaluar las herramientas nativas de Unreal Engine (como Behavior Trees, Blackboard y EQS) para la construcción del sistema.
+    \item Explorar la aplicabilidad de la tecnología NVIDIA ACE como complemento para el aprendizaje y la toma de decisiones avanzadas.
+    \item Comparar los resultados de las soluciones desarrolladas, identificando ventajas, limitaciones y posibles mejoras.
+    \item Validar el sistema a través de pruebas de jugabilidad, midiendo la capacidad de adaptación de los enemigos y la percepción de desafío por parte de los jugadores.
+\end{enumerate}
+
+\subsection*{Evaluación}
+La evaluación del proyecto se llevará a cabo en dos dimensiones principales. Desde una \textbf{perspectiva técnica}, se medirá el desempeño del sistema en términos de eficiencia (tiempos de respuesta, consumo de recursos) y capacidad de adaptación (velocidad y efectividad con que los enemigos ajustan su comportamiento al jugador). 
+
+Desde la perspectiva de experiencia de usuario, se realizarán pruebas de jugabilidad estructuradas mediante experimentos controlados con un grupo de participantes (20-25), donde cada jugador experimentará tanto la versión con enemigos tradicionales como la versión con enemigos adaptativos en sesiones separadas. Para medir la experiencia de juego se utilizará el Game Experience Questionnaire \cite{GEQuestionare} , enfocándose en las dimensiones de desafío, inmersión, competencia y afecto positivo. Adicionalmente, se recopilará feedback cualitativo sobre percepción de predictibilidad y preferencia entre ambas versiones.
+
+Se espera que los resultados muestren un aumento significativo en las puntuaciones de desafío e inmersión para la versión adaptativa, validando la utilidad del enfoque propuesto dentro de motores de uso común como Unreal Engine.
+
+
+\begin{pauta}
+Describir las \textit{metas} del trabajo. Hay que contestar acá: ¿\textit{qué} quieres lograr? (La sección que sigue contestará la pregunta: ¿\textit{cómo} lo vas a lograr?)
+
+Ejemplos de metas: lograr que X sea (más) eficiente, usable, seguro, completo, preciso, barato, informativo, posible por primera vez, etc.
+
+Ejemplos de \textit{no} metas: implementar algo en Javascript, aplicar modelo Y sobre los datos, etc. (Estas cosas van en la descripción de la \textbf{Solución Propuesta}.)
+
+Al final del trabajo, debería ser factible saber si se han logrado los objetivos enumerados acá, o saber cuán bien se han logrado, o no. Por ejemplo, si la meta es tener algo eficiente en términos de tiempo, debería haber una forma de evaluar o estudiar los tiempos. Acá tendrás que definir la forma general en que se podrá evaluar el trabajo.
+
+[No hay que poner texto acá. Se puede empezar directamente con el objetivo general.]
+\end{pauta}
+
+
+  
+\begin{pauta}
+Un \textit{resumen conciso} (no más de un párrafo) de la meta principal del trabajo, es decir, qué quieres lograr con el trabajo (o qué significa ``éxito'' en el contexto del trabajo).
+  
+(``Titularse'' no es una respuesta válida. :))
+  
+[1 párrafo]
+\end{pauta}
+
+  
+\begin{pauta}
+Una \textit{lista} de los hitos principales que se quieren lograr para (intentar) cumplir con el objetivo general. Divide el objetivo general en varios hitos que formarán las etapas del trabajo.
+  
+Cada objetivo debería ser específico, medible, alcanzable, relevante al problema, y acotado en tiempo (objetivos \textit{SMART}).
+
+No se debería escribir más de un párrafo por hito. 
+
+Los objetivos específicos deberían ``sumar'' al objetivo general.
+  
+[Una lista de 3--7 párrafos cortos]
+\end{pauta}
+  
+
+  
+
+  
+\begin{pauta}
+Describe cómo vas a poder evaluar el trabajo en términos de cuán bien cumple con los objetivos planteados. Se pueden discutir los datos, las medidas, los usuarios, las técnicas, etc., utilizables para la evaluación.
+  
+[1--2 párrafos]
+\end{pauta}
+
+\section{Solución Propuesta}\label{sec:sol}
+
+\begin{pauta}
+Una descripción general de la solución propuesta: los datos, las técnicas, las tecnologías, las herramientas, los lenguajes, los marcos, etc., que se usarán para intentar lograr los objetivos planteados. Aquí hay que contestar la pregunta: ¿\textit{cómo} vas a lograr los objetivos planteados? Aquí, sí, está muy bien hablar de Javascript, CNNs, Numpy, Django, índices invertidos, árboles wavelet, privacidad diferencial, PageRank, Diffie--Hellman, triangulaciones de Delaunay, CUDA, Postgres, etc.
+
+[2--4 páginas]
+\end{pauta}
+
+\begin{pauta}
+Una descripción general de la solución propuesta: los datos, las técnicas, las tecnologías, las herramientas, los lenguajes, los marcos, etc., que se usarán para intentar lograr los objetivos planteados. Aquí hay que contestar la pregunta: ¿\textit{cómo} vas a lograr los objetivos planteados? Aquí, sí, está muy bien hablar de Javascript, CNNs, Numpy, Django, índices invertidos, árboles wavelet, privacidad diferencial, PageRank, Diffie--Hellman, triangulaciones de Delaunay, CUDA, Postgres, etc.
+h
+[1--2 páginas]
+\end{pauta}
+
+La solución propuesta consiste en desarrollar un sistema de inteligencia artificial adaptativa que permita a los enemigos jefe aprender y responder dinámicamente a las estrategias del jugador. Este sistema se implementará en Unreal Engine para un juego del género \textit{souls-like}, combinando herramientas integradas de IA con técnicas de análisis de patrones de comportamiento del jugador en tiempo real.
+
+El desarrollo seguirá una metodología experimental controlada, construyendo diferentes versiones del sistema para permitir comparaciones sistemáticas. Estas versiones serán evaluadas comparativamente contra el control mediante estudios de usuarios para medir experiencia de juego (desafío, inmersión, competencia) y percepción de predictibilidad, como se menciona en la sección anterior.
+
+
+\subsection{Caso Control: Versión Base}
+Se desarrollará una versión base del juego que funcionará como caso control, implementando enemigos tradicionales con comportamientos predefinidos mediante:
+\begin{itemize}
+\item Behavior Trees estáticos con patrones de ataque fijos
+\item Máquinas de estados finitos simples
+\item Parámetros de dificultad constantes (vida, daño, velocidad)
+\item Sin mecanismos de aprendizaje o adaptación
+\end{itemize}
+Esta versión base servirá como línea de referencia para todas las comparaciones posteriores y garantizará que las mejoras observadas sean atribuibles específicamente a los mecanismos adaptativos implementados.
+
+
+\subsection{Casos Experimentales: Versiones Adaptativas}
+Sobre la base del caso control, se desarrollarán \textbf{independientemente} diferentes versiones experimentales, cada una implementando distintos enfoques de manejo dinámico de enemigos:
+\subsubsection*{Versión Experimental 1: Adaptación Pre-Combate}
+Los enemigos comunes previos al combate registraran el estilo de juego del usuario durante la exploración (tendencia a ataques a distancia vs. cuerpo a cuerpo, frecuencia de bloqueos vs. esquivas, patrones de movimiento). Esta información se transfiere al jefe antes del combate mediante un sistema de blackboard global, permitiéndole ajustar su configuración inicial: agresividad, patrones de ataque preferidos y estrategias de presión adaptadas al perfil del jugador.
+
+\subsubsection*{Versión Experimental 2: Adaptación durante el combate}
+El jefe analiza en tiempo real los patrones del jugador durante las primeras fases del combate, detectando estrategias recurrentes y puntos de vulnerabilidad. Con esta información, ajusta dinámicamente su comportamiento en fases posteriores del mismo enfrentamiento, castigando las estrategias más predecibles mediante algoritmos de detección de patrones integrados en Behavior Trees con nodos de decisión adaptativos.
+
+Para clarificar las diferencias estructurales entre la versión base (caso control) y las versiones adaptativas, se presenta la siguiente tabla comparativa que resume los aspectos clave del sistema de IA propuesto:
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{3.2cm}|p{5cm}|p{5cm}|}
+\hline
+\textbf{Aspecto} & \textbf{Versión Base} & \textbf{Versión Adaptativa} \\ \hline
+Progresión de fases & 1era fase → 2da fase con nuevos ataques & 1era fase → identifica patrones → 2da fase adapta frecuencia de ataques + nuevos ataques \\ \hline
+Behaviour Tree & BT normal & BT con Blackboard extendido \\ \hline
+Tipo de ataques & Ataques estáticos & Ataques adaptados \\ \hline
+Análisis de condiciones & Solo condiciones instantáneas (distancia, poca vida/stamina/mana) & Condiciones instantáneas + información analizada en la 1era fase \\ \hline
+Uso de patrones del jugador & No & Sí, registra patrones y ajusta frecuencia de ataques en la 2da fase \\ \hline
+\end{tabular}
+\caption{Comparación entre la versión base (control) y la versión adaptativa del sistema de IA.}
+\end{table}
+
+
+
+
+
+
+
+Para implementar estas mecánicas, se emplearán las herramientas nativas de Unreal Engine: 
+\begin{itemize}
+    \item \textbf{Behavior Trees y Blackboard:} para estructurar la toma de decisiones de los enemigos.
+    \item \textbf{EQS (Environment Query System):} para consultas dinámicas que permitan a los enemigos elegir acciones en función del entorno y del jugador.
+    \item \textbf{Registro de datos en tiempo real:} para capturar métricas del desempeño del jugador y transferirlas entre combates o fases.
+\end{itemize}
+
+De forma exploratoria, se evaluará el uso de tecnologías emergentes como NVIDIA ACE (Avatar Cloud Engine) y enfoques de machine learning como alternativa para enriquecer la capacidad de adaptación del sistema. Sin embargo, el núcleo del trabajo se centrará en construir un prototipo funcional utilizando las herramientas nativas de Unreal Engine, asegurando que el sistema sea factible y evaluable.
+
+El resultado esperado es un sistema de jefes que pueda adaptarse antes o durante un enfrentamiento, logrando asi una jugabilidad menos predecible y más inmersiva, con potencial aplicación en géneros como los \textit{soulslike} o los \textit{roguelike}.
+
+
+\section{Plan de Trabajo}\label{sec:pdt}
+
+
+El semestre de finalización se enfocará en la implementación completa del sistema adaptativo, su evaluación exhaustiva y la documentación final:
+
+\begin{itemize}
+    \item \textbf{Implementación del sistema adaptativo completo (Semanas 1-9):} Desarrollar los módulos que permitan registrar las acciones del jugador y adaptar los patrones de los enemigos tanto antes como durante el combate. Se implementarán los algoritmos de detección de patrones y los mecanismos de adaptación dinámica utilizando las herramientas nativas de Unreal Engine. \textit{Esta tarea completa el objetivo específico 3: implementar un prototipo de enemigos que detecten patrones y adapten comportamientos, y contribuye al objetivo específico 4: evaluar las herramientas nativas de Unreal Engine.}
+    
+    \item \textbf{Evaluación de tecnologías emergentes (Semanas 4-9):} Profundizar en la integración de NVIDIA ACE y otras tecnologías de aprendizaje automático como complemento al sistema base. Esta evaluación incluirá pruebas de viabilidad técnica, rendimiento y beneficios comparativos. \textit{Esta actividad completa el objetivo específico 5: explorar la aplicabilidad de la tecnología NVIDIA ACE como complemento para el aprendizaje y toma de decisiones avanzadas.}
+    
+    \item \textbf{Pruebas técnicas de rendimiento (Semanas 7-8):} Realizar mediciones del sistema adaptativo completo, comparando métricas de rendimiento, estabilidad y eficiencia con respecto a la versión base. Se evaluará el impacto de la adaptación en el desempeño general del juego. \textit{Esta tarea contribuye al objetivo específico 6: comparar los resultados de las soluciones desarrolladas, identificando ventajas y limitaciones, y al objetivo específico 7: validar el sistema mediante pruebas técnicas.}
+    
+    \item \textbf{Diseño y ejecución de pruebas de usuario (Semanas 10-12):} Implementar experimentos controlados con participantes para evaluar la experiencia de juego. Cada jugador experimentará tanto la versión tradicional como la adaptativa, recopilando datos cuantitativos y cualitativos sobre percepción de dificultad, inmersión y rejugabilidad. \textit{Esta actividad completa el objetivo específico 7: validar el sistema a través de pruebas de jugabilidad, midiendo la capacidad de adaptación y la percepción de desafío por parte de los jugadores.}
+    
+    \item \textbf{Análisis de resultados (Semanas 12-13):} Procesar y analizar los datos obtenidos de las pruebas técnicas y de usuario. Se realizará una comparación sistemática entre ambos sistemas, identificando ventajas, limitaciones y oportunidades de mejora del enfoque adaptativo. \textit{Esta tarea completa el objetivo específico 6: comparar los resultados de las soluciones desarrolladas, identificando ventajas, limitaciones y posibles mejoras.}
+    
+    \item \textbf{Redacción de memoria final (Semanas 13-15):} Documentar de manera completa el trabajo realizado, incluyendo metodología, implementación, resultados experimentales, análisis comparativo y conclusiones. Se incluirán también propuestas para líneas futuras de investigación y desarrollo. \textit{Esta actividad consolida el cumplimiento del objetivo específico 1: investigar y analizar diferentes enfoques existentes, documentando de manera integral todos los hallazgos del trabajo.}
+    
+   
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{image.png}
+    \caption{Carta Gantt de la planificación}
+    \label{fig:imagen-generica}
+\end{figure}
+
+
+\begin{pauta}
+Dar una lista de los pasos que se va a seguir para desarrollar la solución propuesta. La lista debería contemplar la evaluación del trabajo.
+
+Para el informe final, se recomienda incluir un cronograma planificando el trabajo durante las 15 semanas del semestre del ``F'', haciendo referencia a los pasos listados en el plan de trabajo. Se puede extender el ejemplo dado, o usar otro software para generar el cronograma.
+
+[1--2 páginas]
+\end{pauta}
+
+
+
+
+\section{Trabajo Adelantado}\label{sec:tra}
+
+
+
+
+
+
+
+
+
+\begin{pauta}
+Describe el trabajo adelantado en la segunda parte del curso CC6908. El avance debería describir un trabajo práctico, que genere algún resultado preliminar pero novedoso, y que involucre aproximadamente 35 horas de trabajo. Es algo \textbf{adicional} a la profundización en las otras partes de la propuesta (como por ejemplo, en entender y describir el estado del arte).
+
+[2--5 páginas]
+
+
+
+
+\end{pauta}
+
+
+
+Para el proyecto se decidió utilizar Unreal Engine 5.6. El juego se construyó tomando como base la plantilla Third Person incluida en Unreal Engine. Esta corresponde a un ejemplo diseñado para demostrar las funcionalidades fundamentales del sistema de personajes en tres dimensiones, incorporando un escenario simple, una cámara orbital y un personaje capaz de desplazarse, correr y saltar. Si bien a primera vista los elementos presentados parecen utilizables directamente para la implementación del proyecto, la plantilla posee diversos aspectos que difieren del objetivo buscado y que requieren modificaciones específicas.
+
+La plantilla Third Person proporciona una estructura de proyecto preconfigurada que incluye varios componentes clave. El elemento principal es el \textit{BP\_ThirdPersonCharacter}, un Blueprint que representa al personaje jugable y contiene toda la lógica de movimiento, entrada de usuario y comportamiento básico. 
+
+A lo largo de esta sección se hará referencia frecuente al concepto de \textit{Blueprint}. Los Blueprints son el sistema de scripting visual de Unreal Engine que permite crear lógica de juego mediante nodos interconectados, sin necesidad de escribir código tradicional. Esto facilita la iteración rápida y permite a diseñadores y artistas contribuir directamente a la programación del juego. 
+
+Este Blueprint incluye componentes como la cápsula de colisión, la malla del personaje (Skeletal Mesh), el componente de movimiento (Character Movement Component) y la cámara con su brazo de resorte (Spring Arm). Adicionalmente, la plantilla incluye el Game Mode, que define las reglas básicas del juego, y diversos assets como animaciones base, materiales y el escenario de demostración.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{imagenes/Screenshots editor/BP_Character.png}
+    \caption{Screenshot de Blueprint del jugador}
+    \label{fig:placeholder}
+\end{figure}
+
+Un ejemplo de los ajustes necesarios es la estructura del personaje y sus sistemas de locomoción, los cuales, si bien sirven como referencia inicial, deben ser adaptados o reemplazados según las necesidades mecánicas del juego. Del mismo modo, el comportamiento de la cámara, las animaciones base y la lógica de entrada proporcionadas por defecto funcionan como punto de partida, pero no necesariamente representan la experiencia final deseada.
+
+Por ejemplo, se tuvieron que cambiar las animaciones de movimiento del personaje por algunas que soportaran Strafe Movement. El Strafe Movement (o simplemente strafing) consiste en moverse lateralmente sin perder la orientación hacia un objetivo específico. En lugar de girar todo el cuerpo para caminar hacia la izquierda o la derecha, el personaje desliza su movimiento lateral mientras mantiene la mirada fija hacia adelante o hacia un blanco. Este tipo de movimiento es común en juegos de acción y combate, ya que permite al jugador mantener contacto visual con enemigos mientras se desplaza en cualquier dirección.
+
+Se importaron animaciones que soportan el Strafe Movement, con las opciones de Root Motion y Enable Root Motion habilitadas. El Root Motion permite que el movimiento del personaje sea controlado directamente por las animaciones en lugar de ser aplicado mediante código, lo que resulta en desplazamientos más naturales y sincronizados con las animaciones reproducidas.
+
+Lo siguiente fue crear un Blend Space asociado al esqueleto del jugador, para poder transicionar animaciones dependiendo de la velocidad y dirección del jugador. Un Blend Space es un asset de Unreal Engine que permite interpolar suavemente entre múltiples animaciones basándose en valores de entrada. En este caso, se configuró con dos ejes: uno horizontal que representa la dirección lateral del movimiento y uno vertical que representa la velocidad hacia adelante o atrás.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{BlendSpace.png}
+    \caption{BlendSpace del Strafe Movement, donde el eje X representa la dirección, y el Y la velocidad.}
+    \label{fig:placeholder}
+\end{figure}
+En el Animation Blueprint del personaje (ABP\_Manny), específicamente en el Animation Graph dentro de la máquina de estados de Locomotion, se reemplazó la animación de Idle que venía en el template por una propia, perteneciente al conjunto de animaciones del Strafe Movement.
+
+Luego, se reemplazó en el estado de Walking/Run el Blend Space que venía en el template por el Blend Space creado previamente, permitiendo así transiciones fluidas entre las diferentes direcciones de movimiento mientras se mantiene la orientación del personaje.
+
+También se desactivó el parámetro ``Orient Rotation to Movement'' y se activó el parámetro ``Use Controller Desired Rotation'' para que el jugador mire siempre hacia la dirección que indica la cámara, independientemente de la dirección en la que se mueva.
+
+Cabe recalcar que la mayoría del desarrollo de las implementaciones está realizado en Blueprint. Sin embargo, en el futuro se espera incorporar componentes heredados de C++.
+
+Ahora, para desarrollar las capacidades de combate del jugador se decidió crear un componente BPC\_Combat que hereda de Actor Component y se ancla al Blueprint del jugador, de tal forma que esté centralizada la lógica de combate. De igual forma, para las estadísticas del jugador se creó y ancló un componente BPC\_Stats.
+
+\subsection{Estadísticas del jugador}
+
+Como se mencionó anteriormente, las estadísticas del jugador se implementaron en el componente BPC\_Stats anclado al jugador. Este componente posee múltiples variables, entre las cuales están:
+
+\begin{enumerate}
+    \item health: Tipo Float. Representa la vida actual del jugador.
+    \item Progress Bar Ref: Tipo Progress Bar. Es la referencia a la barra de progreso que muestra la vida.
+    \item maxHealth: Tipo Float. Representa el valor máximo de vida del jugador.
+    \item stamina: Tipo Float. Representa la stamina actual del jugador.
+    \item maxStamina: Tipo Float. Representa la stamina máxima del jugador.
+    \item Stam Bar Ref: Tipo WB Player Stamina. Es la referencia al widget que muestra la barra de stamina.
+    \item canRecoverStamina: Tipo Boolean. Indica si el jugador puede recuperar stamina.
+    \item maxMana: Tipo Float. Representa el valor máximo de maná del jugador.
+    \item mana: Tipo Float. Representa el maná actual del jugador.
+    \item Mana Bar Ref: Tipo Progress Bar. Es la referencia a la barra que muestra el maná.
+\end{enumerate}
+
+La funcionalidad principal de este componente es una función llamada IncreaseVal, la cual recibe como parámetros un enum que indica la estadística que se quiere modificar, junto con el valor del cambio. Si la estadística a modificar es la vida (health), se disminuye la variable de vida por el valor deseado. Luego se calcula el porcentaje de vida actual (health/maxHealth), para finalmente, desde la referencia a la barra (Progress Bar Ref), llamar al método Set Percent, que se encarga de actualizar visualmente la barra con el porcentaje calculado previamente. En caso de recibir el enum perteneciente a la estadística de maná, el proceso es análogo. Para la estadística de stamina también es similar, con la diferencia de que el Widget de la stamina no se muestra siempre, solo cuando se está gastando o recuperando stamina, similar a como lo implementan juegos como \textit{The Legend of Zelda: Breath of the Wild}\footnote{The Legend of Zelda: Breath of the Wild es un videojuego de acción y aventuras en mundo abierto desarrollado publicado por Nintendo en 2017. El juego introduce mecánicas innovadoras de supervivencia y exploración, incluyendo un sistema de stamina que se muestra dinámicamente solo cuando se está utilizando o recuperando. \href{https://www.zelda.com/breath-of-the-wild/}{Disponible en sitio web}}.
+
+Entonces, cuando se recibe el enum de stamina se tiene que revisar si es que existe un widget creado en pantalla. Si se posee, simplemente se le indica al Widget que cambie su porcentaje y al final se revisa si el jugador posee toda la stamina. En caso contrario, significa que el widget no ha sido creado, por lo que se crea y se añade a la pantalla.
+
+Finalmente, se revisa si la stamina es mayor o igual al máximo (100\%). En caso de ser verdadero, significa que el jugador ya posee toda la stamina, por lo que se procede a remover el widget de la pantalla.
+
+Al iniciarse el componente este activa dos timers que se ejecutan cada 0.01 segundos y llaman a los eventos RegainStamina y RegainMana. Estos eventos pasan por una rama que verifica si corresponde regenerar la estadística respectiva; si la condición es verdadera, se usa el nodo IncreaseVal para aumentar la Stamina o el Maná en pequeñas cantidades, creando así un sistema de regeneración continua controlada por condiciones. Es importante mencionar que este enfoque de regeneración mediante timers de alta frecuencia podría optimizarse en el futuro.
+
+\subsection{Componente de combate}
+
+Como se mencionó anteriormente, se creó un Actor Component llamado BPC\_Combat que se ancla al jugador y centraliza toda la lógica relacionada con el combate.
+
+Este componente posee múltiples variables, entre las cuales están:
+
+\begin{enumerate}
+\item TargetLock: Tipo Actor. Es la referencia al objetivo que se tiene fijado por la cámara.
+\item Player BP: Object Reference a BP Third Person Character. Referencia al jugador.
+\item TargetLockWidget: Object Reference a BP Target Lock Widget. Es la referencia al widget del símbolo que se crea cuando se fija un objetivo.
+\item isAttacking: Tipo Boolean. Es una bandera que se levanta cuando el jugador está atacando.
+\item isCombo: Tipo Boolean. Bandera que se levanta cuando el jugador tiene la intención de continuar el ataque.
+\item isDodging: Tipo Boolean. Bandera que se levanta cuando el jugador está realizando una esquiva.
+\item StamWidget: Object Reference a WB Player Stamina. Es la referencia al widget de la stamina que se muestra cuando se gasta o recupera stamina.
+\item StaminaRollUse: Tipo Float. Define la cantidad de stamina que consume la acción de rodar.
+\item isRunning: Tipo Boolean. Bandera que se levanta cuando el jugador está corriendo.
+\item StaminaRunUse: Tipo Float. Define la cantidad de stamina que gasta el jugador al correr.
+\item runSpeed: Tipo Float. Define la velocidad del jugador al correr.
+\item CurrentSpellIndex: Tipo Integer. Índice que indica el hechizo que tiene equipado el jugador actualmente. Alterna entre -1 y 1 para representar los dos hechizos disponibles.
+\item SpellImageObject: Tipo Image. Referencia a la imagen que indica el hechizo que tiene equipado el jugador actualmente en la interfaz.
+\item magicManaUse: Tipo Float. Define la cantidad de maná que consume el proyectil del jugador.
+\item healingManaUse: Tipo Float. Define la cantidad de maná que consume el hechizo de curación del jugador.
+\end{enumerate}
+
+\subsection{Ataque melee del jugador}
+
+El ataque del jugador se implementó en el componente mencionado previamente. Al detectarse el input de ataque, antes de ejecutar la acción, se revisa si el jugador está atacando o esquivando (mediante las variables isAttacking e isDodging). Si ambas están en false, se setea la variable isAttacking como true. Seguido de esto, se ejecuta el Animation Montage asociado al ataque del jugador. Este montage contiene una secuencia de 3 golpes consecutivos.
+
+El montage tiene asociados 2 Animation Notifies, los cuales se activan al final del primer y segundo golpe. Cada vez que uno de estos Animation Notifies es llamado, se chequea si el jugador está atacando y tiene la intención de seguir con la secuencia de ataques (mediante las variables isAttacking e isCombo). Si se detecta que ambos valores son verdaderos, simplemente se continúa con la secuencia de golpes y se setea la variable isCombo como false. En caso contrario, se detiene el montage prematuramente. Cuando el montage es interrumpido o completado, se setean las variables isAttacking e isCombo como false.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{minipage}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{imagenes/Screenshots editor/Ataque1Melee.png}
+        \caption{Primer golpe del montage de ataque}
+        \label{fig:ataque1}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{imagenes/Screenshots editor/Ataque2Melee.png}
+        \caption{Segundo golpe del montage de ataque}
+        \label{fig:ataque2}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.32\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{imagenes/Screenshots editor/Ataque3Melee.png}
+        \caption{Tercer golpe del montage de ataque}
+        \label{fig:ataque3}
+    \end{minipage}
+
+\end{figure}
+
+Con respecto a la hitbox del ataque del jugador, se implementó de la siguiente forma: el montage tiene asociado un Blueprint que hereda de Anim Notify State. Este tipo de notify es similar al Animation Notify mencionado previamente, pero se diferencia principalmente en que permite definir un momento de inicio y un momento de fin dentro del montage, y ejecutar acciones distintas cuando inicia, durante su ejecución y cuando termina.
+
+Este Blueprint de Anim Notify State se colocó en las secciones del montage donde se espera que esté activa una hitbox. La hitbox está implementada como una cápsula de colisión anclada al arma del jugador. Cuando se recibe la señal de inicio del Anim Notify State, se llama a una función en el componente de combate del jugador que se encarga de activar la cápsula de colisión. Esta cápsula detecta todo lo que colisione con ella y llama a la función ApplyDamage para aplicar daño al objetivo detectado. Cuando se recibe la señal de fin del Anim Notify State, simplemente se desactiva la cápsula de colisión.
+
+
+
+
+\subsection{Proyectiles}
+
+Tanto el jugador como el jefe pueden lanzar proyectiles. Es por esto que se decidió crear un Blueprint Class que represente la base de un proyectil (BP\_BaseProjectile), para que después tanto el proyectil del jugador como el del jefe hereden desde esta clase base y ajusten variables específicas de cada uno. El comportamiento por defecto del proyectil es avanzar con velocidad constante en línea recta hasta chocar con algo, momento en el cual se destruye, mostrando el efecto visual (VFX) correspondiente.
+
+El proyectil base posee múltiples componentes, entre los cuales están:
+
+\begin{enumerate}
+    \item BoxCollision: Componente de colisión (Box Collision). Define el volumen de colisión principal del proyectil.
+    \item Arrow: Componente Arrow. Sirve como referencia visual y direccional para indicar hacia dónde se moverá u orientará el proyectil.
+    \item StaticMesh: Componente Static Mesh. Representa la malla estática visible del proyectil, en caso de necesitarse.
+    \item ProjectileMovement: Componente Projectile Movement. Controla el movimiento del proyectil, incluyendo velocidad, gravedad y comportamiento de persecución (homing).
+\end{enumerate}
+
+Las variables de las que se compone son:
+
+\begin{enumerate}
+    \item Speed: Tipo Float. Define la velocidad a la que se mueve el proyectil.
+    \item Gravity: Tipo Float. Controla cuánta influencia tiene la gravedad sobre el proyectil.
+    \item Homing: Tipo Boolean. Indica si el proyectil tiene la capacidad de perseguir automáticamente a un objetivo.
+    \item Base Damage: Tipo Float. Define el daño base que causa el proyectil al impactar.
+    \item Impact Effect: Tipo Particle System. Es la referencia al sistema de partículas que se reproduce cuando el proyectil impacta.
+\end{enumerate}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{BP_BaseProj.png}
+    \caption{Blueprint del proyectil base}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection{Proyectil del jugador}
+
+Uno de los hechizos que puede utilizar el jugador es el de disparar un proyectil. El Blueprint que representa al proyectil del jugador (BP\_PlayerFireBall) configura las siguientes variables al ser instanciado: Speed con un valor alto (para que sea más rápido que el proyectil del jefe), Gravity en 0 (sin influencia gravitacional), isHoming como false (no persigue objetivos), y el ImpactEffect con un VFX de explosión de fuego.
+
+En cuanto a los componentes visuales, el StaticMesh permanece vacío y en su lugar se utiliza un ParticleSystem que representa el efecto visual del proyectil en movimiento
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{imagenes/Screenshots editor/BP_PlayerFireball.png}
+    \caption{Blueprint del proyectil del jugador}
+    \label{fig:placeholder}
+\end{figure}
+
+
+
+\subsubsection{Proyectil del jefe}
+
+El jefe puede lanzar proyectiles mediante ciertos ataques. El Blueprint que representa estos proyectiles (BP\_BossWaterBall) configura las variables de la siguiente manera: Speed con un valor moderado (menor que el del jugador), Gravity en 0, ImpactEffect con un VFX de explosión de agua, e isHoming que varía según el tipo de ataque. El jefe dispone de dos variantes de ataque con proyectiles: uno donde el proyectil avanza en línea recta a velocidad constante (isHoming = false), y otro donde persigue activamente al jugador hasta alcanzarlo o explotar tras un tiempo determinado (isHoming = true).
+Al igual que el proyectil del jugador, el StaticMesh permanece vacío y se emplea un ParticleSystem para el efecto visual del proyectil.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{imagenes//Screenshots editor/BP_BossProj.png}
+    \caption{Blueprint del proyectil del jefe}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Hechizos del jugador}
+
+El jugador posee 2 hechizos que puede utilizar. Esta mecánica se implementó con el propósito de otorgar al jugador versatilidad en combate y proporcionar al jefe la oportunidad de demostrar capacidad de aprendizaje y adaptación a las diferentes estrategias del jugador. El jugador puede intercambiar entre hechizos utilizando la rueda del mouse, y el hechizo actualmente equipado se muestra representado con un símbolo en la esquina inferior derecha de la pantalla. El hechizo seleccionado se representa mediante la variable CurrentSpellIndex, la cual cambia al mover la rueda del mouse.
+
+Cuando se decide ejecutar un hechizo, primero se revisa si se posee el maná necesario para poder lanzarlo. En caso de poseer el maná suficiente, se llama a un evento que representa al hechizo correspondiente.
+
+
+
+\subsubsection{Hechizo de proyectil}
+
+El evento de lanzar el hechizo de proyectil revisa si el jugador está atacando o esquivando. En caso de no estarlo, procede a reproducir la animación del jugador lanzando el proyectil, la cual corresponde a un Animation Montage, y también a desactivar el movimiento del jugador temporalmente hasta que el ataque sea finalizado o interrumpido, ya que el jugador mientras realiza la animación de lanzar el proyectil no debe poder moverse. En este evento también se realiza el consumo de maná, llamando a la función IncreaseVal del componente BPC\_Stats mencionado previamente, pasando como parámetro el valor de la variable magicManaUse con signo negativo para representar la disminución.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{imagenes/Screenshots editor/PlayerThrowing.png}
+    \caption{Jugador lanzando el hechizo de proyectil}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsubsection{Hechizo de curación}
+
+El proceso es análogo para el hechizo de curación, con la diferencia de que aquí se reproduce un VFX de curación cuando inicia la animación. Además, se posee un Animation Notify anclado al montage de la animación, el cual se activa en el momento en que la animación muestra al hielo de curación tocando el suelo. En ese preciso momento se llama a la función IncreaseVal para restaurar vida al jugador.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{imagenes//Screenshots editor/Healing.png}
+    \caption{Jugador lanzando el hechizo de curación}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Esquiva}
+
+La esquiva del jugador está implementada en el componente BPC\_Combat. Se creó una función auxiliar para determinar qué animación de roll ejecutar, ya que se puede realizar un roll hacia adelante, hacia atrás, o hacia los lados cuando se tiene un objetivo fijado mediante el sistema de Target Lock.
+
+Esta función toma la dirección del movimiento del personaje usando su velocidad, la compara con el Forward Vector y el Right Vector del actor mediante productos punto, y determina si el personaje se mueve más hacia adelante/atrás o hacia los lados. Según qué componente sea mayor, se retorna el Animation Montage de roll acorde a la dirección detectada.
+
+Ahora, con respecto a la lógica del roll: cuando se recibe el input, primero se revisa si el jugador está atacando (con la variable isAttacking) y si tiene la stamina disponible para realizar una esquiva. En caso de tener la stamina disponible, se procede a llamar a la función IncreaseVal para restar la stamina consumida, y a ejecutar la animación de roll correspondiente. Inmediatamente se setea la variable canRecoverStamina como false para evitar que se regenere stamina durante la esquiva. Cuando la animación es completada o interrumpida se setea nuevamente como true, e isDodging como false solo cuando la animación es completada exitosamente.
+
+Cabe mencionar que todo esto se ejecuta dentro de un nodo Do Once, el cual, como bien indica su nombre, solo se ejecuta una vez hasta que se resetee. El reseteo se realiza después de 0.45 segundos. Esto permite que el jugador pueda hacer un roll cada 0.45 segundos, pudiendo así encadenar rolls consecutivos para evadir múltiples ataques.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{imagenes/Screenshots editor/ForwardrOLL.png}
+    \caption{Jugador haciendo roll hacia adelante}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Correr}
+
+Cuando se recibe el input de correr, se revisa si se tiene una stamina mayor o igual a 10. En caso de tenerla, se aumenta la velocidad de movimiento del jugador mediante la modificación del Character Movement Component y se setea la variable canRecoverStamina como false, lo que impide la regeneración de stamina mientras se corre.
+
+Cuando se deja de presionar el input de correr, se setea nuevamente la variable canRecoverStamina como true y se restaura la velocidad de movimiento del jugador a su valor normal.
+
+\subsection{Aplicar y recibir daño}
+
+Para aplicar y recibir daño, se está utilizando el sistema interno de eventos de daño de Unreal Engine. Anteriormente se ha hecho referencia a la función IncreaseVal cuando las estadísticas deben cambiar. Sin embargo, es importante no confundir la función principal de IncreaseVal: esta se encarga principalmente de comunicar los cambios al HUD (interfaz de usuario), y no de hacer de puente directo entre distintos actores, como lo son por ejemplo el jefe y el jugador.
+
+Esto no se ha mencionado previamente, pero en los momentos en los que se detecta una colisión (ataque melee, proyectil del jugador, ataques del boss), se llama a la función ApplyDamage, la cual recibe como parámetros DamagedActor y BaseDamage, que representan el actor que va a recibir daño y el daño base aplicado, respectivamente.
+
+Cuando se llama a la función ApplyDamage, esta envía una señal al evento AnyDamage, el cual debe ser implementado en cada actor que pueda recibir daño. El evento, cuando es llamado, entrega el parámetro Damage, que es el parámetro BaseDamage con el cual se llamó la función ApplyDamage.
+
+En la implementación de AnyDamage del jugador, se revisa primero si el jugador está realizando una esquiva mediante la variable isDodging. Si es verdadero, la función simplemente retorna sin aplicar daño, implementando así frames de invencibilidad durante la esquiva. Si no está esquivando, se procede a llamar a IncreaseVal con el enum de Health, entregándole como parámetro el valor Damage negativo que proporciona la función AnyDamage. Luego de eso, se ejecuta el Animation Montage que representa la animación de recibir daño.
+
+Para la implementación de AnyDamage del jefe, se setea directamente la variable Health con la nueva vida calculada (vida actual menos daño recibido), y se llama a SetPercent, que es una función que se encarga de actualizar el porcentaje de la barra de vida del jefe mostrada en la interfaz.
+
+\subsection{Jefe}
+
+El jefe es representado por el Blueprint Class BP\_Boss, el cual hereda de Character. Posee múltiples componentes, entre los cuales están:
+
+
+\begin{enumerate}
+    \item Capsule Component: Componente de colisión (Collision Cylinder). Define el volumen principal de colisión del jefe.
+    \item Arrow Component: Componente Arrow. Indica la dirección frontal del jefe y sirve como referencia espacial.
+    \item Mesh: Componente Skeletal Mesh. Representa el modelo 3D del jefe y permite reproducir animaciones.
+    \item EndTracePos: Componente Arrow. Marca la posición final utilizada para trazos de línea o detección de golpes.
+    \item StartTracePos: Componente Arrow. Marca la posición inicial desde donde se realiza un trazo o chequeo de impacto.
+    \item Character Movement: Componente Character Movement. Controla el desplazamiento del jefe, incluyendo velocidad, gravedad, rotación y movimiento en general.
+\end{enumerate}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{BP_Boss.png}
+    \caption{Blueprint perteneciente al Jefe}
+    \label{fig:placeholder}
+\end{figure}
+
+
+
+\subsubsection{Blackboard}
+
+El Blackboard es una estructura de datos compartida utilizada por el sistema de inteligencia artificial de Unreal Engine para almacenar información que puede ser accedida y modificada tanto por el Behavior Tree como por el AI Controller. Funciona como una pizarra donde se escriben y leen valores que representan el estado actual de la IA. Este sistema permite que diferentes componentes de la IA trabajen con la misma información sin necesidad de comunicarse directamente entre sí.
+
+El Blackboard del jefe guarda variables (llamadas keys) que luego pueden ser utilizadas en el Behavior Tree, las cuales son:
+
+\begin{enumerate}
+\item SelfActor: Referencia al propio actor del jefe. Almacena la identidad del agente controlado por la IA.
+\item PlayerActor: Referencia al actor del jugador. Permite al jefe identificar y rastrear al objetivo principal.
+\item PlayerDistance: Distancia al jugador. Esta es calculada en el AI Controller del Boss en cada tick y actualizada en el Blackboard.
+\item isInAttackRange: Indicador de rango de ataque. Determina si el jugador se encuentra dentro del alcance para ejecutar ataques.
+\item LastAttack: Último ataque ejecutado. Registra el tipo o identificador del ataque más reciente realizado por el jefe.
+\item lastAttackCount: Contador de últimos ataques. Lleva el registro del número de ataques consecutivos del mismo tipo.
+\item AttackWeights.JSON: Ponderaciones de ataques en formato JSON. Contiene la configuración de probabilidades y pesos para la selección de ataques del jefe.
+\end{enumerate}
+
+\subsubsection{Behaviour Tree}
+
+El Behaviour Tree (árbol de comportamiento) es el sistema que se encarga de controlar todas las decisiones y acciones del Boss en el juego. Funciona evaluando constantemente la situación y eligiendo qué comportamiento ejecutar según la distancia del jugador y otras condiciones. La estructura se organiza en niveles jerárquicos donde cada nivel toma decisiones más específicas que el anterior.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{imagenes/Screenshots editor/BHTree.png}
+    \caption{Diagrama de Behaviour Tree dentro del motor}
+    \label{fig:placeholder}
+\end{figure}
+
+\paragraph{Diseño del comportamiento}
+
+El Behaviour Tree del Boss está diseñado para implementar un sistema de combate basado en rangos de distancia. A continuación se presenta una descripción del comportamiento esperado del jefe según su proximidad al jugador.
+
+Primero, es importante definir las acciones disponibles para el Boss:
+
+\begin{itemize}
+    \item \textbf{Chase}: El Boss se mueve hacia el jugador por un máximo de 5 segundos o hasta entrar en un rango de ataque apropiado.
+    
+    \item \textbf{Ataque Básico}: Ataque simple de daño moderado.
+    
+    \item \textbf{Ataque Pesado}: Secuencia de 2 golpes que termina en un golpe fuerte al piso, causando mayor daño que el ataque básico.
+    
+    \item \textbf{Ataque de Rango}: El Boss lanza proyectiles hacia el jugador. Incluye una animación de preparación antes de ejecutar el ataque.
+    
+    \item \textbf{Ataque en Área (AOE)}: Ataque que afecta un área circular alrededor del jefe. Incluye una animación de preparación antes de ejecutar el ataque.
+\end{itemize}
+
+La siguiente tabla muestra cómo el Boss selecciona sus acciones según la distancia al jugador. Los valores A y B representan unidades de distancia específicas (aún por definir), donde se cumple que $A > B$:
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Distancia al jugador} & \textbf{Ataques posibles} & \textbf{Probabilidades} \\
+\hline
+Lejos ($>A$ unidades) & Ataque de Rango / Chase & Rango 70\% / Chase 30\% \\
+\hline
+Media ($A$--$B$ unidades) & Ataque pesado / Ataque básico & Pesado 40\% / Básico 60\% \\
+\hline
+Corta ($<B$ unidades) & AOE / Ataque básico & AOE 50\% / Básico 50\% \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Observación:} En el rango de media distancia, antes de ejecutar el ataque básico, el jefe se acerca al jugador durante 2 segundos adicionales para asegurar que el ataque conecte correctamente.
+
+\paragraph{Estructura del Behaviour Tree}
+
+La implementación de este comportamiento se logra mediante una estructura jerárquica de nodos que se describe a continuación por niveles:
+
+\textbf{Nivel 0 - ROOT (Raíz):}
+Es el punto de inicio del sistema. Desde aquí comienza la evaluación del comportamiento cada vez que se actualiza la IA del Boss.
+
+\textbf{Nivel 1 - Selector Principal:}
+El ROOT conecta con un único nodo Selector que evalúa las tres opciones principales de comportamiento según la distancia al jugador. Este nodo intentará ejecutar cada rama en orden de prioridad hasta que una tenga éxito.
+
+\textbf{Nivel 2 - Secuencias por Distancia:}
+El Selector se divide en tres ramas paralelas que corresponden a los rangos de distancia definidos:
+
+\begin{itemize}
+    \item \textbf{Far Sequence (Secuencia Lejana)}: Se activa cuando el jugador está lejos del Boss (distancia $>A$).
+    \item \textbf{Middle Sequence (Secuencia Media)}: Se activa cuando el jugador está a distancia media (distancia entre $A$ y $B$).
+    \item \textbf{Close Sequence (Secuencia Cercana)}: Se activa cuando el jugador está cerca del Boss (distancia $<B$).
+\end{itemize}
+
+Cada una de estas secuencias representa un ``modo de combate'' diferente según la proximidad del jugador.
+
+\textbf{Nivel 3 - Selectores y Decisores de Peso:}
+
+Dentro de cada secuencia de distancia, primero aparecen nodos \textbf{Task\_SelectDistance} que verifican y confirman la distancia actual al jugador, asegurando que se cumplan las condiciones para ejecutar los ataques de ese rango.
+
+Posteriormente se encuentran nodos \textbf{\textit{RandomSelectorWeight}}, que son los encargados de distribuir las opciones de ataque de forma aleatoria ponderada. Este es un nodo composite personalizado llamado \textit{UCustomCompositeNode}, el cual extiende de la clase base de nodos composite del \textit{Behavior Tree} de \textit{Unreal Engine}.
+
+El nodo \texttt{UCustomCompositeNode} implementa un sistema de selección ponderada con las siguientes características clave:
+
+\begin{itemize}
+    \item \textbf{Pesos dinámicos desde JSON}: Los pesos de cada ataque se configuran dinámicamente mediante un string JSON almacenado en el Blackboard (bajo la clave ``AttackWeightsJSON''). Esto permite ajustar las probabilidades de los ataques en tiempo de ejecución sin necesidad de recompilar el código.
+    
+    \item \textbf{Prevención de repeticiones}: El nodo evita que el mismo ataque se ejecute consecutivamente más de una vez, lo que contribuye a un comportamiento más variado e impredecible. Para esto utiliza dos valores del Blackboard: ``LastAttack'' (identifica el último ataque ejecutado) y ``LastAttackCount'' (contador de repeticiones consecutivas). Si un ataque se ha ejecutado una o más veces seguidas, su peso se establece temporalmente en 0, blo
+
+
+    \item \textbf{Selección aleatoria ponderada}: El algoritmo de selección funciona calculando primero el peso total (suma de todos los pesos de los nodos hijos), luego generando un valor aleatorio entre 0 y dicho peso total, y finalmente recorriendo los hijos restando sus pesos individuales hasta que el valor aleatorio sea menor o igual a cero. Esto garantiza que cada ataque tenga una probabilidad de selección proporcional a su peso asignado.
+
+\item \textbf{Actualización de estado}: Una vez que se selecciona un nodo hijo para ejecutar, el sistema actualiza automáticamente el Blackboard con la información del ataque actual y reinicia o incrementa el contador de repeticiones según corresponda, preparando el sistema para la siguiente evaluación.
+
+\end{itemize}
+\textbf{Nivel 4 - Tareas de Acción (Hojas del árbol):}
+Este es el nivel más profundo de la jerarquía, donde finalmente se ejecutan las acciones concretas del Boss. Cada acción está implementada como una secuencia que lleva el nombre del ataque correspondiente. Dentro de cada secuencia se encuentra la Task específica que implementa la lógica y animación de dicho ataque.
+Los ataques posibles están definidos mediante el enum \texttt{EBossAttackType}, que incluye los siguientes valores:
+\begin{itemize}
+\item \textbf{BA\_BasicAttack}: Ataque básico del Boss, representa el movimiento ofensivo estándar de menor complejidad y daño.
+\item \textbf{BA\_AOEAttack}: Ataque de área de efecto (Area of Effect), capaz de dañar al jugador dentro de un radio determinado alrededor del Boss.
+
+\item \textbf{BA\_HeavyAttack}: Ataque pesado de alto daño, generalmente más lento en ejecución pero con mayor capacidad destructiva que el ataque básico.
+
+\item \textbf{BA\_ProjectileAttack}: Ataque a distancia mediante proyectiles, permite al Boss atacar cuando el jugador se encuentra fuera del rango de ataques cuerpo a cuerpo.
+
+\item \textbf{BA\_BossChase}: Acción de persecución, donde el Boss se mueve activamente hacia la posición del jugador para acortar distancia.
+
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliographystyle{babplain}
+\bibliography{bibliografia}
+
+\end{document}
+
+

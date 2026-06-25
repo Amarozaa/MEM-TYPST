@@ -29,28 +29,340 @@
 // CAPÍTULO 1: INTRODUCCIÓN
 // ==========================================
 #capitulo(title: "Introducción")[
-    #lorem(150)
-    
+
     == Problema abordado
-    #lorem(100)
-    
+
+    El diseño de la inteligencia artificial en videojuegos ha avanzado notablemente en
+    las últimas décadas, evolucionando desde simples máquinas de estados finitos hacia
+    árboles de comportamiento y otros sistemas de navegación más sofisticados
+    @IAVideogames. Sin embargo, muchos títulos continúan empleando enemigos con rutinas
+    predefinidas y comportamientos relativamente previsibles, como ocurre en juegos como
+    _Elden Ring_#footnote[
+      Elden Ring es un videojuego de rol de acción en mundo abierto desarrollado por
+      FromSoftware y publicado por Bandai Namco, ambientado en un universo creado junto a
+      George R. R. Martin.
+      #link("https://en.bandainamcoent.eu/elden-ring/elden-ring")[Disponible en sitio web].
+    ] o _Hollow Knight_#footnote[
+      Hollow Knight es un videojuego de acción y aventuras en 2D desarrollado por Team
+      Cherry, ambientado en el reino subterráneo de Hallownest.
+      #link("https://www.hollowknight.com/")[Disponible en sitio web].
+    ], donde ciertos enemigos y jefes siguen patrones de ataque que los jugadores
+    terminan memorizando tras varios intentos. En géneros particularmente exigentes en
+    este aspecto, como los _souls-like_#footnote[
+      Subgénero inspirado en la serie Dark Souls, caracterizado por un combate
+      desafiante, penalizaciones por muerte y patrones de ataque memorizables en los
+      jefes.
+    ] o los _roguelike_#footnote[
+      Género de videojuegos caracterizado por mazmorras generadas aleatoriamente,
+      _permadeath_ (muerte permanente del personaje) y elementos de rol. Nombrado así por
+      el juego Rogue (1980).
+    ], esta previsibilidad puede limitar la rejugabilidad, haciendo que la dificultad se
+    perciba más como un ejercicio de memorización que como un desafío dinámico y en
+    constante evolución.
+
+    // TODO: agregar capturas de Elden Ring y Alien: Isolation si se desea; las imágenes
+    // referidas en la propuesta original (imagenes/elden.jpg, imagenes/alien.jpg) no
+    // están disponibles en este proyecto.
+
+    Aunque existen técnicas para ajustar la dificultad, la mayoría de los acercamientos a
+    la dificultad dinámica se limitan a modificar parámetros generales del juego -vida,
+    daño o velocidad de los enemigos- en lugar de su comportamiento @Zohaib18. Son pocos
+    los títulos que implementan sistemas donde los enemigos se adaptan activamente a las
+    acciones específicas del jugador; uno de los ejemplos más citados es
+    _Alien: Isolation_#footnote[
+      Alien: Isolation es un videojuego de sigilo y supervivencia en primera persona
+      desarrollado por Creative Assembly y publicado por SEGA, ambientado en el universo
+      de la película Alien.
+      #link("https://www.sega.com/es/alien-isolation/alien-isolation")[Disponible en sitio web].
+    ], donde el antagonista aprende los patrones de escondite del jugador y ajusta sus
+    rutas de patrullaje para mantener la tensión en cada encuentro.
+
+    Este problema general -la falta de enemigos que aprendan del estilo de juego de cada
+    jugador, en lugar de limitarse a ejecutar rutinas fijas o a escalar parámetros
+    numéricos- es el que motiva este trabajo. Cuando un jugador logra memorizar los
+    patrones de ataque o movimiento de un enemigo, el enfrentamiento pierde buena parte
+    de su tensión y su sorpresa; si, en cambio, el enemigo identificara patrones en las
+    acciones del jugador y ajustara su propia estrategia en consecuencia, un mismo
+    enemigo podría ofrecer combates distintos según el estilo de juego de cada persona,
+    generando experiencias más dinámicas, personalizadas y rejugables.
+
+    Este trabajo aborda dicho problema explorando la construcción de un enemigo final (un
+    "jefe") adaptativo en Unreal Engine, motor ampliamente utilizado en la industria y
+    reconocido por su robusto sistema de inteligencia artificial (Behaviour Trees,
+    Blackboard) y su capacidad de prototipado rápido mediante Blueprints, lo que lo
+    convierte en una plataforma adecuada para experimentar con este tipo de sistemas.
+
     == Solución propuesta
-    #lorem(100)
-    
+
+    La solución desarrollada consiste en un sistema de inteligencia artificial adaptativa
+    que permite a un enemigo jefe ajustar su comportamiento de combate en función de cómo
+    juega cada jugador, implementado íntegramente con las herramientas nativas de Unreal
+    Engine (Behaviour Trees, Blackboard y Blueprints, junto con algunos nodos
+    personalizados en C++), sobre un juego del género _souls-like_ construido
+    especialmente para este trabajo.
+
+    A diferencia de otros enfoques de dificultad dinámica, que ajustan parámetros
+    generales del juego (vida, daño, velocidad), la adaptación aquí propuesta opera sobre
+    las probabilidades de selección de los distintos ataques del jefe: el repertorio de
+    ataques se mantiene fijo, pero la frecuencia con que cada uno se elige se ajusta según
+    un perfil de juego construido a partir del comportamiento del jugador frente a un
+    conjunto de enemigos regulares previos al combate (capítulo 3) -su preferencia por el
+    combate cuerpo a cuerpo o a distancia, su uso de la esquiva y sus hábitos de curación,
+    entre otras señales.
+
+    Para poder evaluar el efecto de esta adaptación, se construyó también una versión de
+    control del juego, idéntica a la versión adaptativa salvo en que los pesos de ataque
+    del jefe permanecen fijos en sus valores base, sin incorporar el perfil de juego
+    recolectado. La comparación entre ambas versiones (capítulo 6) permite aislar el
+    efecto de la adaptación de otros factores del diseño del juego.
+
+    Cabe precisar que, durante la etapa de propuesta, se consideró además la posibilidad
+    de extender esta adaptación al combate mismo -ajustando el comportamiento del jefe en
+    tiempo real según las acciones del jugador durante el enfrentamiento- así como la de
+    incorporar tecnologías externas de aprendizaje automático, como NVIDIA ACE. Ambas
+    líneas quedaron fuera del alcance final de este trabajo, que se concentra en la
+    adaptación previa al combate mediante las herramientas nativas del motor; se retoman
+    como trabajo futuro en el capítulo 7.
+
     == Objetivos
-    #lorem(50)
-    
+
+    === Objetivo general
+
+    Diseñar e implementar un sistema de adaptación para un enemigo jefe en Unreal Engine,
+    capaz de ajustar su comportamiento de combate a partir de un perfil construido sobre
+    las acciones previas del jugador, con el fin de reducir la previsibilidad del
+    enfrentamiento y evaluar su efecto sobre la experiencia de juego.
+
+    === Objetivos específicos
+
+    + Investigar y analizar enfoques existentes para el diseño de inteligencia artificial
+      adaptativa en videojuegos.
+    + Construir una versión base del juego con un jefe de comportamiento fijo, sin
+      mecanismos adaptativos, que sirva como caso de control en las pruebas.
+    + Diseñar e implementar un conjunto de enemigos regulares cuyo comportamiento frente
+      al jugador permita construir un perfil de su estilo de juego.
+    + Implementar, sobre la base anterior, un mecanismo que ajuste los pesos de selección
+      de ataques del jefe a partir de dicho perfil antes del inicio del combate.
+    + Validar el sistema mediante pruebas de jugabilidad, midiendo la capacidad de
+      adaptación del jefe y la percepción de desafío por parte de los jugadores.
+    + Comparar los resultados obtenidos entre la versión adaptativa y la versión de
+      control, identificando ventajas, limitaciones y posibles mejoras.
+
     == Metodología
-    #lorem(80)
+
+    El desarrollo del trabajo siguió una metodología experimental de tipo
+    control-tratamiento. A partir de una versión base del juego -con un jefe de
+    comportamiento fijo, sin mecanismos de adaptación- se desarrolló una segunda versión,
+    idéntica en el resto de sus sistemas, en la que el jefe ajusta los pesos de selección
+    de sus ataques a partir de un perfil construido sobre el comportamiento del jugador
+    frente a los enemigos regulares previos al combate (capítulos 3 y 4).
+
+    La evaluación del sistema contempla dos dimensiones. Desde una perspectiva técnica, se
+    revisa el funcionamiento del propio mecanismo de adaptación -cómo se traduce el
+    comportamiento del jugador en ajustes concretos sobre los pesos de ataque del jefe-,
+    documentado en el capítulo 4. Desde la perspectiva de experiencia de usuario, se
+    diseñaron pruebas de jugabilidad mediante un experimento controlado, en el que cada
+    participante juega tanto la versión de control como la versión adaptativa en sesiones
+    separadas, utilizando el Game Experience Questionnaire @GEQuestionare para medir las
+    dimensiones de desafío, inmersión, competencia y afecto, complementado con
+    retroalimentación cualitativa sobre la percepción de predictibilidad de cada versión.
+    El detalle de esta evaluación y sus resultados se presenta en el capítulo 6.
 ]
 
 // ==========================================
 // CAPÍTULO 2: TRABAJO RELACIONADO
 // ==========================================
 #capitulo(title: "Trabajo relacionado")[
-    #lorem(100)
-    
-   
+
+    == Técnicas tradicionales de IA en videojuegos
+
+    Actualmente, la mayoría de los videojuegos implementan la inteligencia de los
+    enemigos mediante técnicas como los Behaviour Trees o las máquinas de estados finitos
+    (FSM) @IOVINO2022104096. Un Behaviour Tree es una estructura jerárquica que organiza
+    decisiones y acciones mediante nodos que retornan éxito, fallo o ejecución en curso,
+    lo que permite definir comportamientos de forma modular.
+
+    Estas metodologías permiten establecer patrones y reglas claras de reacción,
+    ofreciendo control sobre el comportamiento de los enemigos. Sin embargo, carecen de
+    capacidad de adaptación real: los enemigos suelen repetir las mismas rutinas y no
+    aprenden de las acciones del jugador, lo que los hace predecibles tras algunos
+    intentos y reduce tanto la rejugabilidad como el desafío.
+
+    == Enfoques de ajuste dinámico de dificultad
+
+    En el ámbito de la investigación se han desarrollado diversos enfoques para el ajuste
+    dinámico de dificultad @Zohaib18, incluyendo métodos probabilísticos que optimizan el
+    _engagement_ del jugador mediante funciones matemáticas, sistemas basados en redes
+    neuronales capaces de predecir estados emocionales del jugador con buena precisión, y
+    técnicas de aprendizaje por refuerzo donde controladores adaptativos ajustan el
+    comportamiento de los enemigos según el rendimiento del jugador, manteniendo
+    experiencias equilibradas sin volverse predecibles. Aun así, estos casos siguen siendo
+    excepcionales debido a diversos desafíos técnicos y de recursos, además de la limitada
+    adopción por parte de la industria, y no representan una metodología estandarizada
+    para lograr adaptación en tiempo real en los videojuegos modernos.
+
+    En esa misma línea, Zohaib @Zohaib18 describe otros enfoques complementarios, como
+    sistemas donde grupos de personajes no jugables forman comportamientos adaptativos de
+    manera descentralizada, ajustando sus parámetros según la retroalimentación del
+    jugador -por ejemplo, patrones de movimiento e interacciones-, así como técnicas de
+    _scripting_ dinámico que modifican reglas de comportamiento en tiempo real con base en
+    tasas de éxito y fracaso, permitiendo que los enemigos evolucionen sus tácticas durante
+    el juego. Investigaciones más recientes, también recopiladas por el autor, han
+    combinado algoritmos de búsqueda en árboles con redes neuronales para crear oponentes
+    que adaptan su nivel de desafío según los recursos computacionales disponibles,
+    demostrando que es posible correlacionar directamente la dificultad percibida con el
+    tiempo de procesamiento asignado.
+
+    == Tecnologías emergentes y aplicaciones recientes
+
+    En paralelo, tecnologías emergentes como NVIDIA ACE (_Avatar Cloud Engine_) han
+    mostrado posibilidades interesantes de aprendizaje dinámico. Por ejemplo, en el juego
+    MIR5#footnote[
+      MIR5 es un MMORPG desarrollado por Wemade Next.
+      #link("https://www.invenglobal.com/articles/19158/wemade-next-to-develop-an-ai-boss-in-mir5-in-collaboration-with-nvidia")[Disponible en sitio web].
+    ], un jefe conocido como _Asterion_ utiliza esta tecnología para evaluar tácticas,
+    habilidades y equipo del jugador en tiempo real, adaptando sus estrategias para
+    mantener un desafío personalizado y constante. Aunque el enfoque principal de NVIDIA
+    ACE ha sido mejorar la interacción con personajes no jugables mediante conversaciones
+    naturales, su aplicación en MIR5 evidencia que es posible diseñar enemigos que
+    aprenden y modifican su comportamiento según el jugador.
+
+    A pesar de estos avances, no existe una metodología ampliamente adoptada que permita
+    implementar enemigos adaptativos de manera general en motores de juego comunes como
+    Unreal Engine. La mayoría de las soluciones actuales dependen de tecnologías externas
+    o están restringidas a casos específicos, y las técnicas más sofisticadas permanecen
+    principalmente en el ámbito de la investigación, sin traducirse en herramientas
+    accesibles para desarrolladores. Esto abre un espacio de investigación y desarrollo
+    para crear sistemas de inteligencia artificial que no solo reaccionen, sino que
+    aprendan y se ajusten al estilo de juego del usuario.
+
+    == Casos destacados de adaptación en la industria
+
+    Más allá de Alien: Isolation y MIR5, existen otros casos notables en la industria que
+    han explorado distintas formas de adaptación y personalización de la experiencia de
+    juego.
+
+    === Left 4 Dead y el AI Director
+
+    _Left 4 Dead_#footnote[
+      Left 4 Dead es un videojuego cooperativo de supervivencia y terror desarrollado por
+      Valve Corporation y publicado en 2008. El juego se centra en cuatro supervivientes
+      que deben atravesar escenarios infestados de zombis, enfrentándose a hordas
+      dinámicas controladas por el sistema AI Director.
+      #link("https://www.l4d.com/")[Disponible en sitio web].
+    ] introdujo un sistema conocido como "AI Director", diseñado para crear experiencias
+    dinámicas de terror y supervivencia cooperativa. A diferencia de los sistemas
+    tradicionales, donde los enemigos aparecen en ubicaciones predefinidas, el AI Director
+    analiza constantemente el estado del equipo de jugadores -incluyendo salud, munición,
+    posición y nivel de estrés- para ajustar la intensidad del juego en tiempo real
+    @Booth09.
+
+    El sistema funciona manipulando varios parámetros: la frecuencia y tamaño de las
+    hordas de zombis, la aparición de "infectados especiales" (enemigos con habilidades
+    únicas), la colocación de recursos como botiquines y munición, e incluso elementos
+    ambientales como música y efectos de sonido. Cuando el equipo está funcionando bien,
+    el Director incrementa la presión mediante encuentros más desafiantes; cuando los
+    jugadores están al borde del colapso, reduce temporalmente la intensidad para permitir
+    momentos de respiro y recuperación. Esta aproximación se basa en la teoría del "flow"
+    de Csikszentmihalyi, que busca mantener a los jugadores en un estado óptimo entre el
+    aburrimiento y la frustración.
+
+    Sin embargo, el AI Director presenta limitaciones importantes para el contexto de un
+    combate contra un jefe individual: opera principalmente a nivel macro, ajustando
+    parámetros globales del encuentro en lugar de modificar tácticas específicas de
+    enemigos individuales. No aprende de las estrategias particulares de cada jugador -por
+    ejemplo, si prefiere el combate a distancia o cuerpo a cuerpo- ni adapta patrones de
+    ataque específicos; su enfoque se centra en el ritmo y la intensidad general de la
+    experiencia, no en la creación de adversarios que evolucionen tácticamente según el
+    estilo de juego individual.
+
+    === Middle-earth: Shadow of Mordor y el Sistema Nemesis
+
+    El Sistema Nemesis, introducido en _Middle-earth: Shadow of Mordor_#footnote[
+      Middle-earth: Shadow of Mordor es un videojuego de acción y aventuras en mundo
+      abierto desarrollado por Monolith Productions y publicado por Warner Bros.
+      Interactive Entertainment en 2014, ambientado en el universo de El Señor de los
+      Anillos. El juego presenta el Sistema Nemesis, que genera enemigos dinámicos con
+      memoria persistente de sus encuentros con el jugador.
+      #link("https://www.shadowofmordor.com/")[Disponible en sitio web].
+    ] (2014) y expandido en su secuela Shadow of War (2017), representa un enfoque
+    distinto hacia la personalización de enemigos. El sistema genera una jerarquía
+    dinámica de capitanes orcos, cada uno con personalidad, fortalezas, debilidades y
+    apariencia generadas proceduralmente.
+
+    Su característica más distintiva es la memoria persistente: cuando el jugador se
+    enfrenta a un capitán, el resultado del encuentro tiene consecuencias permanentes. Si
+    el jugador es derrotado, el capitán que lo mató asciende en rango, gana confianza y
+    puede desarrollar nuevas habilidades o inmunidades; en encuentros posteriores, ese
+    mismo capitán recordará la victoria anterior mediante diálogos contextuales y mostrará
+    cicatrices o modificaciones físicas resultado del combate previo. Si el jugador logra
+    herir pero no matar a un capitán que luego escapa, este puede regresar más tarde con
+    vendajes, quemaduras o prótesis mecánicas que reflejan cómo fue herido, y
+    potencialmente habiendo desarrollado resistencia a las tácticas que el jugador empleó.
+
+    No obstante, desde la perspectiva de adaptación táctica en combate, el Sistema Nemesis
+    opera principalmente en la dimensión narrativa y estratégica más que en la táctica
+    inmediata. Las adaptaciones de los capitanes son cambios de configuración entre
+    encuentros -nuevas inmunidades, nuevas armas, nuevas habilidades- en lugar de ajustes
+    dinámicos durante el combate mismo: un capitán no modifica sus patrones de ataque a
+    mitad de pelea según observe que el jugador esquiva siempre hacia un mismo lado o
+    abusa de cierta habilidad. Son evoluciones preprogramadas que se activan por
+    condiciones específicas, en lugar de aprendizaje genuino de patrones de comportamiento
+    del jugador.
+
+    === Limitaciones comunes y espacio de oportunidad
+
+    Ambos sistemas, aunque innovadores en sus respectivos dominios, comparten una
+    limitación de fondo: ninguno implementa adaptación táctica en tiempo real basada en el
+    análisis de patrones específicos del estilo de combate del jugador. Left 4 Dead ajusta
+    la experiencia global, pero no personaliza el comportamiento de enemigos individuales;
+    Shadow of Mordor genera evolución narrativa y estratégica entre encuentros, pero no
+    adaptación táctica durante los combates mismos.
+
+    Esto evidencia un espacio de oportunidad: enemigos -en particular, jefes- capaces de
+    identificar y responder a las preferencias tácticas del jugador (patrones de ataque,
+    _timing_ de esquivas, uso de habilidades específicas, posicionamiento), ajustando su
+    comportamiento de forma dinámica antes o durante el combate. Una aproximación así
+    complementaría los enfoques existentes al enfocarse en la adaptación a nivel
+    micro-táctico, donde cada encuentro individual se vuelve un desafío personalizado
+    según las decisiones momento a momento del jugador.
+
+    == Consideraciones de experiencia de usuario
+
+    Más allá de la implementación técnica de los sistemas adaptativos, es necesario
+    considerar cómo estos impactan la experiencia del usuario. Pinelle et al. @Pinelle08
+    desarrollaron un conjunto de heurísticas para evaluar la usabilidad en videojuegos,
+    derivadas del análisis de 108 reseñas profesionales que cubrieron seis géneros
+    principales. Su trabajo identificó doce categorías de problemas de usabilidad
+    comunes, entre las cuales destacan: respuestas impredecibles a las acciones del
+    usuario, falta de información sobre el estado del juego, controles difíciles de
+    manejar y representaciones visuales difíciles de interpretar.
+
+    Estas heurísticas son particularmente relevantes para el desarrollo de enemigos
+    adaptativos, ya que varias se relacionan directamente con cómo el jugador percibe y
+    entiende el comportamiento de la IA. Por ejemplo, la heurística de proporcionar
+    respuestas consistentes a las acciones del usuario establece que los enemigos deben
+    comportarse de manera predecible y apropiada para la situación, lo que plantea una
+    tensión de fondo para este trabajo: ¿cómo lograr que un enemigo sea adaptativo sin
+    volverse impredecible o frustrante? Un sistema de este tipo debe equilibrar la
+    adaptación dinámica con la consistencia percibida, de manera que el jugador pueda
+    entender las "reglas" del comportamiento del enemigo incluso cuando este evolucione.
+
+    == Síntesis y brecha identificada
+
+    La revisión de la literatura muestra que, aunque existen enfoques tradicionales y
+    avances recientes en IA de videojuegos, ninguno ofrece una solución general ni
+    fácilmente integrable para lograr adaptación táctica en tiempo real en enemigos
+    individuales dentro de motores como Unreal Engine. Las técnicas clásicas no aprenden
+    del jugador, los métodos de investigación suelen requerir recursos elevados o no están
+    pensados para su aplicación práctica en juegos comerciales, y los casos industriales
+    corresponden a soluciones específicas, difíciles de replicar.
+
+    Esta situación evidencia una brecha concreta: la falta de un mecanismo que permita que
+    un enemigo -en particular, un jefe- registre el comportamiento del jugador y ajuste sus
+    patrones de combate de manera dinámica, implementado con las herramientas nativas de
+    un motor de uso común. Sobre esa brecha se construye el sistema descrito en los
+    capítulos siguientes.
 ]
 
 // ==========================================
@@ -111,16 +423,25 @@
     con ello exponer una primera diferencia de fondo entre estilos de juego: quienes
     prefieren resolver los encuentros de forma agresiva y cercana, frente a quienes
     prefieren un acercamiento más cauteloso y a distancia. Esta es, de los tres arquetipos
-    regulares, la diferencia de comportamiento más directa de observar.
+    regulares, la diferencia de comportamiento más directa de observar. Concretamente, el
+    mago alterna entre dos ataques:
+
+    - *Ataque a distancia*: lanza un proyectil hacia el jugador desde lejos, sin
+      necesidad de acercarse.
+    - *Ataque cuerpo a cuerpo*: golpea con su cayado cuando el jugador se encuentra a
+      corta distancia, recurriendo a él solo en ese caso.
 
     El tercer arquetipo, el esqueleto caballero, se diseñó con un propósito distinto a los
     dos anteriores: a diferencia del esqueleto normal y del mago, cuyos ataques se
     resuelven con relativamente poca preparación visible, los dos ataques del caballero
     están marcadamente telegrafiados, es decir, tienen una preparación larga y claramente
-    reconocible antes de conectar. El primero es un avance tipo "dash" con el que el
-    caballero cubre distancia rápidamente para golpear, obligando al jugador a decidir
-    hacia qué lado o dirección esquivar; el segundo es un golpe de área, de preparación
-    aún más larga, que castiga con especial fuerza a quien no logra esquivarlo a tiempo.
+    reconocible antes de conectar:
+
+    - *Avance (dash)*: el caballero cubre distancia rápidamente para golpear, obligando al
+      jugador a decidir hacia qué lado o dirección esquivar.
+    - *Golpe de área*: de preparación aún más larga que el avance, castiga con especial
+      fuerza a quien no logra esquivarlo a tiempo.
+
     Su rol no es presionar al jugador con
     velocidad o
     cantidad de golpes, sino enseñarle a identificar una señal de ataque evidente y a

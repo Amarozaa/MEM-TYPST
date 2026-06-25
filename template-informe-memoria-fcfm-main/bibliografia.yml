@@ -39,3 +39,82 @@ Turing38:
   organization: Princeton University
   location: NJ, USA
   doi: "10.1112/plms/s2-45.1.161"
+
+Zohaib18:
+  type: Article
+  title: "Dynamic Difficulty Adjustment (DDA) in Computer Games: A Review"
+  author: Mohammad Zohaib
+  year: 2018
+  doi: "10.1155/2018/5681652"
+  page-range: "5681652"
+  parent:
+    type: Periodical
+    title: Advances in Human-Computer Interaction
+    volume: 2018
+
+IOVINO2022104096:
+  type: Article
+  title: A survey of Behavior Trees in robotics and AI
+  author:
+    - Matteo Iovino
+    - Edvards Scukins
+    - Jonathan Styrud
+    - Petter Ögren
+    - Christian Smith
+  year: 2022
+  doi: "10.1016/j.robot.2022.104096"
+  url: "https://www.sciencedirect.com/science/article/pii/S0921889022000513"
+  page-range: "104096"
+  parent:
+    type: Periodical
+    title: Robotics and Autonomous Systems
+    volume: 154
+
+IAVideogames:
+  type: Article
+  title: "Review and analysis of research on Video Games and Artificial Intelligence: a look back and a step forward"
+  author:
+    - João Paulo Sousa
+    - Rogério Tavares
+    - João Pedro Gomes
+    - Vitor Mendonça
+  year: 2022
+  doi: "10.1016/j.procs.2022.08.038"
+  url: "https://www.sciencedirect.com/science/article/pii/S1877050922007761"
+  parent:
+    type: Periodical
+    title: Procedia Computer Science
+
+Pinelle08:
+  type: Article
+  title: "Heuristic Evaluation for Games: Usability Principles for Video Game Design"
+  author:
+    - David Pinelle
+    - Nelson Wong
+    - Tadeusz Stach
+  year: 2008
+  doi: "10.1145/1357054.1357282"
+  page-range: 1453-1462
+  parent:
+    type: Proceedings
+    title: Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI 2008)
+    location: Florence, Italy
+    publisher: ACM
+
+GEQuestionare:
+  type: Report
+  title: The Game Experience Questionnaire
+  author:
+    - W. A. IJsselsteijn
+    - Y. A. W. de Kort
+    - K. Poels
+  year: 2013
+  organization: Technische Universiteit Eindhoven
+
+Booth09:
+  type: Misc
+  title: The AI Systems of Left 4 Dead
+  author: Michael Booth
+  year: 2009
+  organization: Game Developers Conference (GDC)
+  url: "https://www.gdcvault.com/play/1015528/The-AI-Systems-of-Left"
