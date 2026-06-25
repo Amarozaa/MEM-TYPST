@@ -85,8 +85,8 @@
     progresión a lo largo de los niveles del juego se aborda en la siguiente sección.
 
     El primer arquetipo, el esqueleto normal, corresponde al enemigo más básico del
-    juego: un enemigo cuerpo a cuerpo que persigue al jugador y ataca de forma directa, sin
-    variaciones ni segundas intenciones. Su rol es introducir el ciclo de combate
+    juego: un enemigo cuerpo a cuerpo que persigue al jugador y cuyo único ataque es un
+    golpe directo de espada, sin variaciones ni segundas intenciones. Su rol es introducir el ciclo de combate
     fundamental -acercarse, esquivar y golpear- sin agregar elementos adicionales que
     puedan confundir al jugador mientras aún está aprendiendo los controles. Por este
     motivo es el único enemigo presente durante el tutorial. Su segunda aparición, ya en
@@ -97,9 +97,14 @@
     especializados.
 
     El segundo arquetipo, el esqueleto mago, se diseñó como contraparte directa del
-    anterior: en lugar de perseguir al jugador, privilegia el combate a distancia y
-    permanece en su posición lanzando ataques a rango, recurriendo al cuerpo a cuerpo
-    únicamente cuando es el propio jugador quien decide acortar el espacio entre ambos. Su
+    anterior: en lugar de perseguir siempre al jugador hasta el cuerpo a cuerpo, su
+    acercamiento a distancia es configurable mediante una variable propia, que permite
+    optar entre seguir aproximándose -hasta una distancia mayor a la que usa el esqueleto
+    normal para iniciar su ataque- o permanecer directamente en su posición lanzando
+    proyectiles una vez detecta al jugador por primera vez. En su configuración actual
+    privilegia esta segunda opción, recurriendo a un golpe cuerpo a
+    cuerpo con su cayado únicamente cuando es el propio jugador quien decide acortar el
+    espacio entre ambos. Su
     propósito es introducir una decisión táctica explícita que el esqueleto normal no
     plantea -acercarse para forzar el combate cuerpo a cuerpo contra un enemigo que de otro
     modo se mantiene a distancia, o permanecer lejos y lidiar con sus ataques a rango-, y
@@ -112,13 +117,19 @@
     dos anteriores: a diferencia del esqueleto normal y del mago, cuyos ataques se
     resuelven con relativamente poca preparación visible, los dos ataques del caballero
     están marcadamente telegrafiados, es decir, tienen una preparación larga y claramente
-    reconocible antes de conectar. Su rol no es presionar al jugador con velocidad o
+    reconocible antes de conectar. El primero es un avance tipo "dash" con el que el
+    caballero cubre distancia rápidamente para golpear, obligando al jugador a decidir
+    hacia qué lado o dirección esquivar; el segundo es un golpe de área, de preparación
+    aún más larga, que castiga con especial fuerza a quien no logra esquivarlo a tiempo.
+    Su rol no es presionar al jugador con
+    velocidad o
     cantidad de golpes, sino enseñarle a identificar una señal de ataque evidente y a
     esquivarla con el timing correcto, en lugar de reaccionar de forma genérica ante
     cualquier ataque. Pero ese rol no es solo pedagógico: junto con enseñarle al jugador a
-    leer este tipo de señal, el caballero es también el arquetipo a través del cual el
-    juego observa cómo responde efectivamente el jugador frente a ella -si esquiva o no,
-    hacia qué lado, y con qué consistencia-, comportamiento que pasa a formar parte del
+    leer este tipo de señales, el caballero es también el arquetipo a través del cual el
+    juego observa cómo responde efectivamente el jugador frente a ellas -si esquiva el
+    dash hacia un lado o hacia atrás, y si logra o no esquivar el ataque telegrafiado a
+    tiempo-, comportamiento que pasa a formar parte del
     perfil de juego utilizado más adelante para adaptar al jefe (capítulo 4). Al ser el
     primer enemigo del juego que exige este tipo de lectura, su rol dentro de la
     progresión es cerrar la preparación del jugador justo antes del enfrentamiento contra
@@ -132,21 +143,88 @@
     como tres enemigos sueltos, conviene entenderlos como las tres "preguntas" que el juego
     le hace al jugador antes de llegar al jefe.
 
-    Finalmente, el jefe constituye un arquetipo distinto de los anteriores: en vez de
-    tratarse de un enemigo más dentro de la progresión, es un antagonista único, capaz de
-    adoptar distintas formas y de recurrir a un repertorio amplio de ataques. Aquí se
-    consideró deliberadamente la alternativa más habitual en juegos de este género -enfrentar
-    al jugador a varios jefes distintos, o a un mismo jefe dividido en fases marcadamente
-    diferentes entre sí- y se optó en su lugar por un solo jefe versátil. La razón de fondo
-    es que, bajo ese enfoque alternativo, la dificultad se ajustaría eligiendo qué jefe o
-    qué fase enfrenta cada jugador; en este proyecto, en cambio, se buscó que fuera el
-    comportamiento de un mismo antagonista -y no la elección de un enemigo distinto- el que
-    se ajustara según cómo se haya comportado el jugador frente a los tres arquetipos
-    anteriores. Esta decisión de diseño es la base sobre la cual se construye el sistema
-    adaptativo descrito en el capítulo 4: los arquetipos enfrentados antes del jefe no solo
-    entregan una progresión de dificultad, sino que permiten caracterizar el estilo de
-    juego de quien los enfrenta, perfil que luego se traduce en ajustes sobre el
-    comportamiento del jefe.
+    Con respecto al jefe, este ocupa un lugar distinto dentro de esta lógica: no es una
+    prueba más que se suma a las anteriores, sino el punto donde todas ellas convergen.
+    Mientras los tres arquetipos regulares plantean preguntas por separado -ritmo,
+    distancia, lectura de ataques-, el jefe es el primer enemigo que responde a las
+    respuestas que el jugador ya dio. Por eso se descartó deliberadamente la alternativa
+    más común en el género -múltiples jefes, o un mismo jefe dividido en fases fijas-, ya
+    que en ese esquema la dificultad se resuelve eligiendo qué enemigo o qué fase enfrenta
+    cada jugador, una variable externa a su propio desempeño. Aquí, en cambio, es un único
+    antagonista versátil el que cambia, y lo hace en función de cómo se comportó quien lo
+    enfrenta: el mismo jefe puede presionar la distancia, multiplicar los ataques
+    telegrafiados o variar su agresividad según el perfil construido a partir de los
+    arquetipos anteriores. Este diseño es lo que hace posible el sistema adaptativo del
+    capítulo 4 -el jefe no es un desafío fijo al final de la progresión, sino su
+    consecuencia directa.
+
+    Concretamente, el jefe dispone de nueve ataques distintos, agrupados en tres
+    secuencias según el rango al que se encuentre el jugador en el momento de atacar. La
+    @tbl:ataques-jefe resume esta relación.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Rango*], [*Ataques disponibles*]),
+        [Lejano], [Charco, persecución, proyectil en línea recta, proyectil homing],
+        [Medio], [Básico, salto, giro],
+        [Cercano], [Básico, espinas, muro],
+      )),
+      caption: [Ataques del jefe agrupados según el rango respecto al jugador.],
+    ) <tbl:ataques-jefe>
+
+    A grandes rasgos, cada uno de estos ataques se comporta de la siguiente forma:
+
+    - *Básico*: un ataque cuerpo a cuerpo en el que el jefe deforma su cuerpo hacia
+      adelante para golpear.
+    - *Espinas*: el jefe saca espinas alrededor de sí mismo, golpeando en área a quien se
+      encuentre cerca.
+    - *Muro*: el jefe se transforma en un muro rectangular, se estira hacia arriba y cae
+      hacia adelante, aplastando al jugador frente a él.
+    - *Salto*: el jefe salta acercándose a la posición del jugador y golpea en área al
+      aterrizar.
+    - *Giro*: el jefe se contrae brevemente y luego extiende su cuerpo como un látigo,
+      describiendo un barrido lateral frente a él.
+    - *Charco*: el jefe se transforma en un charco líquido y avanza hacia el jugador, para
+      luego, tras un tiempo, resurgir desde el suelo golpeando y repeliendo al jugador si
+      este se encuentra cerca.
+    - *Persecución*: el jefe se desplaza hacia el jugador durante un máximo de algunos
+      segundos o hasta entrar en un rango de ataque determinado; no causa daño por sí
+      misma, sino que sirve para cerrar distancia desde un rango medio-lejano.
+    - *Proyectil en línea recta*: el jefe dispara un abanico de proyectiles que avanzan en
+      línea recta, sin seguir al jugador.
+    - *Proyectil homing*: el jefe dispara una cantidad menor de proyectiles, pero que
+      persiguen activamente al jugador.
+
+    Cada uno de estos ataques se diseñó, además, pensando en un perfil de jugador
+    distinto al cual poner a prueba, tal como resume la @tbl:perfiles-castigados.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Ataque*], [*Perfil de jugador que pone a prueba*]),
+        [Básico], [Jugador estático, que permanece quieto frente al jefe.],
+        [Espinas], [Jugador agresivo, que se mantiene cerca del jefe.],
+        [Muro], [Ninguno en particular; aporta variedad táctica a corta distancia.],
+        [Giro], [Jugador que se desplaza lateralmente en rango medio.],
+        [Salto], [Jugador que mantiene distancia media o esquiva hacia atrás.],
+        [Charco], [Jugador que huye constantemente o abusa del _kiteo_.],
+        [Persecución], [Ninguno en particular; es solo movilidad hacia el jugador.],
+        [Proyectil en línea recta], [Jugador que permanece quieto a distancia lejana.],
+        [Proyectil homing], [Jugador que se mueve mucho estando a distancia lejana.],
+      )),
+      caption: [Perfil de jugador al que apunta cada ataque del jefe.],
+    ) <tbl:perfiles-castigados>
+
+    Dentro de cada rango, el ataque concreto se elige mediante un sorteo aleatorio
+    ponderado, y son justamente esos pesos -no la elección del rango, que depende solo de
+    la distancia- los que el sistema adaptativo del capítulo 4 ajusta según el
+    comportamiento previo del jugador. Cabe mencionar que todos los ataques parten con el
+    mismo peso, es decir, la misma probabilidad de ser elegidos dentro de su rango, antes
+    de que el sistema adaptativo introduzca cualquier ajuste. El detalle de cada ataque y
+    del mecanismo de selección se documenta en el capítulo 5.
 
     El detalle técnico de la implementación de cada uno de estos enemigos -estructura,
     comportamiento e inteligencia artificial- se documenta en el capítulo 5.
