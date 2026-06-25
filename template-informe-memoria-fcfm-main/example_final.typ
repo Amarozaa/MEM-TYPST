@@ -378,42 +378,55 @@
     == Género y mecánicas principales
 
     El juego corresponde a un _action-RPG_ en tercera persona del género _souls-like_,
-    mencionado ya en el capítulo 1: combate en tiempo real, estadísticas de vida, stamina
-    y maná, y una dificultad pensada para premiar la lectura atenta de cada enemigo por
-    sobre la repetición de un mismo botón. Esta elección de género no es incidental: es
-    precisamente en este tipo de juegos donde la previsibilidad de los enemigos se vuelve
-    más notoria -el jugador aprende a memorizar patrones de ataque tras unos pocos
-    intentos-, por lo que resulta el escenario más exigente para poner a prueba un enemigo
-    que efectivamente se adapte a quien lo enfrenta.
+    mencionado ya en el capítulo 1: se compone de un combate en tiempo real sostenido por
+    estadísticas de vida, stamina y maná, y de una dificultad pensada para premiar la
+    lectura atenta de cada enemigo por sobre la repetición de un mismo botón. Esta
+    elección de género combina un gusto personal con una razón de fondo que sí es
+    relevante para este trabajo: es precisamente en este tipo de juegos donde la
+    previsibilidad de los enemigos se vuelve más notoria -el jugador aprende a memorizar
+    patrones de ataque tras unos pocos intentos-, por lo que resulta el escenario más
+    exigente para poner a prueba un enemigo que efectivamente se adapte a quien lo
+    enfrenta.
 
     Sobre esa base, el juego se construyó alrededor de un pequeño conjunto de mecánicas
     que definen lo que el jugador puede hacer en cada encuentro:
 
+    - *Desplazamiento*: el jugador se mueve libremente en cualquier dirección en tercera
+      persona.
     - *Combate cuerpo a cuerpo*: el jugador ataca con una secuencia de golpes
       consecutivos, pudiendo encadenarlos en un combo si continúa atacando a tiempo.
-    - *Esquiva*: el jugador puede rodar para evadir un ataque, quedando brevemente
-      invulnerable durante el movimiento; es la principal herramienta defensiva del juego.
+    - *Esquiva*: el jugador puede rodar para evadir un ataque, quedando invulnerable
+      durante toda la duración del movimiento; es la principal herramienta defensiva del
+      juego.
     - *Fijado de objetivo*: el jugador puede fijar la cámara sobre un enemigo específico,
-      orientándose automáticamente hacia él durante el combate.
-    - *Hechizos*: el jugador dispone de dos hechizos intercambiables -un ataque a
-      distancia y uno de curación- que ofrecen una vía alternativa al combate cuerpo a
-      cuerpo puro.
+      orientándose automáticamente hacia él durante el combate, lo que le permite
+      desplazarse lateralmente a su alrededor sin perderlo de vista.
+    - *Equipamiento alternable*: mediante una misma acción, el jugador puede alternar
+      entre un hechizo de proyectil de fuego -ofensivo, a distancia, con costo de maná- y
+      una poción de vida -defensiva, de uso limitado-, ofreciendo una vía alternativa al
+      combate cuerpo a cuerpo puro.
     - *Carrera*: el jugador puede desplazarse más rápido de lo normal, útil para ganar o
       mantener distancia frente a un enemigo.
 
-    Estas acciones se sostienen sobre tres estadísticas que limitan su uso: la vida, que
+    Estas acciones se sostienen sobre los recursos que limitan su uso: la vida, que
     termina el encuentro si llega a cero; la stamina, que se consume al esquivar o correr;
-    y el maná, que se consume al lanzar hechizos. Esta limitación de recursos obliga al
-    jugador a tomar decisiones constantes -cuándo esquivar en lugar de atacar, cuándo
-    curarse en lugar de seguir presionando, cuándo alejarse en lugar de arriesgar un
-    golpe-, en lugar de simplemente repetir una única acción óptima.
+    el maná, que se consume al lanzar el hechizo de fuego; y una cantidad limitada de
+    pociones de vida, que es lo que efectivamente acota cuándo el jugador puede curarse.
+    Esta limitación de recursos obliga al jugador a tomar decisiones constantes -cuándo
+    esquivar en lugar de atacar, cuándo curarse en lugar de seguir presionando, cuándo
+    alejarse en lugar de arriesgar un golpe-, en lugar de simplemente repetir una única
+    acción óptima.
 
     Esta variedad de decisiones es, además, lo que hace posible el resto del diseño
     descrito en este capítulo: si el juego solo permitiera atacar y nada más, todos los
-    jugadores jugarían igual y no habría comportamiento que perfilar. Son estas mismas
-    mecánicas -la preferencia por el cuerpo a cuerpo o los hechizos a distancia, el uso
-    más o menos frecuente de la esquiva, el momento en que se decide curar- las que los
-    arquetipos de enemigos descritos a continuación están pensados para poner a prueba.
+    jugadores jugarían igual y no habría comportamiento que perfilar. No todas las
+    mecánicas cumplen ese rol por igual: el fijado de objetivo y la carrera responden más
+    bien a la convención del género -se esperan en un juego de este tipo y facilitan el
+    manejo de la cámara y el posicionamiento- sin que el sistema observe especialmente
+    cómo se usan. Son, en cambio, la preferencia por el cuerpo a cuerpo o el hechizo a
+    distancia, el uso más o menos frecuente de la esquiva, y el momento en que se decide
+    curar, las mecánicas que los arquetipos de enemigos descritos a continuación están
+    pensados para poner a prueba.
 
     == Diseño y arquetipos de enemigos
 
@@ -595,8 +608,83 @@
     El detalle técnico de la implementación de cada uno de estos enemigos -estructura,
     comportamiento e inteligencia artificial- se documenta en el capítulo 5.
 
-    == Diseño de niveles y entornos de prueba
-    #lorem(150)
+    == Diseño de niveles
+
+    Los niveles se diseñaron como una progresión que ordena, en el tiempo y el espacio,
+    los encuentros descritos en la sección anterior: primero se introduce al jugador en
+    un entorno de bajo riesgo, luego se le enfrenta a los tres arquetipos regulares en
+    conjunto, y finalmente se le lleva al combate contra el jefe. La ambientación de
+    mazmorra que comparten los tres niveles responde a una decisión de producción
+    -aprovechar assets disponibles de Fab (Unreal Engine Marketplace)- y no condiciona las
+    decisiones de diseño que se describen a continuación.
+
+    === Nivel de tutorial
+
+    El primer nivel se diseñó como un entorno de bajo riesgo, cuyo objetivo es que el
+    jugador aprenda los controles y mecánicas básicas (desplazamiento, esquiva, fijado de
+    objetivo, ataque) antes de que estas decisiones tengan consecuencias relevantes. Por
+    esto, el único enemigo que hay en el nivel es el esqueleto normal -el arquetipo más
+    simple-, precedido por un maniquí sin capacidad de respuesta, de modo que la
+    dificultad real del combate se introduce de forma gradual.
+
+    El nivel se organiza en una secuencia de salas, cada una dedicada a introducir una
+    mecánica nueva mediante un mensaje emergente, seguida de inmediato por una oportunidad
+    de practicarla antes de poder continuar.
+
+    La sala inicial, donde aparece el jugador, enseña el desplazamiento y presenta al
+    maniquí: al acercarse, un mensaje indica que el clic izquierdo ataca, y que
+    presionarlo varias veces seguidas encadena los golpes en un combo. Recién cuando el
+    jugador logra bajarle la vida al maniquí se abre la puerta de salida.
+
+    La segunda sala es notablemente más larga que la primera. En su recorrido se enseña a
+    correr y, ya cerca del primer esqueleto normal que el jugador encuentra, a esquivar,
+    aclarando que la esquiva otorga invulnerabilidad. Derrotar a este enemigo abre la
+    puerta hacia la tercera sala.
+
+    La tercera sala está dividida por un abismo con espinas en el fondo, cruzado por un
+    puente que comienza levantado, con un maniquí ubicado al otro lado. Al entrar, se
+    enseña a fijar el objetivo y a lanzar una bola de fuego; la intención es que el
+    jugador fije al maniquí del otro lado del abismo y le baje la vida a distancia, ya
+    que el puente permanece levantado y el abismo impide cruzar de otra forma. Al
+    lograrlo, el puente baja y habilita el paso.
+
+    Al otro lado, unas flechas señalan un agujero en el suelo por el que el jugador debe
+    dejarse caer para continuar. Tras la caída, el jugador aterriza sobre un campo de
+    espinas en la sala siguiente, donde se enseña a alternar entre el hechizo de fuego y
+    la poción de vida, pidiéndole específicamente cambiar a la poción y curarse.
+
+    El nivel termina poco después, en un pasillo final sin más obstáculos.
+
+    // TODO: agregar minimapa del nivel de tutorial una vez se tenga el PNG.
+    /*
+    #figure(
+      image("imagenes/minimapa-tutorial.png", width: 80%),
+      caption: [Distribución de salas del nivel de tutorial.],
+    ) <fig:minimapa-tutorial>
+    */
+
+    === Nivel previo al jefe
+
+    El segundo nivel reúne, por primera y única vez, a los tres arquetipos de enemigo
+    regulares -esqueleto normal, mago y caballero- descritos en la sección anterior. A
+    diferencia del tutorial, aquí el jugador debe lidiar con los tres ejes de
+    comportamiento -elección de rango, manejo de la esquiva, lectura de ataques
+    telegrafiados- de forma simultánea y bajo la presión de varios enemigos a la vez, lo
+    que lo convierte en el último peldaño de dificultad antes del jefe.
+
+    Cómo se traduce específicamente lo que el jugador hace en este nivel hacia el
+    comportamiento del jefe es algo que se aborda en el capítulo 4; por ahora basta decir
+    que este nivel es, dentro de la progresión, el último punto de referencia sobre el
+    jugador antes de que comience el combate final.
+
+    === Arena del jefe
+
+    // TODO: pendiente describir este nivel (Lvl_ThirdPerson) en términos de diseño; el
+    // capítulo 5 todavía no lo documenta en detalle, más allá de mencionar la activación
+    // del Behaviour Tree del jefe al entrar a la arena.
+
+    El detalle de la lógica propia de cada nivel -puertas, palancas y demás elementos
+    reutilizables- se documenta en el capítulo 5.
 
 ]
 
@@ -780,17 +868,28 @@ Si el valor es negativo, se interpreta como curación: se invoca directamente `I
 sobre `BPC_Stats` con el valor invertido, restaurando la vida del jugador según lo descrito
 en la sección anterior.
 
-Si el valor es positivo, se interpreta como daño recibido, y se ejecuta una secuencia más
-elaborada. En primer lugar, se intenta identificar si el causante del daño es el jefe
-(`BP_Slime`); de ser así, se consulta su _Behaviour Tree_ para obtener cuál fue su último
-ataque (`LastAttack`) y se registra en el `PlayerMetricsComponent` mediante
-`RegisterBossAttackHit`, asociando así cada golpe recibido con el tipo de ataque que lo
-causó. A continuación, se distingue si el jugador se encontraba esquivando en el momento del
-impacto (`isDodging`): si es así, se registra como un dodge fallido mediante
-`RegisterDodgeResult`; en caso contrario, se registra el daño normalmente mediante
-`RegisterDamageTaken`, y se reproduce el sonido de dolor correspondiente. Si además el
-jugador se encontraba dentro de una zona específica del combate (`isInTankZone`), se efectúa
-un registro adicional (`RegisterDamageTakenInTankZone`).
+Si el valor es positivo, se interpreta como daño recibido. Antes de procesarlo, se comprueba
+si el jugador se encuentra esquivando (`isDodging`); de ser así, la función retorna de
+inmediato sin aplicar daño, lo que implementa la invulnerabilidad del jugador durante toda la
+esquiva descrita en el capítulo 3.
+
+// TODO: revisar esta sección con más detalle. No queda claro cómo concilia este retorno
+// anticipado por `isDodging` con el registro de "dodge fallido" (`RegisterDodgeResult`)
+// descrito a continuación, que asume que el daño puede igualmente aplicarse mientras el
+// jugador esquiva. Es posible que ese registro corresponda a un caso distinto (por
+// ejemplo, un tipo de ataque que no es bloqueado por la esquiva), pero no se ha podido
+// confirmar contra el Blueprint original.
+
+En caso contrario, se ejecuta una secuencia más elaborada. En primer lugar, se intenta
+identificar si el causante del daño es el jefe (`BP_Slime`); de ser así, se consulta su
+_Behaviour Tree_ para obtener cuál fue su último ataque (`LastAttack`) y se registra en el
+`PlayerMetricsComponent` mediante `RegisterBossAttackHit`, asociando así cada golpe recibido
+con el tipo de ataque que lo causó. A continuación, se distingue si el jugador se encontraba
+esquivando en el momento del impacto (`isDodging`): si es así, se registra como un dodge
+fallido mediante `RegisterDodgeResult`; en caso contrario, se registra el daño normalmente
+mediante `RegisterDamageTaken`, y se reproduce el sonido de dolor correspondiente. Si además
+el jugador se encontraba dentro de una zona específica del combate (`isInTankZone`), se
+efectúa un registro adicional (`RegisterDamageTakenInTankZone`).
 
 Finalmente, se aplica el daño a la vida del jugador mediante `IncreaseVal` y, si el daño es
 mayor a cero, se reproduce la animación de reacción a daño (`HitReact_Montage`), que
