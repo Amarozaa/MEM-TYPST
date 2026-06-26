@@ -672,10 +672,46 @@
     telegrafiados- de forma simultánea y bajo la presión de varios enemigos a la vez, lo
     que lo convierte en el último peldaño de dificultad antes del jefe.
 
-    Cómo se traduce específicamente lo que el jugador hace en este nivel hacia el
-    comportamiento del jefe es algo que se aborda en el capítulo 4; por ahora basta decir
-    que este nivel es, dentro de la progresión, el último punto de referencia sobre el
-    jugador antes de que comience el combate final.
+    El nivel se organiza en torno a una sala amplia central, desde la cual se accede a dos
+    zonas dedicadas -una por cada uno de los arquetipos especializados- antes de poder llegar a la puerta del
+    jefe.
+
+    El jugador comienza en una sala vacía y, al avanzar por un primer tramo de pasillos, se
+    encuentra de inmediato con el primer esqueleto normal, que patrulla la zona. Al final de
+    estos pasillos se abre la sala amplia mencionada, donde patrullan dos esqueletos
+    normales adicionales.
+
+    Al frente de esta sala, en el extremo opuesto a la entrada, se encuentra la puerta de
+    acceso al jefe, bloqueada por dos puertas metálicas dispuestas una tras otra. Abrir
+    ambas es la condición para avanzar, y cada una se desbloquea completando una de las dos
+    zonas laterales que se describen a continuación. Además de la entrada por los pasillos y
+    de esta puerta bloqueada, la sala amplia tiene otras dos salidas -una hacia cada zona-,
+    junto con dos puertas metálicas adicionales que funcionan únicamente como atajos de
+    regreso.
+
+    La salida izquierda lleva, mediante una escalera, a un segundo piso que corresponde a la
+    zona de enemigos tanque, es decir, a los esqueletos caballero. Tras avanzar un poco se
+    encuentra el primer caballero y, más adelante en la misma sala, el segundo. Al final de
+    la zona, una palanca abre a la vez una de las dos puertas metálicas que bloquean el
+    acceso al jefe y una puerta de atajo, por la que el jugador puede bajar una escalera y
+    volver directamente a la sala amplia sin repetir el recorrido.
+
+    La salida derecha conduce a la zona de rango. Tras cambiar de sala, el jugador encuentra
+    al primer esqueleto mago; pasado este, una escalera sube a un segundo piso de la misma
+    zona, donde esperan tres esqueletos mago dispuestos sobre plataformas, cada una con una
+    rampa en su parte posterior que permite subir y atacarlos cuerpo a cuerpo, sin perjuicio
+    de poder seguir atacándolos a distancia con la bola de fuego. Al final de esta sala, otra
+    palanca abre la segunda puerta metálica de acceso al jefe junto con su propia puerta de
+    atajo, que de igual forma permite bajar y regresar a la sala amplia.
+
+    Una vez abiertas ambas puertas metálicas -una desde cada zona- el jugador puede
+    finalmente acceder a la sala del jefe.
+
+    Todo lo que el jugador hace en este nivel -cómo enfrenta a cada arquetipo, cómo
+    esquiva, etc.- queda registrado y se utiliza más adelante para ajustar el
+    comportamiento del jefe; el mecanismo concreto de ese ajuste se explica en el
+    capítulo 4. Por ahora basta con entender este nivel como el último punto de referencia
+    sobre el jugador antes de que comience el combate final.
 
     === Arena del jefe
 
