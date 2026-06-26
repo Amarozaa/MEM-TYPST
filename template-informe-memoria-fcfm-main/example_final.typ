@@ -511,6 +511,15 @@
     el jefe, cuyos ataques son considerablemente más numerosos y
     variados.
 
+    // TODO: poner figura acá con los tres arquetipos regulares (esqueleto normal, mago y
+    // caballero) uno junto al otro, para que se aprecie su diferenciación visual.
+    /*
+    #figure(
+      image("imagenes/arquetipos-regulares.png", width: 80%),
+      caption: [Los tres arquetipos de enemigo regulares del juego.],
+    ) <fig:arquetipos-regulares>
+    */
+
     Tomados en conjunto, estos tres arquetipos no se diseñaron para ser superados de forma
     aislada, sino como un pequeño catálogo de situaciones de combate -ritmo básico, gestión
     de distancia y lectura de ataques telegrafiados- que, sumadas, dan una imagen
@@ -536,6 +545,15 @@
     arquetipos anteriores. Este diseño es lo que hace posible el sistema adaptativo del
     capítulo 4 -el jefe no es un desafío fijo al final de la progresión, sino su
     consecuencia directa.
+
+    // TODO: poner figura acá con el modelo o concept art del jefe en sus distintas formas
+    // (normal y charco), ya que ambas se mencionan en esta sección.
+    /*
+    #figure(
+      image("imagenes/jefe-formas.png", width: 80%),
+      caption: [El jefe en su forma normal y en su forma de charco.],
+    ) <fig:jefe-formas>
+    */
 
     Concretamente, el jefe dispone de nueve ataques distintos, agrupados en tres
     secuencias según el rango al que se encuentre el jugador en el momento de atacar. La
@@ -713,6 +731,15 @@
     capítulo 4. Por ahora basta con entender este nivel como el último punto de referencia
     sobre el jugador antes de que comience el combate final.
 
+    // TODO: agregar minimapa del nivel previo al jefe una vez se tenga el PNG, mostrando
+    // la sala amplia central y las dos zonas laterales (tanque y rango).
+    /*
+    #figure(
+      image("imagenes/minimapa-previo-jefe.png", width: 80%),
+      caption: [Distribución de salas del nivel previo al jefe.],
+    ) <fig:minimapa-previo-jefe>
+    */
+
     === Arena del jefe
 
     A diferencia de los dos niveles anteriores, la arena del jefe se diseñó como un
@@ -723,6 +750,15 @@
     lo cumplieron los niveles anteriores-, sino un único espacio amplio que le da al jefe,
     versátil y con ataques de distinto alcance, el lugar necesario para desplegar todo su
     repertorio.
+
+    // TODO: poner figura acá con una captura de la arena del jefe, mostrando su tamaño
+    // respecto al pasillo de entrada.
+    /*
+    #figure(
+      image("imagenes/arena-jefe.png", width: 80%),
+      caption: [Vista general de la arena del jefe.],
+    ) <fig:arena-jefe>
+    */
 
     El detalle de la lógica propia de cada nivel -puertas, palancas y demás elementos
     reutilizables- se documenta en el capítulo 5.
