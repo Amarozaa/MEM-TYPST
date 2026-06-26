@@ -791,6 +791,20 @@
     diferencia observada específicamente a la adaptación, y no a otro factor del diseño
     del juego.
 
+    La asignación a una u otra condición se controla mediante un botón escondido en una
+    esquina de la pantalla del menú principal, sin ningún propósito para el jugador. Es
+    quien administra el experimento quien lo presiona antes de entregarle el control del
+    computador al participante, de modo que este nunca interactúa con él ni sabe a qué
+    condición fue asignado, preservando el cegamiento del experimento.
+
+    Es importante notar, además, que la recolección de datos durante el nivel previo no
+    depende de esta condición, sino de un interruptor independiente: todos los jugadores
+    generan el mismo perfil de comportamiento, sin importar si pertenecen al grupo
+    adaptativo o de control. Lo único que cambia entre condiciones es si ese perfil
+    efectivamente se aplica sobre los pesos del jefe. Esto permite, entre otras cosas,
+    comparar los perfiles de ambos grupos para verificar que la asignación experimental no
+    haya generado diferencias sistemáticas de comportamiento previas al combate.
+
     == Perfil de juego: qué se mide y por qué
 
     El nivel previo al jefe reúne a los tres arquetipos de enemigo regulares (capítulo 3)
@@ -800,10 +814,20 @@
     subconjunto de esos ataques -no necesariamente excluyente del de las otras
     dimensiones, ya que más de una puede terminar reforzando un mismo ataque.
 
+    Durante ese mismo nivel se registra, además, a qué porcentaje de vida suele curarse
+    el jugador. A diferencia de las cuatro dimensiones anteriores, esta observación no se
+    usa para ajustar los pesos antes del combate, sino durante este, como se describe más
+    adelante en la sección "Ajuste durante el combate".
+
     === Distancia
 
-    Se registra la distancia promedio que el jugador mantiene respecto a los enemigos
-    durante el nivel. El jefe opera con dos umbrales de distancia: uno que define el
+    Se registra la distancia promedio que el jugador mantiene frente al esqueleto normal
+    y al esqueleto caballero (capítulo 3), pero no frente al mago: su zona suele enfrentar
+    al jugador contra varios enemigos a la vez, lo que volvería ruidosa una medición de
+    distancia pensada para un solo oponente. Frente al esqueleto normal y al caballero,
+    en cambio, el jugador se enfrenta de forma más controlada, por lo que la distancia que
+    decide mantener resulta una señal más limpia de su estilo de juego. El jefe opera con
+    dos umbrales de distancia: uno que define el
     límite del rango cercano (650 unidades) y otro el del rango lejano (1100 unidades).
     Si el jugador mantiene una distancia promedio menor a 650, el límite del rango
     cercano aumenta en 75 unidades, ampliando la zona en la que el jefe se considera en
@@ -2774,6 +2798,12 @@ de la dirección o el lado por el que el jugador haya entrado.
 == Widgets generales (MainMenu, WinnerScreen...)
 
 === Menú principal (`WB_MainMenu`)
+
+// TODO: documentar el botón que permite alternar `bAdaptiveEnabled` (condición
+// adaptativa vs. control, mencionado en el capítulo 4) -es un botón escondido en una
+// esquina de la pantalla del menú principal, sin ningún propósito para el jugador, que
+// el experimentador presiona antes de entregarle el control al participante- detallar
+// su ubicación exacta y si queda algún registro de qué condición se seleccionó.
 
 === Pantalla de victoria (`WB_WinnerScreen`)
 
