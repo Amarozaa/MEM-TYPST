@@ -373,8 +373,14 @@
 // CAPÍTULO 3: DISEÑO DEL VIDEOJUEGO
 // ==========================================
 #capitulo(title: "Diseño del videojuego")[
-    #lorem(100)
-    
+    Este capítulo describe las decisiones de diseño detrás del videojuego construido para
+    este trabajo, dejando los detalles técnicos de su implementación para el capítulo 5.
+    Primero se explica el género elegido y las mecánicas principales que sostienen el
+    combate; luego, los arquetipos de enemigos diseñados a partir de esas mecánicas; y
+    finalmente, los niveles que organizan en qué orden el jugador se enfrenta a cada uno.
+    Estas decisiones, tomadas en conjunto, son las que el capítulo 4 retoma para explicar
+    cómo se adapta el comportamiento del jefe al estilo de juego de quien lo enfrenta.
+
     == Género y mecánicas principales
 
     El juego corresponde a un _action-RPG_ en tercera persona del género _souls-like_,
@@ -455,22 +461,18 @@
     golpe directo de espada, sin variaciones ni segundas intenciones. Su rol es introducir el ciclo de combate
     fundamental -acercarse, esquivar y golpear- sin agregar elementos adicionales que
     puedan confundir al jugador mientras aún está aprendiendo los controles. Por este
-    motivo es el único enemigo presente durante el tutorial. Su segunda aparición, ya en
-    el nivel previo al combate y junto a los demás arquetipos, no busca representar un desafío en
-    sí mismo, sino servir de punto de comparación: al ser un enemigo "neutro", la forma en
+    motivo es el único enemigo presente durante el tutorial. Sus apariciones siguientes,
+    ya en el nivel previo al combate y junto a los demás arquetipos, no buscan representar
+    un desafío en sí mismas, sino servir de punto de comparación: al ser un enemigo
+    "neutro", la forma en
     que el jugador lo enfrenta funciona como una referencia base respecto a la cual
     contrastar su comportamiento frente a los dos arquetipos siguientes, ambos más
     especializados.
 
     El segundo arquetipo, el esqueleto mago, se diseñó como contraparte directa del
-    anterior: en lugar de perseguir siempre al jugador hasta el cuerpo a cuerpo, su
-    acercamiento a distancia es configurable mediante una variable propia, que permite
-    optar entre seguir aproximándose -hasta una distancia mayor a la que usa el esqueleto
-    normal para iniciar su ataque- o permanecer directamente en su posición lanzando
-    proyectiles una vez detecta al jugador por primera vez. En su configuración actual
-    privilegia esta segunda opción, recurriendo a un golpe cuerpo a
-    cuerpo con su cayado únicamente cuando es el propio jugador quien decide acortar el
-    espacio entre ambos. Su
+    anterior: en lugar de perseguir al jugador, permanece en su posición y ataca a
+    distancia una vez lo detecta, recurriendo al cuerpo a cuerpo con su báculo únicamente
+    cuando es el propio jugador quien decide acortar el espacio entre ambos. Su
     propósito es introducir una decisión táctica explícita que el esqueleto normal no
     plantea -acercarse para forzar el combate cuerpo a cuerpo contra un enemigo que de otro
     modo se mantiene a distancia, o permanecer lejos y lidiar con sus ataques a rango-, y
@@ -482,7 +484,7 @@
 
     - *Ataque a distancia*: lanza un proyectil hacia el jugador desde lejos, sin
       necesidad de acercarse.
-    - *Ataque cuerpo a cuerpo*: golpea con su cayado cuando el jugador se encuentra a
+    - *Ataque cuerpo a cuerpo*: golpea con su báculo cuando el jugador se encuentra a
       corta distancia, recurriendo a él solo en ese caso.
 
     El tercer arquetipo, el esqueleto caballero, se diseñó con un propósito distinto a los
@@ -640,10 +642,8 @@
 
     El primer nivel se diseñó como un entorno de bajo riesgo, cuyo objetivo es que el
     jugador aprenda los controles y mecánicas básicas (desplazamiento, esquiva, fijado de
-    objetivo, ataque) antes de que estas decisiones tengan consecuencias relevantes. Por
-    esto, el único enemigo que hay en el nivel es el esqueleto normal -el arquetipo más
-    simple-, precedido por un maniquí sin capacidad de respuesta, de modo que la
-    dificultad real del combate se introduce de forma gradual.
+    objetivo, ataque) antes de que estas decisiones tengan consecuencias relevantes, de
+    modo que la dificultad real del combate se introduce de forma gradual.
 
     El nivel se organiza en una secuencia de salas, cada una dedicada a introducir una
     mecánica nueva mediante un mensaje emergente, seguida de inmediato por una oportunidad
@@ -686,7 +686,7 @@
     El segundo nivel reúne, por primera y única vez, a los tres arquetipos de enemigo
     regulares -esqueleto normal, mago y caballero- descritos en la sección anterior. A
     diferencia del tutorial, aquí el jugador debe lidiar con los tres ejes de
-    comportamiento -elección de rango, manejo de la esquiva, lectura de ataques
+    comportamiento -ritmo básico, gestión de distancia y lectura de ataques
     telegrafiados- de forma simultánea y bajo la presión de varios enemigos a la vez, lo
     que lo convierte en el último peldaño de dificultad antes del jefe.
 
@@ -770,7 +770,244 @@
 // ==========================================
 #capitulo(title: "Sistema adaptativo basado en el comportamiento del jugador")[
 
-    
+    Este capítulo explica cómo el comportamiento del jugador durante el nivel previo al
+    jefe (capítulo 3) se traduce en ajustes sobre el repertorio de ataques de ese mismo
+    jefe. La intención no es repetir aquí el mecanismo técnico exacto -las variables, los
+    umbrales numéricos y la forma en que se almacenan los pesos se documentan en el
+    capítulo 5-, sino explicar la lógica detrás de cada regla de adaptación: qué se mide,
+    por qué se eligió medir eso en particular, y en qué dirección general empuja el
+    comportamiento del jefe.
+
+    == Diseño experimental: condición adaptativa y de control
+
+    Para poder evaluar si la adaptación realmente cambia la experiencia del jugador, el
+    sistema no se activa siempre: cada sesión de juego queda asignada a una de dos
+    condiciones, adaptativa o de control. En la condición de control, el jefe usa el mismo
+    repertorio de ataques descrito en el capítulo 3, pero con sus pesos parejos durante
+    todo el combate, sin que el comportamiento del jugador en el nivel previo tenga ningún
+    efecto sobre él. En la condición adaptativa se aplican, en cambio, todas las reglas que
+    se describen en el resto de este capítulo. Comparar el desempeño y la experiencia de
+    los jugadores entre ambas condiciones (capítulo 6) es lo que permite atribuir cualquier
+    diferencia observada específicamente a la adaptación, y no a otro factor del diseño
+    del juego.
+
+    == Perfil de juego: qué se mide y por qué
+
+    El nivel previo al jefe reúne a los tres arquetipos de enemigo regulares (capítulo 3)
+    precisamente porque cada uno expone una dimensión distinta del comportamiento del
+    jugador. Al terminar ese nivel, esas observaciones se resumen en un perfil de cuatro
+    dimensiones independientes entre sí, cada una capaz de inclinar la frecuencia de un
+    subconjunto de esos ataques -no necesariamente excluyente del de las otras
+    dimensiones, ya que más de una puede terminar reforzando un mismo ataque.
+
+    === Distancia
+
+    Se registra la distancia promedio que el jugador mantiene respecto a los enemigos
+    durante el nivel. El jefe opera con dos umbrales de distancia: uno que define el
+    límite del rango cercano (650 unidades) y otro el del rango lejano (1100 unidades).
+    Si el jugador mantiene una distancia promedio menor a 650, el límite del rango
+    cercano aumenta en 75 unidades, ampliando la zona en la que el jefe se considera en
+    corta distancia; si la distancia promedio es mayor a 1100, el límite del rango lejano
+    se reduce en 75 unidades y la duración de la persecución del jefe aumenta en 2
+    segundos. En el rango intermedio, considerado un comportamiento neutro, no se
+    introduce ningún cambio. La @tbl:regla-distancia resume esta regla.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Condición*], [*Ajuste*]),
+        [Distancia promedio < 650], [Límite del rango cercano +75],
+        [650 -- 1100 (neutro)], [Sin cambios],
+        [Distancia promedio > 1100], [Límite del rango lejano --75; duración de persecución +2 s],
+      )),
+      caption: [Regla de adaptación por distancia promedio.],
+    ) <tbl:regla-distancia>
+
+    // TODO: verificar contra el Blueprint si el ajuste por distancia promedio baja
+    // realmente *aumenta* el límite del rango cercano (como se describe arriba, según el
+    // markdown de reglas de adaptación) o lo *reduce* (como quedó documentado en el
+    // capítulo 5, sección "Adaptación pre-combate"). Ambas fuentes no coinciden en la
+    // dirección del ajuste.
+
+    // TODO: revisar que los valores numéricos de este párrafo (650, 1100, +75, -75, +2s)
+    // sigan vigentes; el documento de referencia usado para redactar esta sección
+    // advertía que algunos valores podían estar desactualizados respecto a la
+    // implementación actual.
+
+    === Melee versus ataques a distancia
+
+    Más allá de la distancia que mantiene, esta dimensión observa qué tipo de ataque usa
+    el jugador con más frecuencia -cuerpo a cuerpo o a distancia-, tanto en general (con
+    un mínimo de 5 ataques registrados) como específicamente dentro de la zona de rango
+    (con un mínimo de 3 ataques en la zona), donde esa decisión tiene mayor peso
+    contextual. Si la proporción de ataques a distancia supera el 65% del total, aumentan
+    en 15 los pesos de Charco y Persecución -que cierran distancia con rapidez- y de Salto
+    -que presiona en rango medio-; si baja del 35%, aumentan en 15 los de Espinas y Giro,
+    pensados para castigar a quien se mantiene cerca. Entre ambos umbrales se considera un
+    comportamiento mixto y no hay ajuste. Si, dentro de la zona de rango, predominó
+    claramente uno de los dos tipos de ataque, se suman además 10 puntos al peso de
+    Espinas (si predominó el cuerpo a cuerpo) o de Charco (si predominó el ataque a
+    distancia). La @tbl:regla-melee-rango resume estas reglas.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Condición*], [*Ajuste*]),
+        [Ataques a distancia > 65% del total], [Charco +15, Persecución +15, Salto +15],
+        [Entre 35% y 65% (mixto)], [Sin cambios],
+        [Ataques a distancia < 35% del total], [Espinas +15, Giro +15],
+        [Predominio melee en zona de rango], [Espinas +10 adicional],
+        [Predominio a distancia en zona de rango], [Charco +10 adicional],
+      )),
+      caption: [Regla de adaptación por preferencia melee vs. a distancia.],
+    ) <tbl:regla-melee-rango>
+
+    // TODO: revisar que estos porcentajes y valores (65 %, 35 %, +15, +10) sigan vigentes
+    // en la implementación actual.
+
+    === Esquiva
+
+    Esta dimensión mide qué tan seguido el jugador esquiva con éxito, a partir de un
+    mínimo de 5 esquivas registradas. No todos los ataques del jefe son igual de fáciles
+    de leer: Salto, Espinas y Muro requieren una preparación larga y son más fáciles de
+    anticipar, mientras que Básico apenas se anuncia antes de conectar. Si más del 60% de
+    las esquivas del jugador son exitosas, aumenta en 15 el peso de Básico, precisamente
+    por ser el más difícil de leer y, por lo tanto, el que más pone a prueba esa
+    habilidad; si menos del 30% lo son, aumentan en 15 los pesos de Espinas, Muro y Salto,
+    los ataques de preparación larga que de todas formas logran conectar incluso cuando se
+    intenta evadirlos. Entre ambos umbrales no hay ajuste. La @tbl:regla-esquiva resume
+    esta regla.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Condición*], [*Ajuste*]),
+        [Esquivas exitosas > 60%], [Básico +15],
+        [Entre 30% y 60% (normal)], [Sin cambios],
+        [Esquivas exitosas < 30%], [Espinas +15, Muro +15, Salto +15],
+      )),
+      caption: [Regla de adaptación por efectividad de esquiva.],
+    ) <tbl:regla-esquiva>
+
+    // TODO: revisar que estos porcentajes y valores (60 %, 30 %, +15) sigan vigentes en
+    // la implementación actual.
+
+    === Zona de enemigos tanque
+
+    La zona de enemigos tanque (capítulo 3) se diseñó deliberadamente para replicar, a
+    menor escala, dos situaciones que el jugador volverá a enfrentar contra el jefe: un
+    avance rápido que cierra distancia -similar a Salto- y un ataque de preparación larga
+    -similar a Salto y Giro-. Por eso, en lugar de una sola medición, esta dimensión
+    observa dos comportamientos puntuales frente al caballero, cada uno con un mínimo de 3
+    datos registrados para activarse.
+
+    Frente al avance del caballero, se registra hacia qué lado esquiva el jugador: si
+    predominan las esquivas laterales, aumenta en 10 el peso de Giro; si predominan las
+    esquivas hacia atrás, aumenta en 10 el de Salto, replicando el mismo patrón de
+    reacción que el jugador ya mostró frente al avance del caballero.
+
+    Frente a su ataque telegrafiado, se registra si el jugador logra esquivarlo a tiempo:
+    si lo logra con buena frecuencia, aumenta en 10 el peso de Básico; en caso contrario,
+    aumentan en 10 los pesos de Salto y Giro. La @tbl:regla-tanque resume ambas reglas.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Condición*], [*Ajuste*]),
+        [Avance: predominan esquivas laterales], [Giro +10],
+        [Avance: predominan esquivas hacia atrás], [Salto +10],
+        [Ataque telegrafiado: buena frecuencia de esquiva], [Básico +10],
+        [Ataque telegrafiado: baja frecuencia de esquiva], [Salto +10, Giro +10],
+      )),
+      caption: [Reglas de adaptación por comportamiento en la zona de enemigos tanque.],
+    ) <tbl:regla-tanque>
+
+    // TODO: verificar la condición exacta de este último ajuste contra el Blueprint; el
+    // documento de referencia usado para esta sección la compara directamente contra el
+    // daño recibido en la zona, mientras que el capítulo 5 la calcula como una proporción
+    // sobre el total de esquivas registradas en la zona. El resultado cualitativo (qué
+    // ataque sube) coincide en ambas fuentes, pero la condición exacta no.
+
+    == De perfil a comportamiento: ajuste de pesos antes del combate
+
+    Como se mencionó en el capítulo 3, los nueve ataques del jefe parten con la misma
+    probabilidad de ser elegidos dentro de su banda de distancia correspondiente. Lo que
+    hacen las cuatro dimensiones anteriores, en conjunto, es sumar bonificaciones sobre esa
+    base pareja: cada regla que se activa aumenta la frecuencia relativa de algunos
+    ataques puntuales, sin eliminar ni modificar ningún otro. Este ajuste ocurre una sola
+    vez, al iniciar el combate, y se mantiene fijo durante todo el enfrentamiento salvo por
+    los ajustes adicionales descritos en la siguiente sección.
+
+    Sobre el resultado de estas bonificaciones se aplica, además, una restricción que no
+    depende del perfil del jugador: ningún ataque puede ser elegido tres veces
+    consecutivas, sin importar cuánto haya aumentado su frecuencia. Esta restricción evita
+    que la adaptación produzca el efecto contrario al buscado -un jefe que repite el mismo
+    ataque una y otra vez resulta tan previsible como uno completamente estático-, y
+    responde a la misma tensión planteada en el capítulo 2 a partir de las heurísticas de
+    Pinelle et al.: que el jefe se adapte sin volverse impredecible o frustrante para el
+    jugador.
+
+    == Ajuste durante el combate
+
+    La adaptación principal ocurre antes del combate, pero existen dos ajustes acotados
+    que sí operan en tiempo real, distintos de la adaptación en tiempo real más ambiciosa
+    que se descartó del alcance de este trabajo (capítulo 1).
+
+    El primero observa, cada 15 ataques realizados por el jefe, qué proporción de los
+    intentos de cada tipo de ataque efectivamente conecta con el jugador (siempre que
+    existan al menos 3 intentos de ese tipo). Si la proporción de aciertos supera el 60%,
+    el peso de ese ataque aumenta en 15; si es menor al 30%, se reduce en 15; entre ambos
+    umbrales no hay ajuste. Así, el jefe deja de insistir en ataques que el jugador ya
+    domina y dedica más turnos a los que sí le generan dificultad. La
+    @tbl:regla-exito-ataque resume esta regla.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Condición (por tipo de ataque)*], [*Ajuste*]),
+        [Tasa de acierto > 60%], [Ese ataque +15],
+        [Entre 30% y 60%], [Sin cambios],
+        [Tasa de acierto < 30%], [Ese ataque --15],
+      )),
+      caption: [Regla de adaptación por éxito de cada tipo de ataque durante el combate.],
+    ) <tbl:regla-exito-ataque>
+
+    El segundo ajuste es reactivo a la vida del jugador y requiere al menos 2 curaciones
+    registradas durante el nivel previo: a partir del promedio de vida al que el jugador
+    se curó, el jefe reconoce cuándo entra a ese rango (con un margen de ±10 puntos
+    porcentuales) y, mientras se mantiene ahí, aumenta en 15 los pesos de Básico, Salto,
+    Charco y Proyectil homing, reduciendo la ventana disponible para curarse. Al salir de
+    ese rango, revierte esos mismos 15 puntos en cada uno, evitando mantener una presión
+    artificial una vez que el riesgo de curación ya pasó. La @tbl:regla-curacion resume
+    esta regla.
+
+    #figure(
+      align(center, table(
+        columns: 2,
+        align: (left, left),
+        table.header([*Condición*], [*Ajuste*]),
+        [Jugador entra al rango habitual de curación (±10 pp)], [Básico +15, Salto +15, Charco +15, Proyectil homing +15],
+        [Jugador sale de ese rango], [Revierte los mismos ajustes (--15 cada uno)],
+      )),
+      caption: [Regla de adaptación reactiva por proximidad al rango habitual de curación.],
+    ) <tbl:regla-curacion>
+
+    // TODO: revisar que estos valores (cada 15 ataques, mínimo 3 intentos, 60 %/30 %,
+    // ±15, mínimo 2 curaciones, ±10 puntos porcentuales) sigan vigentes en la
+    // implementación actual.
+
+    == Cierre
+
+    El mecanismo concreto detrás de cada una de estas reglas -las variables exactas, los
+    umbrales numéricos, y la forma en que los pesos se almacenan y se actualizan- se
+    documenta en el capítulo 5. Los datos recolectados durante el estudio, junto con la
+    comparación entre la condición adaptativa y la de control, se analizan en el
+    capítulo 6.
 ]
 
 // ==========================================
@@ -1767,7 +2004,7 @@ completarse el montage, la tarea finaliza exitosamente.
 ==== Ataque cuerpo a cuerpo (`CloseMage`)
 
 Cuando el jugador se encuentra a corta distancia, el mago recurre a un ataque cuerpo a
-cuerpo con su cayado. La tarea `CloseMage` marca `onRotate` como `true`, reproduce el
+cuerpo con su báculo. La tarea `CloseMage` marca `onRotate` como `true`, reproduce el
 montage `MO_CloseStaff`, y rota hacia el jugador mediante el mismo mecanismo de
 interpolación que el resto de las tareas del mago. Al completarse el montage, `onRotate` se
 restablece a `false` y la tarea finaliza con éxito, siguiendo el mismo patrón de
