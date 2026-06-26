@@ -715,9 +715,14 @@
 
     === Arena del jefe
 
-    // TODO: pendiente describir este nivel (Lvl_ThirdPerson) en términos de diseño; el
-    // capítulo 5 todavía no lo documenta en detalle, más allá de mencionar la activación
-    // del Behaviour Tree del jefe al entrar a la arena.
+    A diferencia de los dos niveles anteriores, la arena del jefe se diseñó como un
+    espacio simple: un pasillo corto conecta la sala del nivel previo con una sala de
+    gran tamaño donde ocurre el combate. Al entrar a esta sala, una puerta metálica se
+    cierra detrás del jugador, cortando la posibilidad de retirada, y se activa el jefe.
+    No hay aquí una progresión de salas ni elementos adicionales que aprender -ese rol ya
+    lo cumplieron los niveles anteriores-, sino un único espacio amplio que le da al jefe,
+    versátil y con ataques de distinto alcance, el lugar necesario para desplegar todo su
+    repertorio.
 
     El detalle de la lógica propia de cada nivel -puertas, palancas y demás elementos
     reutilizables- se documenta en el capítulo 5.
