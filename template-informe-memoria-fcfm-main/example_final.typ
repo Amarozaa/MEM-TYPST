@@ -162,7 +162,7 @@
 
     La evaluación del sistema contempla dos dimensiones. Desde una perspectiva técnica, se
     verifica la corrección del propio mecanismo de adaptación: a partir de los pesos de
-    ataque volcados a archivo al iniciar cada combate (capítulo 4), se revisa que el
+    ataque volcados a archivo al iniciar cada combate (capítulo 5), se revisa que el
     perfil construido sobre el comportamiento del jugador se traduzca efectivamente en los
     ajustes esperados sobre dichos pesos. Desde la perspectiva de experiencia de usuario, se
     diseñaron pruebas de jugabilidad mediante un experimento controlado, en el que cada
@@ -566,9 +566,9 @@
         columns: 2,
         align: (left, left),
         table.header([*Rango*], [*Ataques disponibles*]),
-        [Lejano], [Charco, persecución, proyectil en línea recta, proyectil homing],
-        [Medio], [Básico, salto, giro],
-        [Cercano], [Básico, espinas, muro],
+        [Lejano], [Charco, Persecución, Proyectil en línea recta, Proyectil homing],
+        [Medio], [Básico, Salto, Giro],
+        [Cercano], [Básico, Espinas, Muro],
       )),
       caption: [Ataques del jefe agrupados según el rango respecto al jugador.],
     ) <tbl:ataques-jefe>
@@ -628,7 +628,7 @@
     El detalle técnico de la implementación de cada uno de estos enemigos -estructura,
     comportamiento e inteligencia artificial- se documenta en el capítulo 5.
 
-    == Diseño de niveles
+    == Diseño de niveles <sec:diseno-niveles>
 
     Los niveles se diseñaron como una progresión que ordena, en el tiempo y el espacio,
     los encuentros descritos en la sección anterior: primero se introduce al jugador en
@@ -1675,7 +1675,7 @@ utiliza directamente la ubicación del objetivo. Además, mientras el fijado est
 reposiciona en pantalla el widget de la barra de stamina.
 
 Actualmente, la única clase que implementa la interfaz `BPI_Lockable` es el jefe
-(`BP_Slime`). Esto se debe a que su animación de ataque de charco  desplaza visualmente al personaje hacia abajo —simulando que se hunde o agacha en el charco— sin que dicho desplazamiento se traduzca en un movimiento real del
+(`BP_Slime`). Esto se debe a que su animación de ataque de charco desplaza visualmente al personaje hacia abajo —simulando que se hunde o agacha en el charco— sin que dicho desplazamiento se traduzca en un movimiento real del
 actor en el mundo. Si la cámara utilizara directamente la ubicación del actor (su origen),
 el punto de fijado quedaría desalineado respecto a la posición visual del jefe durante esta
 animación. Al implementar `BPI_Lockable`, el jefe puede reportar un punto de fijado ajustado
@@ -1720,10 +1720,8 @@ utilizada (`bAlreadyUsed`); de no haberlo sido, se invoca la función `PlayLever
 Blueprint de la palanca (`BP_Lever`), que se encarga de reproducir su animación y de
 ejecutar el efecto asociado a su activación.
 
-// TODO: mencionar algo asi pos: "el funcionamiento interno de las palancas se detalle en..."
-/*l funcionamiento interno de las palancas se detalla
-en la sección @sec:elementos-nivel (o el label/número que corresponda a esa sección
-*/
+El funcionamiento interno de las palancas se detalla en la sección
+@sec:elementos-nivel.
 
 == Menú de pausa
 
@@ -1947,7 +1945,7 @@ El Blackboard asociado (`BBD_AI`) contiene las siguientes _keys_:
 - `BTTask_ChaseB4Attack` mueve al enemigo hacia el jugador hasta alcanzar una distancia
   determinada por la variable `Acceptance Radius`, finalizando la tarea al llegar o al fallar
   el movimiento. Esta tarea es compartida con el esqueleto mago, el cual altera su
-  comportamiento mediante la variable `infiniteRange` (descrito en la sección
+  comportamiento mediante la variable `infiniteRange` (descrita en la sección
   correspondiente a dicho enemigo); el esqueleto normal no la utiliza.
 
 - `BT_TaskSWORDAttack` gestiona el ataque cuerpo a cuerpo del esqueleto en dos partes. Al
@@ -2131,8 +2129,8 @@ ubicados 150 y 225 unidades respectivamente delante del caballero, en la direcci
 vector hacia adelante. La forma de la caja del trace difiere entre ambas tareas: en
 `KnightAttack1` es un cubo de 50×50×50 unidades, mientras que en `KnightAttack2` es una
 caja de 30×80×50 unidades, más ancha. De detectarse una colisión válida, se aplica daño
-mediante `ApplyDamage`, con un valor fijo de 20 en ambas tareas (a diferencia del
-`KnightDamage` variable utilizado en el ataque con espada).
+mediante `ApplyDamage`, con un valor fijo de 20 en ambas tareas (a diferencia de la
+variable `KnightDamage`, utilizada en el ataque con espada).
 
 Mientras la tarea está activa (`ReceiveTickAI`), y siguiendo el mismo patrón visto en el
 resto de los enemigos, el caballero rota suavemente hacia el jugador mediante `RInterpTo`
@@ -2152,7 +2150,7 @@ distintas formas que necesita adoptar durante el combate.
 
 Dado que el slime no posee un esqueleto tradicional, gran parte de sus deformaciones se
 modelaron mediante _shape keys_, tanto para las distintas formas que puede adoptar el
-cuerpo (por ejemplo, su forma de charco, o su forma donde de espinas) como para las acciones propias
+cuerpo (por ejemplo, su forma de charco, o su forma de espinas) como para las acciones propias
 de cada ataque.
 
 === Componentes y variables
@@ -2419,7 +2417,7 @@ adelantado desde el `Tick` como se describió arriba— detiene el movimiento de
 jefe, reduce su velocidad a 285 y reproduce el montage `MO_PoddleUp`. En el instante
 señalado por el _Animation Notify_ de este montage, se ejecuta un _Sphere Trace_ de
 radio 225 alrededor del jefe; de detectarse al jugador, se le aplica un daño
-definido por la variable `PoddleDamage`, se cancelan sus montages de esquive en las
+definido por la variable `PoddleDamage`, se cancelan sus montages de esquiva en las
 cuatro direcciones, y se lo lanza por los aires (_launch_). Al completarse el
 montage, se restaura la colisión del jefe (bloqueo contra Pawns, bloqueo contra uno
 de los canales adicionales y _overlap_ contra el otro) y se marca `bIsCharco`
@@ -2509,6 +2507,8 @@ en @sec:pesos-ataque). Su funcionamiento se detalla en profundidad en
 
 === Secuencia de introducción
 
+// TODO: pendiente describir la secuencia de introducción del jefe.
+
 == Sistema de métricas y telemetría <sec:metricas>
 
 De forma transversal a varios de los sistemas descritos en este capítulo, el juego
@@ -2574,7 +2574,7 @@ en su rango habitual de curación.
 + `CombatTotalDodges`, `CombatSuccessfulDodges`: equivalentes durante el combate.
 + `CombatDamageTaken`, `CombatTotalDamageReceived`: equivalentes durante el combate.
 + `LateralDodgesFromDash`, `BackwardDodgesFromDash`: esquivas laterales o hacia atrás frente
-  a el ataque de embestida del caballero esqueleto.
+  al ataque de embestida del esqueleto caballero.
 + `DodgesFromDelayAttack`, `DodgesFromDelayAttack_TankZone`: esquivas frente a un ataque con
   retardo, en general y en zona de tanque.
 + `CombatDodgesFromDelayAttack`: equivalente durante el combate.
@@ -2645,7 +2645,7 @@ funciones `ApplyPreCombatDistance`, `ApplyPreCombatMeleeVsRanged`, `ApplyPreComb
 solo se ejecuta si `IsAdaptiveEnabled` retorna verdadero, lo cual depende de
 `bAdaptiveEnabled`.
 
-*Distancia* (`ApplyPreCombatDistance`): requiere `DistanceSamples` >=; 20. Si
+*Distancia* (`ApplyPreCombatDistance`): requiere `DistanceSamples` >= 20. Si
 `AverageDistance` < 550, reduce en 50 la variable de Blackboard `CloseRange`. Si
 `AverageDistance` > 1100, reduce en 75 `FarRange` e incrementa en 2 segundos `BossChaseDur`.
 Entre ambos umbrales, no hay ajuste.
@@ -2723,11 +2723,12 @@ contenido como el nombre del archivo.
 Los niveles del juego comparten una ambientación de mazmorra, construida a partir de
 _assets_ obtenidos principalmente de una entrega gratuita de Fab (Unreal Engine
 Marketplace), complementados con _assets_ de otras fuentes. La estructura general de
-los niveles —cómo se distribuyen y conectan entre sí— se describe en la sección 3.3;
+los niveles —cómo se distribuyen y conectan entre sí— se describe en la sección
+@sec:diseno-niveles;
 a continuación se documentan los elementos reutilizables que los componen y, luego,
 la implementación particular de cada nivel.
 
-=== Elementos de nivel
+=== Elementos de nivel <sec:elementos-nivel>
 
 ==== Maniquí
 
@@ -2807,7 +2808,11 @@ de la dirección o el lado por el que el jugador haya entrado.
 
 === Pantalla de victoria (`WB_WinnerScreen`)
 
+// TODO: pendiente describir este widget y su lógica.
+
 === Barra de vida del jefe (`WB_BossHealth`)
+
+// TODO: pendiente describir este widget y su lógica.
 
 === Barra de vida de enemigos normales (`WB_NormalHealth`)
 
