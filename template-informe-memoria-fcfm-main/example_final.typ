@@ -3166,14 +3166,13 @@ participantes.
 
 == Equipo de prueba
 
-// TODO: completar con las especificaciones reales del equipo utilizado.
 Todas las sesiones se ejecutaron en el mismo equipo, con las siguientes
 especificaciones:
 
-- Procesador: [pendiente].
-- Tarjeta gráfica: [pendiente].
-- Memoria RAM: [pendiente].
-- Sistema operativo: [pendiente].
+- Procesador: Intel® Core™ i5-11400H (11.ª generación, 2.70 GHz).
+- Tarjeta gráfica: NVIDIA® GeForce RTX™ 3050 Laptop GPU.
+- Memoria RAM: 8 GB.
+- Sistema operativo: Windows 11.
 
 == Desarrollo de la sesión
 
