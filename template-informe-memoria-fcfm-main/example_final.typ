@@ -657,7 +657,7 @@
     #let icono-barra(color, w, h) = rect(width: w, height: h, fill: color)
     #let icono-puerta-salida = box(width: 16pt, height: 16pt)[
       #place(top + left, rect(width: 12pt, height: 16pt, stroke: 0.7pt, fill: none))
-      #place(top + left, dx: 6pt, dy: 4pt, polygon(
+      #place(top + left, dx: 3pt, dy: 4pt, polygon(
         stroke: 0.7pt, fill: none,
         (0pt, 0pt), (6pt, 4pt), (0pt, 8pt),
       ))
