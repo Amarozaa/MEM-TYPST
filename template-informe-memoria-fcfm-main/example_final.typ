@@ -64,8 +64,9 @@
     ) <fig:elden>
 
     Aunque existen técnicas para ajustar la dificultad, la mayoría de los acercamientos a
-    la dificultad dinámica se limitan a modificar parámetros generales del juego -vida,
-    daño o velocidad de los enemigos- en lugar de su comportamiento @Zohaib18. Son pocos
+    la dificultad dinámica se limitan a modificar parámetros generales del juego, como la
+    vida, el daño o la velocidad de los enemigos, en lugar de su comportamiento @Zohaib18.
+    Son pocos
     los títulos que implementan sistemas donde los enemigos se adaptan activamente a las
     acciones específicas del jugador; uno de los ejemplos más citados es
     _Alien: Isolation_#footnote[
@@ -81,9 +82,9 @@
       caption: [Captura de _Alien: Isolation_.],
     ) <fig:alien>
 
-    Este problema general -la falta de enemigos que aprendan del estilo de juego de cada
-    jugador, en lugar de limitarse a ejecutar rutinas fijas o a escalar parámetros
-    numéricos- es el que motiva este trabajo. Cuando un jugador logra memorizar los
+    Este problema general, la falta de enemigos que aprenden del estilo de juego de cada
+    jugador en lugar de limitarse a ejecutar rutinas fijas o a escalar parámetros
+    numéricos, es el que motiva este trabajo. Cuando un jugador logra memorizar los
     patrones de ataque o movimiento de un enemigo, el enfrentamiento pierde buena parte
     de su tensión y su sorpresa; si, en cambio, el enemigo identificara patrones en las
     acciones del jugador y ajustara su propia estrategia en consecuencia, un mismo
@@ -110,9 +111,9 @@
     las probabilidades de selección de los distintos ataques del jefe: el repertorio de
     ataques se mantiene fijo, pero la frecuencia con que cada uno se elige se ajusta según
     un perfil de juego construido a partir del comportamiento del jugador frente a un
-    conjunto de enemigos regulares previos al combate (capítulo 3) -su preferencia por el
-    combate cuerpo a cuerpo o a distancia, su uso de la esquiva y sus hábitos de curación,
-    entre otras señales.
+    conjunto de enemigos regulares previos al combate (capítulo 3), considerando señales
+    como su preferencia por el combate cuerpo a cuerpo o a distancia, su uso de la esquiva
+    y sus hábitos de curación.
 
     Para poder evaluar el efecto de esta adaptación, se construyó también una versión de
     control del juego, idéntica a la versión adaptativa salvo en que los pesos de ataque
@@ -121,8 +122,8 @@
     efecto de la adaptación de otros factores del diseño del juego.
 
     Cabe precisar que, durante la etapa de propuesta, se consideró además la posibilidad
-    de extender esta adaptación al combate mismo -ajustando el comportamiento del jefe en
-    tiempo real según las acciones del jugador durante el enfrentamiento- así como la de
+    de extender esta adaptación al combate mismo, ajustando el comportamiento del jefe en
+    tiempo real según las acciones del jugador durante el enfrentamiento, así como la de
     incorporar tecnologías externas de aprendizaje automático, como NVIDIA ACE. Ambas
     líneas quedaron fuera del alcance final de este trabajo, que se concentra en la
     adaptación previa al combate mediante las herramientas nativas del motor; se retoman
@@ -155,8 +156,8 @@
     == Metodología
 
     El desarrollo del trabajo siguió una metodología experimental de tipo
-    control-tratamiento. A partir de una versión base del juego -con un jefe de
-    comportamiento fijo, sin mecanismos de adaptación- se desarrolló una segunda versión,
+    control-tratamiento. A partir de una versión base del juego, con un jefe de
+    comportamiento fijo y sin mecanismos de adaptación, se desarrolló una segunda versión,
     idéntica en el resto de sus sistemas, en la que el jefe ajusta los pesos de selección
     de sus ataques a partir de un perfil construido sobre el comportamiento del jugador
     frente a los enemigos regulares previos al combate (capítulos 3 y 4).
@@ -209,7 +210,8 @@
     En esa misma línea, Zohaib @Zohaib18 describe otros enfoques complementarios, como
     sistemas donde grupos de personajes no jugables forman comportamientos adaptativos de
     manera descentralizada, ajustando sus parámetros según la retroalimentación del
-    jugador -por ejemplo, patrones de movimiento e interacciones-, así como técnicas de
+    jugador, por ejemplo a partir de sus patrones de movimiento e interacciones, así
+    como técnicas de
     _scripting_ dinámico que modifican reglas de comportamiento en tiempo real con base en
     tasas de éxito y fracaso, permitiendo que los enemigos evolucionen sus tácticas durante
     el juego. Investigaciones más recientes, también recopiladas por el autor, han
@@ -258,8 +260,8 @@
     ] introdujo un sistema conocido como "AI Director", diseñado para crear experiencias
     dinámicas de terror y supervivencia cooperativa. A diferencia de los sistemas
     tradicionales, donde los enemigos aparecen en ubicaciones predefinidas, el AI Director
-    analiza constantemente el estado del equipo de jugadores -incluyendo salud, munición,
-    posición y nivel de estrés- para ajustar la intensidad del juego en tiempo real
+    analiza constantemente el estado del equipo de jugadores, incluyendo salud, munición,
+    posición y nivel de estrés, para ajustar la intensidad del juego en tiempo real
     @Booth09.
 
     El sistema funciona manipulando varios parámetros: la frecuencia y tamaño de las
@@ -275,8 +277,8 @@
     Sin embargo, el AI Director presenta limitaciones importantes para el contexto de un
     combate contra un jefe individual: opera principalmente a nivel macro, ajustando
     parámetros globales del encuentro en lugar de modificar tácticas específicas de
-    enemigos individuales. No aprende de las estrategias particulares de cada jugador -por
-    ejemplo, si prefiere el combate a distancia o cuerpo a cuerpo- ni adapta patrones de
+    enemigos individuales. No aprende de las estrategias particulares de cada jugador, por
+    ejemplo si prefiere el combate a distancia o cuerpo a cuerpo, ni adapta patrones de
     ataque específicos; su enfoque se centra en el ritmo y la intensidad general de la
     experiencia, no en la creación de adversarios que evolucionen tácticamente según el
     estilo de juego individual.
@@ -308,7 +310,7 @@
     No obstante, desde la perspectiva de adaptación táctica en combate, el Sistema Nemesis
     opera principalmente en la dimensión narrativa y estratégica más que en la táctica
     inmediata. Las adaptaciones de los capitanes son cambios de configuración entre
-    encuentros -nuevas inmunidades, nuevas armas, nuevas habilidades- en lugar de ajustes
+    encuentros, como nuevas inmunidades, armas o habilidades, en lugar de ajustes
     dinámicos durante el combate mismo: un capitán no modifica sus patrones de ataque a
     mitad de pelea según observe que el jugador esquiva siempre hacia un mismo lado o
     abusa de cierta habilidad. Son evoluciones preprogramadas que se activan por
@@ -324,7 +326,7 @@
     Shadow of Mordor genera evolución narrativa y estratégica entre encuentros, pero no
     adaptación táctica durante los combates mismos.
 
-    Esto evidencia un espacio de oportunidad: enemigos -en particular, jefes- capaces de
+    Esto evidencia un espacio de oportunidad: enemigos, en particular jefes, capaces de
     identificar y responder a las preferencias tácticas del jugador (patrones de ataque,
     _timing_ de esquivas, uso de habilidades específicas, posicionamiento), ajustando su
     comportamiento de forma dinámica antes o durante el combate. Una aproximación así
@@ -364,7 +366,7 @@
     corresponden a soluciones específicas, difíciles de replicar.
 
     Esta situación evidencia una brecha concreta: la falta de un mecanismo que permita que
-    un enemigo -en particular, un jefe- registre el comportamiento del jugador y ajuste sus
+    un enemigo, en particular un jefe, registre el comportamiento del jugador y ajuste sus
     patrones de combate de manera dinámica, implementado con las herramientas nativas de
     un motor de uso común. Sobre esa brecha se construye el sistema descrito en los
     capítulos siguientes.
@@ -390,8 +392,9 @@
     lectura atenta de cada enemigo por sobre la repetición de un mismo botón. Esta
     elección de género combina un gusto personal con una razón de fondo que sí es
     relevante para este trabajo: es precisamente en este tipo de juegos donde la
-    previsibilidad de los enemigos se vuelve más notoria -el jugador aprende a memorizar
-    patrones de ataque tras unos pocos intentos-, por lo que resulta el escenario más
+    previsibilidad de los enemigos se vuelve más notoria, ya que el jugador aprende a
+    memorizar patrones de ataque tras unos pocos intentos, por lo que resulta el escenario
+    más
     exigente para poner a prueba un enemigo que efectivamente se adapte a quien lo
     enfrenta.
 
@@ -409,8 +412,8 @@
       orientándose automáticamente hacia él durante el combate, lo que le permite
       desplazarse lateralmente a su alrededor sin perderlo de vista.
     - *Equipamiento alternable*: mediante una misma acción, el jugador puede alternar
-      entre un hechizo de proyectil de fuego -ofensivo, a distancia, con costo de maná- y
-      una poción de vida -defensiva, de uso limitado-, ofreciendo una vía alternativa al
+      entre un hechizo de proyectil de fuego, ofensivo, a distancia y con costo de maná, y
+      una poción de vida, defensiva y de uso limitado, ofreciendo una vía alternativa al
       combate cuerpo a cuerpo puro.
     - *Carrera*: el jugador puede desplazarse más rápido de lo normal, útil para ganar o
       mantener distancia frente a un enemigo.
@@ -419,17 +422,17 @@
     termina el encuentro si llega a cero; la stamina, que se consume al esquivar o correr;
     el maná, que se consume al lanzar el hechizo de fuego; y una cantidad limitada de
     pociones de vida, que es lo que efectivamente acota cuándo el jugador puede curarse.
-    Esta limitación de recursos obliga al jugador a tomar decisiones constantes -cuándo
+    Esta limitación de recursos obliga al jugador a tomar decisiones constantes: cuándo
     esquivar en lugar de atacar, cuándo curarse en lugar de seguir presionando, cuándo
-    alejarse en lugar de arriesgar un golpe-, en lugar de simplemente repetir una única
+    alejarse en lugar de arriesgar un golpe, en lugar de simplemente repetir una única
     acción óptima.
 
     Esta variedad de decisiones es, además, lo que hace posible el resto del diseño
     descrito en este capítulo: si el juego solo permitiera atacar y nada más, todos los
     jugadores jugarían igual y no habría comportamiento que perfilar. No todas las
     mecánicas cumplen ese rol por igual: el fijado de objetivo y la carrera responden más
-    bien a la convención del género -se esperan en un juego de este tipo y facilitan el
-    manejo de la cámara y el posicionamiento- sin que el sistema observe especialmente
+    bien a la convención del género, ya que se esperan en un juego de este tipo y facilitan
+    el manejo de la cámara y el posicionamiento, sin que el sistema observe especialmente
     cómo se usan. Son, en cambio, la preferencia por el cuerpo a cuerpo o el hechizo a
     distancia, el uso más o menos frecuente de la esquiva, y el momento en que se decide
     curar, las mecánicas que los arquetipos de enemigos descritos a continuación están
@@ -441,8 +444,8 @@
     progresiva, sino representar distintos arquetipos de combate, cada uno pensado para
     poner a prueba una forma distinta de jugar. En lugar de variar solo la vida o el daño
     de un mismo tipo de enemigo, se optó por diferenciar a cada uno por su patrón de
-    comportamiento, de manera que el jugador deba ajustar su forma de jugar -y no solo su
-    nivel de atención- al enfrentar a cada arquetipo.
+    comportamiento, de manera que el jugador deba ajustar su forma de jugar, y no solo su
+    nivel de atención, al enfrentar a cada arquetipo.
 
     Esta decisión responde a dos objetivos que se buscó conciliar. El primero es
     puramente de diseño de juego: un elenco pequeño de enemigos claramente diferenciados
@@ -459,8 +462,9 @@
 
     El primer arquetipo, el esqueleto normal, corresponde al enemigo más básico del
     juego: un enemigo cuerpo a cuerpo que persigue al jugador y cuyo único ataque es un
-    golpe directo de espada, sin variaciones ni segundas intenciones. Su rol es introducir el ciclo de combate
-    fundamental -acercarse, esquivar y golpear- sin agregar elementos adicionales que
+    golpe directo de espada, sin variaciones ni segundas intenciones. Su rol es introducir
+    el ciclo de combate fundamental: acercarse, esquivar y golpear, sin agregar elementos
+    adicionales que
     puedan confundir al jugador mientras aún está aprendiendo los controles. Por este
     motivo es el único enemigo presente durante el tutorial. Sus apariciones siguientes,
     ya en el nivel previo al combate y junto a los demás arquetipos, no buscan representar
@@ -475,9 +479,9 @@
     distancia una vez lo detecta, recurriendo al cuerpo a cuerpo con su báculo únicamente
     cuando es el propio jugador quien decide acortar el espacio entre ambos. Su
     propósito es introducir una decisión táctica explícita que el esqueleto normal no
-    plantea -acercarse para forzar el combate cuerpo a cuerpo contra un enemigo que de otro
-    modo se mantiene a distancia, o permanecer lejos y lidiar con sus ataques a rango-, y
-    con ello exponer una primera diferencia de fondo entre estilos de juego: quienes
+    plantea: acercarse para forzar el combate cuerpo a cuerpo contra un enemigo que de otro
+    modo se mantiene a distancia, o permanecer lejos y lidiar con sus ataques a rango. Esto
+    expone una primera diferencia de fondo entre estilos de juego: quienes
     prefieren resolver los encuentros de forma agresiva y cercana, frente a quienes
     prefieren un acercamiento más cauteloso y a distancia. Esta es, de los tres arquetipos
     regulares, la diferencia de comportamiento más directa de observar. Concretamente, el
@@ -505,58 +509,47 @@
     esquivarla con el timing correcto, en lugar de reaccionar de forma genérica ante
     cualquier ataque. Pero ese rol no es solo pedagógico: junto con enseñarle al jugador a
     leer este tipo de señales, el caballero es también el arquetipo a través del cual el
-    juego observa cómo responde efectivamente el jugador frente a ellas -si esquiva el
+    juego observa cómo responde efectivamente el jugador frente a ellas: si esquiva el
     dash hacia un lado o hacia atrás, y si logra o no esquivar el ataque telegrafiado a
-    tiempo-, comportamiento que pasa a formar parte del
+    tiempo. Ese comportamiento pasa a formar parte del
     perfil de juego utilizado más adelante para adaptar al jefe (capítulo 4). Al ser el
     primer enemigo del juego que exige este tipo de lectura, su rol dentro de la
     progresión es cerrar la preparación del jugador justo antes del enfrentamiento contra
     el jefe, cuyos ataques son considerablemente más numerosos y
     variados.
 
-    // TODO: poner figura acá con los tres arquetipos regulares (esqueleto normal, mago y
-    // caballero) uno junto al otro, para que se aprecie su diferenciación visual.
-    /*
     #figure(
-      image("imagenes/arquetipos-regulares.png", width: 80%),
-      caption: [Los tres arquetipos de enemigo regulares del juego.],
+      image("imagenes/cap3/enemies_comparative.png", width: 80%),
+      caption: [Los arquetipos de enemigo regulares del juego.],
     ) <fig:arquetipos-regulares>
-    */
 
-    Tomados en conjunto, estos tres arquetipos no se diseñaron para ser superados de forma
-    aislada, sino como un pequeño catálogo de situaciones de combate -ritmo básico, gestión
-    de distancia y lectura de ataques telegrafiados- que, sumadas, dan una imagen
+    Tomados en conjunto (@fig:arquetipos-regulares), estos tres arquetipos no se diseñaron
+    para ser superados de forma aislada, sino como un pequeño catálogo de situaciones de
+    combate: ritmo básico, gestión
+    de distancia y lectura de ataques telegrafiados, que sumadas dan una imagen
     razonablemente completa de cómo juega quien los enfrenta. Por eso, antes que pensarlos
     como tres enemigos sueltos, conviene entenderlos como las tres "preguntas" que el juego
     le hace al jugador antes de llegar al jefe.
 
-    Con respecto al jefe, este ocupa un lugar distinto dentro de esta lógica: no es una
-    prueba más que se suma a las anteriores, sino el punto donde todas ellas convergen.
-    Mientras los tres arquetipos regulares plantean preguntas por separado -ritmo,
-    distancia, lectura de ataques-, el jefe es el primer enemigo que responde a las
-    respuestas que el jugador ya dio. Por eso se descartó deliberadamente la alternativa
-    más común en el género -múltiples jefes, o un mismo jefe dividido en fases fijas-, ya
-    que en ese esquema la dificultad se resuelve eligiendo qué enemigo o qué fase enfrenta
-    cada jugador, una variable externa a su propio desempeño. Aquí, en cambio, es un único
-    antagonista versátil el que cambia, y lo hace en función de cómo se comportó quien lo
-    enfrenta. A diferencia de los demás enemigos, que reutilizan assets ya existentes, el
-    jefe se construyó como un personaje propio, lo que permitió darle distintas formas y
-    diseñar cada uno de sus ataques a la medida de las necesidades del combate, en lugar
-    de adaptarse a las limitaciones de un modelo externo: el mismo jefe puede presionar la
-    distancia, multiplicar los ataques
-    telegrafiados o variar su agresividad según el perfil construido a partir de los
-    arquetipos anteriores. Este diseño es lo que hace posible el sistema adaptativo del
-    capítulo 4 -el jefe no es un desafío fijo al final de la progresión, sino su
-    consecuencia directa.
+    El jefe, en cambio, no es una prueba más que se suma a las tres anteriores: es el
+    primer enemigo que responde a las respuestas que el jugador ya dio sobre ritmo,
+    distancia y lectura de ataques. Por eso se descartó la
+    alternativa más común del género, usar múltiples jefes o un mismo jefe dividido en
+    fases fijas, ya que ahí la dificultad depende de qué enemigo o fase le toca a cada
+    jugador, una variable externa a su desempeño. Aquí es un único antagonista el que
+    cambia, en función de cómo jugó quien lo enfrenta.
 
-    // TODO: poner figura acá con el modelo o concept art del jefe en sus distintas formas
-    // (normal y charco), ya que ambas se mencionan en esta sección.
-    /*
+    A diferencia de los demás enemigos, que reutilizan assets existentes, el jefe se
+    construyó como un personaje propio (@fig:jefe-modelo). Esto permitió darle distintas
+    formas y diseñar cada ataque a la medida del combate, en lugar de adaptarse a un
+    modelo externo: puede presionar la distancia, multiplicar los ataques telegrafiados
+    o variar su agresividad según el perfil construido a partir de los arquetipos
+    anteriores, lo que hace posible el sistema adaptativo del capítulo 4.
+
     #figure(
-      image("imagenes/jefe-formas.png", width: 80%),
-      caption: [El jefe en su forma normal y en su forma de charco.],
-    ) <fig:jefe-formas>
-    */
+      image("imagenes/cap3/slime_nivel.png", width: 60%),
+      caption: [El jefe en su forma normal.],
+    ) <fig:jefe-modelo>
 
     Concretamente, el jefe dispone de nueve ataques distintos, agrupados en tres
     secuencias según el rango al que se encuentre el jugador en el momento de atacar. La
@@ -619,15 +612,15 @@
     ) <tbl:perfiles-castigados>
 
     Dentro de cada rango, el ataque concreto se elige mediante un sorteo aleatorio
-    ponderado, y son justamente esos pesos -no la elección del rango, que depende solo de
-    la distancia- los que el sistema adaptativo del capítulo 4 ajusta según el
+    ponderado, y son justamente esos pesos, no la elección del rango, que depende solo de
+    la distancia, los que el sistema adaptativo del capítulo 4 ajusta según el
     comportamiento previo del jugador. Cabe mencionar que todos los ataques parten con el
     mismo peso, es decir, la misma probabilidad de ser elegidos dentro de su rango, antes
     de que el sistema adaptativo introduzca cualquier ajuste. El detalle de cada ataque y
     del mecanismo de selección se documenta en el capítulo 5.
 
-    El detalle técnico de la implementación de cada uno de estos enemigos -estructura,
-    comportamiento e inteligencia artificial- se documenta en el capítulo 5.
+    El detalle técnico de la implementación de cada uno de estos enemigos (estructura,
+    comportamiento e inteligencia artificial) se documenta en el capítulo 5.
 
     == Diseño de niveles <sec:diseno-niveles>
 
@@ -635,8 +628,8 @@
     los encuentros descritos en la sección anterior: primero se introduce al jugador en
     un entorno de bajo riesgo, luego se le enfrenta a los tres arquetipos regulares en
     conjunto, y finalmente se le lleva al combate contra el jefe. La ambientación de
-    mazmorra que comparten los tres niveles responde a una decisión de producción
-    -aprovechar assets disponibles de Fab (Unreal Engine Marketplace)- y no condiciona las
+    mazmorra que comparten los tres niveles responde a una decisión de producción,
+    aprovechar assets disponibles de Fab (Unreal Engine Marketplace), y no condiciona las
     decisiones de diseño que se describen a continuación.
 
     === Nivel de tutorial
@@ -648,7 +641,33 @@
 
     El nivel se organiza en una secuencia de salas, cada una dedicada a introducir una
     mecánica nueva mediante un mensaje emergente, seguida de inmediato por una oportunidad
-    de practicarla antes de poder continuar.
+    de practicarla antes de poder continuar. La @fig:minimapa-tutorial muestra la
+    distribución de estas salas, con la simbología detallada en la @tbl:simbologia-tutorial.
+
+    #figure(
+      image("imagenes/cap3/minimap_tutorial.png", width: 80%),
+      caption: [Distribución de salas del nivel de tutorial.],
+    ) <fig:minimapa-tutorial>
+
+    #let icono-punto(color, borde: none) = circle(radius: 4pt, fill: color, stroke: borde)
+    #let icono-triangulo(color, borde: none) = polygon(
+      fill: color, stroke: borde,
+      (5pt, 0pt), (10pt, 9pt), (0pt, 9pt),
+    )
+    #let icono-barra(color, w, h) = rect(width: w, height: h, fill: color)
+
+    #figure(
+      align(center, grid(
+        columns: (60pt, 60pt, 60pt, 60pt, 60pt, 60pt),
+        row-gutter: 4pt,
+        align: center + horizon,
+        icono-triangulo(red), icono-barra(yellow, 4pt, 16pt), icono-punto(yellow),
+        icono-punto(white, borde: 0.5pt), icono-triangulo(white, borde: 0.5pt), icono-barra(rgb("#ff00ff"), 16pt, 4pt),
+        text(size: 9pt)[Inicio], text(size: 9pt)[Puerta], text(size: 9pt)[Maniquí],
+        text(size: 9pt)[Esqueleto], text(size: 9pt)[Espinas], text(size: 9pt)[Puente],
+      )),
+      caption: [Simbología utilizada en el minimapa del nivel de tutorial.],
+    ) <tbl:simbologia-tutorial>
 
     La sala inicial, donde aparece el jugador, enseña el desplazamiento y presenta al
     maniquí: al acercarse, un mensaje indica que el clic izquierdo ataca, y que
@@ -674,26 +693,18 @@
 
     El nivel termina poco después, en un pasillo final sin más obstáculos.
 
-    // TODO: agregar minimapa del nivel de tutorial una vez se tenga el PNG.
-    /*
-    #figure(
-      image("imagenes/minimapa-tutorial.png", width: 80%),
-      caption: [Distribución de salas del nivel de tutorial.],
-    ) <fig:minimapa-tutorial>
-    */
-
     === Nivel previo al jefe
 
     El segundo nivel reúne, por primera y única vez, a los tres arquetipos de enemigo
-    regulares -esqueleto normal, mago y caballero- descritos en la sección anterior. A
+    regulares (esqueleto normal, mago y caballero) descritos en la sección anterior. A
     diferencia del tutorial, aquí el jugador debe lidiar con los tres ejes de
-    comportamiento -ritmo básico, gestión de distancia y lectura de ataques
-    telegrafiados- de forma simultánea y bajo la presión de varios enemigos a la vez, lo
+    comportamiento (ritmo básico, gestión de distancia y lectura de ataques
+    telegrafiados) de forma simultánea y bajo la presión de varios enemigos a la vez, lo
     que lo convierte en el último peldaño de dificultad antes del jefe.
 
     El nivel se organiza en torno a una sala amplia central, desde la cual se accede a dos
-    zonas dedicadas -una por cada uno de los arquetipos especializados- antes de poder llegar a la puerta del
-    jefe.
+    zonas dedicadas, una por cada uno de los arquetipos especializados, antes de poder
+    llegar a la puerta del jefe.
 
     El jugador comienza en una sala vacía y, al avanzar por un primer tramo de pasillos, se
     encuentra de inmediato con el primer esqueleto normal, que patrulla la zona. Al final de
@@ -704,7 +715,7 @@
     acceso al jefe, bloqueada por dos puertas metálicas dispuestas una tras otra. Abrir
     ambas es la condición para avanzar, y cada una se desbloquea completando una de las dos
     zonas laterales que se describen a continuación. Además de la entrada por los pasillos y
-    de esta puerta bloqueada, la sala amplia tiene otras dos salidas -una hacia cada zona-,
+    de esta puerta bloqueada, la sala amplia tiene otras dos salidas, una hacia cada zona,
     junto con dos puertas metálicas adicionales que funcionan únicamente como atajos de
     regreso.
 
@@ -723,11 +734,11 @@
     palanca abre la segunda puerta metálica de acceso al jefe junto con su propia puerta de
     atajo, que de igual forma permite bajar y regresar a la sala amplia.
 
-    Una vez abiertas ambas puertas metálicas -una desde cada zona- el jugador puede
+    Una vez abiertas ambas puertas metálicas, una desde cada zona, el jugador puede
     finalmente acceder a la sala del jefe.
 
-    Todo lo que el jugador hace en este nivel -cómo enfrenta a cada arquetipo, cómo
-    esquiva, etc.- queda registrado y se utiliza más adelante para ajustar el
+    Todo lo que el jugador hace en este nivel, cómo enfrenta a cada arquetipo, cómo
+    esquiva, etc., queda registrado y se utiliza más adelante para ajustar el
     comportamiento del jefe; el mecanismo concreto de ese ajuste se explica en el
     capítulo 4. Por ahora basta con entender este nivel como el último punto de referencia
     sobre el jugador antes de que comience el combate final.
@@ -743,26 +754,22 @@
 
     === Arena del jefe
 
-    A diferencia de los dos niveles anteriores, la arena del jefe se diseñó como un
-    espacio simple: un pasillo corto conecta la sala del nivel previo con una sala de
-    gran tamaño donde ocurre el combate. Al entrar a esta sala, una puerta metálica se
-    cierra detrás del jugador, cortando la posibilidad de retirada, y se activa el jefe.
-    No hay aquí una progresión de salas ni elementos adicionales que aprender -ese rol ya
-    lo cumplieron los niveles anteriores-, sino un único espacio amplio que le da al jefe,
-    versátil y con ataques de distinto alcance, el lugar necesario para desplegar todo su
-    repertorio.
+    A diferencia de los dos niveles anteriores, la arena del jefe (@fig:arena-jefe) se
+    diseñó como un espacio simple: un pasillo corto conecta la sala del nivel previo con
+    una sala de gran tamaño donde ocurre el combate. Al entrar a esta sala, una puerta
+    metálica se cierra detrás del jugador, cortando la posibilidad de retirada, y se
+    activa el jefe. No hay aquí una progresión de salas ni elementos adicionales que
+    aprender, ese rol ya lo cumplieron los niveles anteriores, sino un único espacio
+    amplio que le da al jefe, versátil y con ataques de distinto alcance, el lugar
+    necesario para desplegar todo su repertorio.
 
-    // TODO: poner figura acá con una captura de la arena del jefe, mostrando su tamaño
-    // respecto al pasillo de entrada.
-    /*
     #figure(
-      image("imagenes/arena-jefe.png", width: 80%),
+      image("imagenes/cap3/boss_arena.png", width: 80%),
       caption: [Vista general de la arena del jefe.],
     ) <fig:arena-jefe>
-    */
 
-    El detalle de la lógica propia de cada nivel -puertas, palancas y demás elementos
-    reutilizables- se documenta en el capítulo 5.
+    El detalle de la lógica propia de cada nivel (puertas, palancas y demás elementos
+    reutilizables) se documenta en el capítulo 5.
 
 ]
 
@@ -773,9 +780,9 @@
 
     Este capítulo explica cómo el comportamiento del jugador durante el nivel previo al
     jefe (capítulo 3) se traduce en ajustes sobre el repertorio de ataques de ese mismo
-    jefe. La intención no es repetir aquí el mecanismo técnico exacto -las variables, los
+    jefe. La intención no es repetir aquí el mecanismo técnico exacto, las variables, los
     umbrales numéricos y la forma en que se almacenan los pesos se documentan en el
-    capítulo 5-, sino explicar la lógica detrás de cada regla de adaptación: qué se mide,
+    capítulo 5, sino explicar la lógica detrás de cada regla de adaptación: qué se mide,
     por qué se eligió medir eso en particular, y en qué dirección general empuja el
     comportamiento del jefe.
 
@@ -812,7 +819,7 @@
     precisamente porque cada uno expone una dimensión distinta del comportamiento del
     jugador. Al terminar ese nivel, esas observaciones se resumen en un perfil de cuatro
     dimensiones independientes entre sí, cada una capaz de inclinar la frecuencia de un
-    subconjunto de esos ataques -no necesariamente excluyente del de las otras
+    subconjunto de esos ataques, no necesariamente excluyente del de las otras
     dimensiones, ya que más de una puede terminar reforzando un mismo ataque.
 
     Durante ese mismo nivel se registra, además, a qué porcentaje de vida suele curarse
@@ -852,12 +859,13 @@
     === Melee versus ataques a distancia
 
     Más allá de la distancia que mantiene, esta dimensión observa qué tipo de ataque usa
-    el jugador con más frecuencia -cuerpo a cuerpo o a distancia-, tanto en general (con
+    el jugador con más frecuencia, cuerpo a cuerpo o a distancia, tanto en general (con
     un mínimo de 5 ataques registrados) como específicamente dentro de la zona de rango
     (con un mínimo de 3 ataques en la zona), donde esa decisión tiene mayor peso
     contextual. Si la proporción de ataques a distancia supera el 50% del total, aumentan
-    en 15 los pesos de Charco y Persecución -que cierran distancia con rapidez- y de Salto
-    -que presiona en rango medio-; si baja del 35%, aumentan en 15 los de Espinas y Giro,
+    en 15 los pesos de Charco y Persecución, que cierran distancia con rapidez, y de
+    Salto, que presiona en rango medio; si baja del 35%, aumentan en 15 los de Espinas y
+    Giro,
     pensados para castigar a quien se mantiene cerca. Entre ambos umbrales se considera un
     comportamiento mixto y no hay ajuste. Si, dentro de la zona de rango, predominó
     claramente uno de los dos tipos de ataque, se suman además 10 puntos al peso de
@@ -882,8 +890,8 @@
 
     Esta dimensión mide qué proporción de las esquivas totales del jugador (mínimo 5
     registradas) corresponden específicamente a esquivas exitosas contra el ataque
-    telegrafiado del esqueleto caballero (capítulo 3) -el mismo dato usado, en su versión
-    acotada a la zona de enemigos tanque, en la dimensión descrita más abajo-. No todos
+    telegrafiado del esqueleto caballero (capítulo 3), el mismo dato usado, en su versión
+    acotada a la zona de enemigos tanque, en la dimensión descrita más abajo. No todos
     los ataques del jefe son igual de fáciles de leer: Salto, Espinas y Muro requieren una
     preparación larga y son más fáciles de anticipar, mientras que Básico apenas se anuncia
     antes de conectar. Si esa proporción supera el 60%, aumenta en 15 el peso de Básico,
@@ -909,8 +917,8 @@
 
     La zona de enemigos tanque (capítulo 3) se diseñó deliberadamente para replicar, a
     menor escala, dos situaciones que el jugador volverá a enfrentar contra el jefe: un
-    avance rápido que cierra distancia -similar a Salto- y un ataque de preparación larga
-    -similar a Salto y Giro-. Por eso, en lugar de una sola medición, esta dimensión
+    avance rápido que cierra distancia, similar a Salto, y un ataque de preparación larga,
+    similar a Salto y Giro. Por eso, en lugar de una sola medición, esta dimensión
     observa dos comportamientos puntuales frente al caballero.
 
     Frente al avance del caballero (con un mínimo de 2 esquivas registradas para
@@ -950,8 +958,8 @@
     Sobre el resultado de estas bonificaciones se aplica, además, una restricción que no
     depende del perfil del jugador: ningún ataque puede ser elegido tres veces
     consecutivas, sin importar cuánto haya aumentado su frecuencia. Esta restricción evita
-    que la adaptación produzca el efecto contrario al buscado -un jefe que repite el mismo
-    ataque una y otra vez resulta tan previsible como uno completamente estático-, y
+    que la adaptación produzca el efecto contrario al buscado, ya que un jefe que repite el
+    mismo ataque una y otra vez resulta tan previsible como uno completamente estático, y
     responde a la misma tensión planteada en el capítulo 2 a partir de las heurísticas de
     Pinelle et al.: que el jefe se adapte sin volverse impredecible o frustrante para el
     jugador.
@@ -1004,8 +1012,8 @@
 
     == Cierre
 
-    El mecanismo concreto detrás de cada una de estas reglas -las variables exactas, los
-    umbrales numéricos, y la forma en que los pesos se almacenan y se actualizan- se
+    El mecanismo concreto detrás de cada una de estas reglas, las variables exactas, los
+    umbrales numéricos y la forma en que los pesos se almacenan y se actualizan, se
     documenta en el capítulo 5. Los datos recolectados durante el estudio, junto con la
     comparación entre la condición adaptativa y la de control, se analizan en el
     capítulo 6.
@@ -1419,8 +1427,8 @@ componente de colisión. Cuando el proyectil se solapa con otro actor, se compru
 actor no sea su propio dueño (`GetOwner`); de no serlo, se invoca la función
 `SpawnImpactEffect`, que reproduce el sistema de partículas `Impact Effect` en el punto de
 colisión junto con el sonido `Sound Impact`. A continuación se aplica el daño definido en
-`Base Damage` sobre el actor impactado —indicando al dueño del proyectil como causante del
-daño— y finalmente el proyectil se destruye.
+`Base Damage` sobre el actor impactado, indicando al dueño del proyectil como causante del
+daño, y finalmente el proyectil se destruye.
 
 === Proyectil del jugador
 
@@ -1478,8 +1486,8 @@ jugador no permanezcan indefinidamente en la escena.
 
 El jugador dispone de dos opciones que puede alternar y utilizar mediante una misma acción:
 un hechizo de proyectil de fuego y una poción de vida. Esta mecánica se implementó con el
-propósito de otorgar al jugador versatilidad en combate —pudiendo elegir entre una opción
-ofensiva y una defensiva— y de proporcionar al jefe la oportunidad de demostrar capacidad de
+propósito de otorgar al jugador versatilidad en combate, pudiendo elegir entre una opción
+ofensiva y una defensiva, y de proporcionar al jefe la oportunidad de demostrar capacidad de
 aprendizaje y adaptación a las diferentes estrategias del jugador.
 
 El jugador puede intercambiar entre el hechizo de fuego y la poción utilizando la rueda del
@@ -1639,13 +1647,13 @@ un objetivo, cada fotograma se calcula la rotación necesaria para que la cámar
 él y se aplica a la rotación del controlador del jugador. Para obtener el punto exacto al que
 mirar, el sistema comprueba si el objetivo implementa la interfaz `BPI_Lockable`: si la
 implementa, solicita a través de ella un punto de fijado personalizado, lo que permite que
-ciertos enemigos —como aquellos cuya geometría se deforma o cuyo centro visual no coincide
-con su origen— definan explícitamente dónde debe apuntar la cámara; si no la implementa, se
+ciertos enemigos, como aquellos cuya geometría se deforma o cuyo centro visual no coincide
+con su origen, definan explícitamente dónde debe apuntar la cámara; si no la implementa, se
 utiliza directamente la ubicación del objetivo. Además, mientras el fijado está activo, se
 reposiciona en pantalla el widget de la barra de stamina.
 
 Actualmente, la única clase que implementa la interfaz `BPI_Lockable` es el jefe
-(`BP_Slime`). Esto se debe a que su animación de ataque de charco desplaza visualmente al personaje hacia abajo —simulando que se hunde o agacha en el charco— sin que dicho desplazamiento se traduzca en un movimiento real del
+(`BP_Slime`). Esto se debe a que su animación de ataque de charco desplaza visualmente al personaje hacia abajo, simulando que se hunde o agacha en el charco, sin que dicho desplazamiento se traduzca en un movimiento real del
 actor en el mundo. Si la cámara utilizara directamente la ubicación del actor (su origen),
 el punto de fijado quedaría desalineado respecto a la posición visual del jefe durante esta
 animación. Al implementar `BPI_Lockable`, el jefe puede reportar un punto de fijado ajustado
@@ -1661,7 +1669,7 @@ incluso cuando la animación no coincide con la posición lógica del actor.
 
 == Correr
 
-La carrera permite al jugador desplazarse a mayor velocidad a cambio de consumir stamina, y está implementada en el componente `BPC_Combat` mediante el `Input Action` `IA_Run`. A diferencia de otras acciones, esta responde a las distintas fases del input —el momento en que se presiona, mientras se mantiene presionado, y cuando se suelta—, lo que permite controlar tanto la activación como el gasto continuo de stamina y el regreso al estado normal.
+La carrera permite al jugador desplazarse a mayor velocidad a cambio de consumir stamina, y está implementada en el componente `BPC_Combat` mediante el `Input Action` `IA_Run`. A diferencia de otras acciones, esta responde a las distintas fases del input: el momento en que se presiona, mientras se mantiene presionado, y cuando se suelta, lo que permite controlar tanto la activación como el gasto continuo de stamina y el regreso al estado normal.
 
 Como condición común a todas las fases, la carrera solo opera si no se está reproduciendo la animación de reacción a daño (`HitReact_Montage`), de modo que recibir un golpe interrumpe la posibilidad de correr.
 
@@ -1714,7 +1722,7 @@ cámara), se habilita la visibilidad del cursor, y finalmente se pausa el juego.
 La interfaz de usuario asociada al jugador se compone de varios _Widget Blueprints_, cada
 uno encargado de mostrar un aspecto específico del estado del jugador o de gestionar una
 pantalla concreta. La mayoría de estos widgets se actualizan desde la lógica de juego ya
-descrita —principalmente desde el componente `BPC_Stats`—, por lo que su Blueprint interno
+descrita, principalmente desde el componente `BPC_Stats`, por lo que su Blueprint interno
 es mínimo y se limitan a su composición visual.
 
 El widget principal es el HUD del jugador (`WB_PlayerHUD`), que actúa como contenedor de los
@@ -1771,8 +1779,8 @@ juego y se carga el nivel del menú principal (`Lvl_MainMenu`).
 Esta pantalla se muestra cuando el jugador es derrotado e incluye un mensaje de "Game Over"
 junto con dos botones: reintentar (`Retry Button`) y volver al menú principal
 (`Main Menu Button`). Al presionar reintentar, se reanuda el juego, se incrementa el contador
-de intentos (`AttemptNumber`) almacenado en el `SlimeGameInstance` —dato relevante para el
-seguimiento del estudio— y se recarga el nivel actual, permitiendo al jugador volver a
+de intentos (`AttemptNumber`) almacenado en el `SlimeGameInstance`, dato relevante para el
+seguimiento del estudio, y se recarga el nivel actual, permitiendo al jugador volver a
 enfrentar el combate. Al presionar el botón de menú principal, se reanuda el juego y se carga
 el nivel del menú principal.
 == Enemigos
@@ -1808,16 +1816,16 @@ posteriormente para regresar a su punto de origen.
 
 La detección del jugador se gestiona mediante el evento `On See Pawn` del componente
 `PawnSensing`. Al detectar al jugador, el esqueleto invoca una función auxiliar
-(`hasseen`), la cual castea el Pawn detectado a `BP_ThirdPersonCharacter` —validando que
-corresponda efectivamente al jugador— y, de ser así, marca la _Blackboard key_
+(`hasseen`), la cual castea el Pawn detectado a `BP_ThirdPersonCharacter`, validando que
+corresponda efectivamente al jugador, y, de ser así, marca la _Blackboard key_
 `hasSeenPlayer?` como `true`. Esta misma función auxiliar es invocada también desde el
 evento de recepción de daño, descrito a continuación.
 
 Adicionalmente, al detectar al jugador se inicia un temporizador en bucle de 0.5 segundos
 que dispara el evento `REGISTER_DISTANCE`, el cual obtiene la referencia al
 `SlimeGameInstance` e invoca `RegisterDistance`, pasando como parámetro la distancia
-actual entre el esqueleto y el jugador. Este mecanismo —compartido con el esqueleto
-caballero, descrito más adelante— es el que alimenta las variables de distancia de la
+actual entre el esqueleto y el jugador. Este mecanismo, compartido con el esqueleto
+caballero descrito más adelante, es el que alimenta las variables de distancia de la
 sección de métricas y telemetría durante la fase previa al combate contra el jefe.
 
 ==== Recepción de daño y muerte
@@ -1830,8 +1838,8 @@ actualiza el porcentaje de la barra de vida correspondiente
 (`health` / `maxHealth`).
 
 Si la vida resultante es menor o igual a cero, el esqueleto reproduce un sonido de muerte
-(`SkeleDeath`) e invoca el delegado `OnEnemyDied` -el mismo escuchado por el Level
-Blueprint de `Lvl_Tutorial`, descrito en su sección correspondiente- antes de
+(`SkeleDeath`) e invoca el delegado `OnEnemyDied`, el mismo escuchado por el Level
+Blueprint de `Lvl_Tutorial` y descrito en su sección correspondiente, antes de
 destruirse. Adicionalmente, se obtiene la referencia al jugador
 (`BP_ThirdPersonCharacter`) y se invoca sobre él la función `RemoveWidget`, encargada de
 eliminar el indicador visual asociado a este enemigo (por ejemplo, el del sistema de _Target
@@ -1960,7 +1968,7 @@ que, en cada fotograma, calcula la distancia entre el mago y el jugador y la alm
 _Blackboard key_ `distanceToPlayer`:
 
 - *Secuencia "FarSeq"* (distancia mayor a 280 unidades): el mago se acerca al jugador
-  mediante `BTTask_ChaseB4Attack` —la misma tarea utilizada por el esqueleto normal—, pero
+  mediante `BTTask_ChaseB4Attack`, la misma tarea utilizada por el esqueleto normal, pero
   con la variable `infiniteRange` activada. Esto provoca que el `AIMoveTo` subyacente reciba
   un radio de aceptación extremadamente amplio, por lo que la tarea se da por completada de
   inmediato sin que el mago efectivamente se desplace hacia el jugador; en la práctica, el
@@ -1972,8 +1980,8 @@ _Blackboard key_ `distanceToPlayer`:
 La decisión entre ambas secuencias se evalúa mediante la tarea `Task_MageDist`, la cual
 finaliza (`FinishExecute`) con éxito si la distancia actual al jugador (_Blackboard key_
 `distanceToPlayer`) es menor estricta que `max_dist` y, a la vez, mayor o igual que
-`min_dist` -es decir, si cae dentro del rango `[min_dist, max_dist)` propio de la
-secuencia evaluada- y con fracaso en caso contrario.
+`min_dist`, es decir, si cae dentro del rango `[min_dist, max_dist)` propio de la
+secuencia evaluada, y con fracaso en caso contrario.
 
 ==== Ataque a distancia (`MagicAttack`)
 
@@ -1981,8 +1989,8 @@ Al activarse esta tarea, se marca la variable `onRotate` como `true` y se reprod
 montage `MO_MagicAttack`. Mientras `onRotate` es `true` (evaluado en cada fotograma, en
 `ReceiveTickAI`), el mago interpola su rotación hacia la posición del jugador, de forma
 idéntica al sistema de orientación visto en el ataque del esqueleto normal. En el instante
-indicado por un _Animation Notify_ del montage, `onRotate` se marca como `false` —deteniendo
-la rotación— y se instancia un proyectil (`BP_SkeletonBall`) desde una posición desplazada
+indicado por un _Animation Notify_ del montage, `onRotate` se marca como `false`, deteniendo
+la rotación, y se instancia un proyectil (`BP_SkeletonBall`) desde una posición desplazada
 300 unidades hacia adelante respecto al mago, con este último asignado como su dueño
 (_Owner_). El proyectil se configura con una velocidad de 800, sin influencia de gravedad,
 sin comportamiento de persecución (_Homing_ desactivado), y un daño base de 15. Al
@@ -2013,11 +2021,11 @@ mago el daño del ataque cuerpo a cuerpo está definido como un valor fijo de 11
 === Esqueleto caballero
 
 El esqueleto caballero (`BP_KnightSkele`) comparte la estructura de componentes y gran
-parte del comportamiento base del esqueleto normal —cápsula de colisión con barra de
+parte del comportamiento base del esqueleto normal: cápsula de colisión con barra de
 vida, malla esquelética con componentes de escena para el _trace_ de impacto
-(`StartTrace`/`EndTrace`), componente de movimiento y `PawnSensing`—, por lo que a
+(`StartTrace`/`EndTrace`), componente de movimiento y `PawnSensing`; por lo que a
 continuación solo se detallan las diferencias respecto a dicho enemigo. Este enemigo se
-ubica en el nivel `Lvl_PreBoss`, donde —junto con el esqueleto normal— alimenta la
+ubica en el nivel `Lvl_PreBoss`, donde, junto con el esqueleto normal, alimenta la
 métrica de distancia previa al combate contra el jefe.
 
 ==== Detección y registro de distancia
@@ -2057,8 +2065,8 @@ nombre de la variable de daño utilizada, `KnightDamage`, en lugar de `skeleton_
 
 El Behaviour Tree del caballero reutiliza la secuencia "Look Around"
 (`BTTask_RoamAround` + espera de 2 segundos) cuando no ha detectado al jugador, y la tarea
-`BTTask_ChaseB4Attack` —sin la variable `infiniteRange`, al igual que el esqueleto
-normal— para acercarse a él una vez detectado. A diferencia de los esqueletos anteriores,
+`BTTask_ChaseB4Attack`, sin la variable `infiniteRange`, al igual que el esqueleto
+normal, para acercarse a él una vez detectado. A diferencia de los esqueletos anteriores,
 tras la persecución el caballero no ejecuta una única tarea de ataque, sino que entra a un
 nodo compuesto personalizado llamado "Alternating Selector", con dos ramas: `Attack 1`
 (tarea `KnightAttack1` seguida de una espera de 1 segundo) y `Attack 2` (tarea
@@ -2084,8 +2092,8 @@ reproduce un _Animation Montage_: `MO_AvanceV3` con velocidad de reproducción 1
 
 Al completarse el montage (`OnCompleted`), la tarea finaliza con éxito (`FinishExecute`).
 En el instante señalado por un único _Animation Notify_ del montage (`OnNotifyBegin`), se
-marca `onRotate` como `false` —deteniendo la rotación hacia el jugador, igual que en el
-resto de las tareas de ataque del juego— y, a diferencia del ataque con espada por
+marca `onRotate` como `false`, deteniendo la rotación hacia el jugador, igual que en el
+resto de las tareas de ataque del juego, y, a diferencia del ataque con espada por
 temporizador, se ejecuta un único _Box Trace_ (sin temporizador en bucle) entre dos puntos
 ubicados 150 y 225 unidades respectivamente delante del caballero, en la dirección de su
 vector hacia adelante. La forma de la caja del trace difiere entre ambas tareas: en
@@ -2106,8 +2114,8 @@ justo en el instante del impacto.
 El modelo y las animaciones del jefe fueron creados desde cero en Blender, en lugar de
 recurrir a assets externos como en el resto de los enemigos. La motivación principal fue
 contar con un control total sobre el resultado, de modo que el modelo y sus animaciones
-pudieran ajustarse específicamente a los requerimientos de _gameplay_ del jefe —en
-particular, a los _Anim Notify States_ que delimitan las ventanas de ataque y a las
+pudieran ajustarse específicamente a los requerimientos de _gameplay_ del jefe, en
+particular a los _Anim Notify States_ que delimitan las ventanas de ataque y a las
 distintas formas que necesita adoptar durante el combate.
 
 Dado que el slime no posee un esqueleto tradicional, gran parte de sus deformaciones se
@@ -2207,8 +2215,8 @@ descrito más arriba), intentando cada una en orden hasta que alguna tiene éxit
 
 Dentro de cada secuencia, un nodo `Task_SelectDistance` confirma que la distancia
 actual cumple el rango correspondiente y, a continuación, un nodo
-`BTComposite_RandomSelector` —descrito en la siguiente sección, con una instancia por
-cada secuencia— reparte mediante selección aleatoria ponderada entre un subconjunto de
+`BTComposite_RandomSelector`, descrito en la siguiente sección, con una instancia por
+cada secuencia, reparte mediante selección aleatoria ponderada entre un subconjunto de
 los nueve ataques del jefe:
 
 + Secuencia lejana: Charco (`BA_Poddle`), Persecución (`BA_BossChase`), proyectil en
@@ -2307,8 +2315,8 @@ horizontal como en el eje vertical.
 
 Al completarse o interrumpirse el montage, el jefe vuelve a modo `Walking`, restaura
 su colisión con Pawns y, si completó normalmente, comprueba si quedó atrapado contra
-algún actor mediante el componente `PULL_OUT` —de la misma forma descrita para el
-ataque de charco (`BA_Poddle`), más abajo— antes de finalizar la tarea con éxito.
+algún actor mediante el componente `PULL_OUT`, de la misma forma descrita para el
+ataque de charco (`BA_Poddle`) más abajo, antes de finalizar la tarea con éxito.
 
 /*
 #figure(
@@ -2379,8 +2387,8 @@ jugador se encuentra a menos de 250 unidades del jefe; de ser así, se marca
 `TimeoutdeAtaque` y se invoca dicho evento manualmente, adelantando el fin del
 ataque a que el jugador se haya acercado lo suficiente.
 
-`TimeoutdeAtaque` —ya sea disparado por su propio temporizador a los 7 segundos, o
-adelantado desde el `Tick` como se describió arriba— detiene el movimiento del
+`TimeoutdeAtaque`, ya sea disparado por su propio temporizador a los 7 segundos o
+adelantado desde el `Tick` como se describió arriba, detiene el movimiento del
 jefe, reduce su velocidad a 285 y reproduce el montage `MO_PoddleUp`. En el instante
 señalado por el _Animation Notify_ de este montage, se ejecuta un _Sphere Trace_ de
 radio 225 alrededor del jefe; de detectarse al jugador, se le aplica un daño
@@ -2410,8 +2418,8 @@ continuación.
 Esta tarea es idéntica en estructura al ataque de proyectil (`BA_ProjectilAttack`,
 descrito más arriba): reproduce el mismo montage (`MO_ProjectileAttack`) y, en su
 _Animation Notify_, instancia proyectiles (`BP_BossSlimeBall_C`) en abanico. Las
-diferencias son el arreglo de desviaciones angulares utilizado —0°, 60° y -60°, es
-decir, tres proyectiles en lugar de siete—, la velocidad de los proyectiles (850 en
+diferencias son el arreglo de desviaciones angulares utilizado (0°, 60° y -60°, es
+decir, tres proyectiles en lugar de siete), la velocidad de los proyectiles (850 en
 vez de 1000) y que estos sí tienen activado el comportamiento de persecución
 (_Homing_). Al igual que el ataque de proyectil normal, esta tarea no invoca
 `RegisterBossAttackAttempt`.
@@ -2447,8 +2455,8 @@ de una interfaz de notificación de daño aparte.
 
 Al activarse, se marca la variable `canRotate` como `true`, se registra el intento
 de ataque y se reproduce el montage `MO_WallAttack`. En el instante señalado por el
-_Animation Notify_, se marca `canRotate` como `false` —deteniendo la rotación hacia
-el jugador— y se ejecuta un único _Box Trace_ entre la posición del jefe y un punto
+_Animation Notify_, se marca `canRotate` como `false`, deteniendo la rotación hacia
+el jugador, y se ejecuta un único _Box Trace_ entre la posición del jefe y un punto
 520 unidades hacia adelante, con una caja de 100×100×100 unidades orientada según su
 rotación; de detectarse una colisión válida, se aplica un daño fijo de 10. Al
 completarse el montage, la tarea finaliza con éxito. Mientras la tarea está activa y
@@ -2493,7 +2501,7 @@ variables principales, agrupadas por categoría.
 
 Cabe precisar de antemano el rol efectivo de estas variables con prefijo `Combat` dentro del
 sistema de adaptación. Si bien se registran de forma paralela a sus contrapartes sin
-prefijo —mediante el mismo flag `isInCombat`— y forman parte del diseño original de la
+prefijo, mediante el mismo flag `isInCombat`, y forman parte del diseño original de la
 infraestructura de métricas, que contemplaba adaptar también el comportamiento del jefe
 durante el combate en base a estas métricas, dicha adaptación en tiempo real no se llegó a
 implementar. La adaptación pre-combate (`ApplyPreCombatAdaptation` y sus subfunciones, ver
@@ -2503,8 +2511,8 @@ consulta las variables `Combat*` para tomar decisiones. Las únicas excepciones,
 comportamiento del jefe, son el registro de aciertos por tipo de ataque
 (`TotalAttemptsPerType` y `SuccessfulHits`, en `PlayerMetricsComponent`), que alimenta
 `ApplyInCombatSuccessfulHits`, y el monitoreo de curación en combate vía
-`ApplyInCombatHealing`, que compara la vida actual del jugador contra `AverageHealingHP`
-—calculada en la fase pre-combate— para ajustar la presión de ataque cuando el jugador entra
+`ApplyInCombatHealing`, que compara la vida actual del jugador contra `AverageHealingHP`,
+calculada en la fase pre-combate, para ajustar la presión de ataque cuando el jugador entra
 en su rango habitual de curación.
 
 *Distancia*
@@ -2624,9 +2632,9 @@ Entre ambos umbrales, no hay ajuste.
 el de `BA_Poddle` si predominó el ataque a distancia.
 
 *Esquiva* (`ApplyPreCombatDodges`): requiere `TotalDodges` >= 5. Calcula
-`DodgeRatio = DodgesFromDelayAttack / TotalDodges` -es decir, la proporción de esquivas
+`DodgeRatio = DodgesFromDelayAttack / TotalDodges`, es decir, la proporción de esquivas
 totales que corresponden específicamente a esquivas exitosas contra el ataque
-telegrafiado del caballero-. Si `DodgeRatio` > 0.6, incrementa en 15 el peso de
+telegrafiado del caballero. Si `DodgeRatio` > 0.6, incrementa en 15 el peso de
 `BA_BasicAttack`. Si `DodgeRatio` < 0.4, incrementa en 15 los pesos de `BA_AOEAttack`,
 `BA_WallAttack` y `BA_HeavyAttack`. Entre ambos umbrales, no hay ajuste.
 
@@ -2634,9 +2642,9 @@ telegrafiado del caballero-. Si `DodgeRatio` > 0.6, incrementa en 15 el peso de
 `LateralDodgesFromDash` + `BackwardDodgesFromDash` >= 2, incrementa en 10 el peso de
 `BA_WhipAttack` (si predominaron las laterales) o de `BA_HeavyAttack` (si predominaron las
 de retroceso). Si `TotalDodgesTankZone` >= 3, compara si
-`DodgesFromDelayAttack_TankZone * 2` >= `TotalDodgesTankZone` -es decir, si la proporción
+`DodgesFromDelayAttack_TankZone * 2` >= `TotalDodgesTankZone`, es decir, si la proporción
 de esquivas exitosas contra el ataque telegrafiado del caballero alcanza o supera el
-50%-: de ser así, incrementa en 10 el peso de `BA_BasicAttack`; en caso contrario,
+50%: de ser así, incrementa en 10 el peso de `BA_BasicAttack`; en caso contrario,
 incrementa en 10 los pesos de `BA_HeavyAttack` y `BA_WhipAttack`.
 
 === Adaptación durante el combate
@@ -2691,7 +2699,7 @@ contenido como el nombre del archivo.
 Los niveles del juego comparten una ambientación de mazmorra, construida a partir de
 _assets_ obtenidos principalmente de una entrega gratuita de Fab (Unreal Engine
 Marketplace), complementados con _assets_ de otras fuentes. La estructura general de
-los niveles —cómo se distribuyen y conectan entre sí— se describe en la sección
+los niveles, cómo se distribuyen y conectan entre sí, se describe en la sección
 @sec:diseno-niveles;
 a continuación se documentan los elementos reutilizables que los componen y, luego,
 la implementación particular de cada nivel.
@@ -2717,8 +2725,8 @@ Sus variables son las siguientes:
 + `maxHealth` (Float): vida máxima del maniquí.
 + `timerHandle` (Timer Handle): referencia al temporizador de regeneración, utilizada
   para poder invalidarlo una vez la vida se restablece por completo.
-+ `bSingleOpenDoor` (Boolean): bandera que evita que la lógica de derrota -y, con
-  ella, el delegado asociado- se ejecute más de una vez.
++ `bSingleOpenDoor` (Boolean): bandera que evita que la lógica de derrota, y con
+  ella el delegado asociado, se ejecute más de una vez.
 
 Al comenzar a jugar (`ReceiveBeginPlay`), obtiene el widget de su barra de
 vida (`Health Bar Widget`), lo castea a `WB_NormalHealth_C` y fija la barra al 100 %
@@ -2732,10 +2740,10 @@ no, se reinicia y reproduce una Timeline que, en cada fotograma, rota el maniqu�
 efecto visual de que el maniquí se tambalea al recibir el impacto.
 
 Adicionalmente, si `health` cae a 0 o menos, se comprueba la variable
-`bSingleOpenDoor`: si todavía no se ha activado, se marca como `true` -evitando que
-esta lógica se repita en golpes posteriores-, se invoca el delegado `OnDummyDied`
--escuchado por el Level Blueprint del nivel de tutorial para disparar la apertura
-de la puerta correspondiente, según se detalla en la sección de `Lvl_Tutorial`- y
+`bSingleOpenDoor`: si todavía no se ha activado, se marca como `true`, evitando que
+esta lógica se repita en golpes posteriores, se invoca el delegado `OnDummyDied`,
+escuchado por el Level Blueprint del nivel de tutorial para disparar la apertura
+de la puerta correspondiente según se detalla en la sección de `Lvl_Tutorial`, y
 se inicia un temporizador en bucle de 0.03 segundos que dispara el evento
 `CustomEvent`.
 
@@ -2761,8 +2769,8 @@ son las siguientes:
   abrirse.
 + `EndPos` (Vector): posición final de la puerta una vez abierta.
 
-Su lógica se reduce a la función `OpenDoor`, invocada externamente -como se vio en
-la sección de `Lvl_Tutorial`- al derrotar al enemigo o maniquí correspondiente. Al
+Su lógica se reduce a la función `OpenDoor`, invocada externamente, como se vio en
+la sección de `Lvl_Tutorial`, al derrotar al enemigo o maniquí correspondiente. Al
 activarse, guarda la posición actual de la puerta en `InitPos`
 (`K2_GetActorLocation`) y calcula `EndPos` desplazándola 300 unidades hacia arriba
 en el eje Z. A continuación reproduce una Timeline que, en cada fotograma,
@@ -2805,8 +2813,8 @@ Sus variables, ambas públicas y editables, son las siguientes:
   activarse.
 + `EndRot` (Rotator): rotación final del puente una vez bajado.
 
-Su lógica se reduce a la función `RotateBridge`, invocada externamente -como se vio
-en la sección de `Lvl_Tutorial`- al derrotar al maniquí del otro lado del abismo.
+Su lógica se reduce a la función `RotateBridge`, invocada externamente, como se vio
+en la sección de `Lvl_Tutorial`, al derrotar al maniquí del otro lado del abismo.
 Al activarse, guarda la rotación actual del componente `Scene` en `iniRot`
 (`K2_GetComponentRotation`) y calcula `EndRot` componiéndola con un giro adicional
 de -90°. A continuación reproduce una Timeline que, en cada fotograma, interpola la
@@ -2885,8 +2893,8 @@ La estructura visual del widget es la siguiente:
     + `Border`: borde visual.
       + `VerticalBox_71`: contenedor vertical donde se ubica el texto.
 
-Su único evento con lógica es la función `Calling_Array`, invocada externamente
--como se describió en la sección anterior- al entrar a una zona de popup. Al
+Su único evento con lógica es la función `Calling_Array`, invocada externamente,
+como se describió en la sección anterior, al entrar a una zona de popup. Al
 activarse, limpia los hijos actuales de `VerticalBox_71` (`ClearChildren`) y, para
 cada elemento del arreglo recibido como parámetro, crea un `TextBlock`
 (`GenericCreateObject`), le asigna como texto ese elemento (`Conv_StringToText`),
@@ -2910,8 +2918,8 @@ fondo del nivel (`MUSIC_TUT`) a un volumen reducido, y se suscribe, mediante la
 función `BindEvent`, a los delegados de derrota de tres actores específicos del
 nivel, cada uno asociado a un evento local propio:
 
-+ El maniquí de la primera sala (`BP_Dummy`) dispara `OnDummyDied` -el mismo
-  delegado descrito en la sección del Maniquí-, vinculado al evento local
++ El maniquí de la primera sala (`BP_Dummy`) dispara `OnDummyDied`, el mismo
+  delegado descrito en la sección del Maniquí, vinculado al evento local
   `Camera Dummy`.
 + El esqueleto normal de la segunda sala (`BP_Skeleton1`) dispara `OnEnemyDied`,
   vinculado al evento local `CameraLvl1`.
@@ -2927,7 +2935,7 @@ pasándole una cámara y una puerta como parámetros: `Camera Dummy` con
 función hace un blend de cámara hacia el actor recibido como cámara
 (`SetViewTargetWithBlend`) y, a continuación, intenta castear el actor recibido como
 puerta a `BP_Door_C`; si el cast tiene éxito, abre la puerta (`OpenDoor`). En
-cualquier caso -tanto si el cast tiene éxito como si falla- se programa un
+cualquier caso, tanto si el cast tiene éxito como si falla, se programa un
 temporizador a 2 segundos que dispara el evento `ReturnToPlayer`, devolviendo el
 control de la cámara al jugador (`SetViewTargetWithBlend` hacia
 `GetPlayerCharacter`).
@@ -2950,8 +2958,8 @@ Blueprint.
 Al comenzar a jugar (`ReceiveBeginPlay`), el Level Blueprint reproduce la música
 de fondo del nivel (`MUSIC_PRELEVEL`) a un volumen reducido, habilita las métricas
 del jugador (`bMetricsEnabled` en `SlimeGameInstance`), y se suscribe, mediante
-`BindEvent`, al delegado `OnLeverActivated` -descrito en la sección de la
-Palanca- de las dos palancas del nivel:
+`BindEvent`, al delegado `OnLeverActivated`, descrito en la sección de la
+Palanca, de las dos palancas del nivel:
 
 + `BP_Lever`, la palanca de la zona de enemigos tanque, vinculada al evento local
   `CAM1`.
@@ -2973,8 +2981,8 @@ y `DoorShortcut`. Tanto si el cast tiene éxito como si falla, se programa a
 continuación un temporizador a 3 segundos que dispara el evento `ShortCutOpen`.
 
 El evento `ShortCutOpen` castea la puerta guardada en `DoorShortcut` a `BP_Door_C`
-y, de tener éxito, invoca su función `OpenDoor` -descrita en la sección de la
-Puerta-. Tanto si el cast tiene éxito como si falla, se hace un blend de cámara de
+y, de tener éxito, invoca su función `OpenDoor`, descrita en la sección de la
+Puerta. Tanto si el cast tiene éxito como si falla, se hace un blend de cámara de
 1.5 segundos hacia la cámara guardada en `CameraShortcut`, y se programa un
 temporizador a 3 segundos que dispara el evento `PlayerReturn`, el cual devuelve
 el control de la cámara al jugador (`SetViewTargetWithBlend` hacia
@@ -3019,7 +3027,7 @@ La secuencia, una vez disparada, es la siguiente:
   dispara el evento `FocusingDoorGate`.
 + `FocusingDoorGate` hace un blend de 1 segundo hacia `CameraDoor` y, sobre la
   puerta referenciada en `Door` (casteada a `BP_Door_C`), invoca su función
-  `OpenDoor` -descrita en la sección de la Puerta-, lo que en este punto bloquea el
+  `OpenDoor`, descrita en la sección de la Puerta, lo que en este punto bloquea el
   paso detrás del jugador en lugar de habilitarlo, dependiendo de la posición
   inicial con la que esta instancia de la puerta esté ubicada en el nivel.
   Transcurridos 2 segundos, se dispara el evento `GoingBackToPlayer`.
@@ -3096,7 +3104,7 @@ La estructura visual del widget es la siguiente:
 
 A diferencia de otros widgets documentados en este capítulo, `WB_BossHealth` no
 posee lógica propia: es el propio jefe (`BP_Slime`) quien, mediante su variable
-`progressbarref` -descrita en la sección de componentes y variables del jefe-,
+`progressbarref`, descrita en la sección de componentes y variables del jefe,
 referencia a `BossProgressBar` y actualiza directamente su porcentaje al recibir
 daño.
 
@@ -3108,7 +3116,7 @@ La estructura visual del widget es la siguiente:
   - `Health Bar`: barra de progreso de la vida.
 
 Al igual que `WB_BossHealth`, este widget no posee lógica propia: es cada actor
-que lo utiliza -el esqueleto normal, el mago, el caballero y el maniquí- quien
+que lo utiliza, el esqueleto normal, el mago, el caballero y el maniquí, quien
 referencia su componente `Health Bar` y actualiza directamente su porcentaje
 (`SetPercent`) al recibir daño, según se detalla en la sección de cada uno de
 ellos. La rotación de la barra hacia la cámara del jugador, descrita en esas
@@ -3140,8 +3148,9 @@ partida contamine la percepción de la otra.
 
 Quienes se inscriben completan primero un cuestionario corto sobre su
 familiaridad con videojuegos de acción exigentes y con mecánicas de esquiva,
-melee y hechizos -frecuencia semanal de juego, horas acumuladas en el género
-y cantidad de títulos soulslike o similares ya jugados-. La suma de esas
+melee y hechizos, considerando su frecuencia semanal de juego, las horas
+acumuladas en el género y la cantidad de títulos soulslike o similares ya
+jugados. La suma de esas
 respuestas entrega un puntaje entre 0 y 9, que separa a los participantes en
 dos perfiles: poca o nula experiencia (0 a 3) y con experiencia (4 a 9).
 
@@ -3177,8 +3186,8 @@ especificaciones:
 == Desarrollo de la sesión
 
 Cada sesión sigue el mismo guión, sin importar la condición asignada: un
-tutorial de controles, una fase de exploración del nivel previo al jefe
--donde el sistema ya empieza a registrar comportamiento- y finalmente el
+tutorial de controles, una fase de exploración del nivel previo al jefe,
+donde el sistema ya empieza a registrar comportamiento, y finalmente el
 combate contra el jefe. El investigador deja jugar libremente, e interviene
 solo si la persona se traba en algo relacionado con los controles, no con
 el combate en sí. Cada sesión dura entre 25 y 40 minutos. Para mantener el
@@ -3193,8 +3202,8 @@ Al cerrar la sesión, se le pide responder dos instrumentos más: el SUS
 (System Usability Scale) adaptado a videojuegos, y una selección de ítems
 del GEQ (Game Experience Questionnaire), ambos en escala de 1 a 5. Se
 prefirió el GEQ sobre alternativas como el GAMEFULQUEST porque este último
-mide «gamefulness» -cuánto se parece una experiencia a un juego-, una
-pregunta pensada para sistemas gamificados y no para comparar el desafío,
+mide «gamefulness», es decir, cuánto se parece una experiencia a un juego,
+una pregunta pensada para sistemas gamificados y no para comparar el desafío,
 la competencia, la tensión o la inmersión que es lo que realmente interesa
 contrastar entre las dos condiciones del jefe. El GEQ además es más breve,
 lo que ayuda a no agotar a quien ya respondió el SUS. Cierra la sesión un
@@ -3204,10 +3213,11 @@ injusto, y si la persona notó algún tipo de adaptación en su comportamiento.
 == Datos registrados
 
 Durante cada sesión, el sistema descrito en la @sec:metricas va guardando
-en segundo plano las variables de comportamiento del jugador -distancia al
+en segundo plano las variables de comportamiento del jugador: distancia al
 jefe, proporción de ataques melee y a distancia, esquivas y tiempo en la
-zona de tanque durante la exploración; aciertos del jefe y cercanía de las
-curaciones durante el combate- y al terminar deja persistidos los pesos de
+zona de tanque durante la exploración, además de los aciertos del jefe y la
+cercanía de las curaciones durante el combate. Al terminar, deja persistidos
+los pesos de
 ataque finales que alcanzó el jefe en esa partida, según el mecanismo
 descrito en la @sec:pesos-ataque. Cruzar esta información con las respuestas
 de cada participante permite revisar, caso por caso, si el perfil que el
@@ -3215,7 +3225,7 @@ sistema infirió a partir del juego se condice con lo que la propia persona
 reportó haber sentido.
 
 Con esos datos se busca responder dos cosas: si el prototipo resulta usable
-según el SUS, y si la condición adaptativa cambia -para mejor o peor- la
+según el SUS, y si la condición adaptativa cambia, para mejor o peor, la
 experiencia reportada en el GEQ y en las preguntas abiertas, en comparación
 con la condición de control. En particular interesa ver si esas diferencias,
 de existir, van en la dirección que cabría esperar dado cómo se ajustó
