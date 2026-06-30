@@ -655,16 +655,25 @@
       (5pt, 0pt), (10pt, 9pt), (0pt, 9pt),
     )
     #let icono-barra(color, w, h) = rect(width: w, height: h, fill: color)
+    #let icono-puerta-salida = box(width: 16pt, height: 16pt)[
+      #place(top + left, rect(width: 12pt, height: 16pt, stroke: 0.7pt, fill: none))
+      #place(top + left, dx: 6pt, dy: 4pt, polygon(
+        stroke: 0.7pt, fill: none,
+        (0pt, 0pt), (6pt, 4pt), (0pt, 8pt),
+      ))
+    ]
 
     #figure(
       align(center, grid(
-        columns: (60pt, 60pt, 60pt, 60pt, 60pt, 60pt),
+        columns: (52pt, 52pt, 52pt, 52pt, 52pt, 52pt, 52pt),
         row-gutter: 4pt,
         align: center + horizon,
         icono-triangulo(red), icono-barra(yellow, 4pt, 16pt), icono-punto(yellow),
         icono-punto(white, borde: 0.5pt), icono-triangulo(white, borde: 0.5pt), icono-barra(rgb("#ff00ff"), 16pt, 4pt),
+        icono-puerta-salida,
         text(size: 9pt)[Inicio], text(size: 9pt)[Puerta], text(size: 9pt)[Maniquí],
         text(size: 9pt)[Esqueleto], text(size: 9pt)[Espinas], text(size: 9pt)[Puente],
+        text(size: 9pt)[Salida],
       )),
       caption: [Simbología utilizada en el minimapa del nivel de tutorial.],
     ) <tbl:simbologia-tutorial>
