@@ -1930,6 +1930,12 @@ El Blackboard asociado (`BBD_AI`) contiene las siguientes _keys_:
 + `spawnPoint` (Vector): posición de origen, utilizada como punto de patrulla.
 + `distanceToPlayer` (Float): distancia actual respecto al jugador.
 
+#figure(
+  image("imagenes/cap5/BT_Skeleton.png", width: 90%),
+  caption: [Behaviour Tree del esqueleto normal (`BT_AI`).],
+) <fig:bt-skeleton>
+
+
 ==== Tareas del Behaviour Tree
 
 - `BTTask_RoamAround` selecciona, mediante `Get Random Reachable Point In Radius`, un punto
@@ -1944,18 +1950,30 @@ El Blackboard asociado (`BBD_AI`) contiene las siguientes _keys_:
   correspondiente a dicho enemigo); el esqueleto normal no la utiliza.
 
 - `BT_TaskSWORDAttack` gestiona el ataque cuerpo a cuerpo del esqueleto en dos partes. Al
-  activarse la tarea (`ReceiveExecuteAI`), marca la variable interna `onRotate` como `true`
+  activarse la tarea, marca la variable interna `onRotate` como `true`
   y reproduce el montage de ataque (`MO_Attack`) sobre el esqueleto; en el instante en que
   la animación lo indica (_Animation Notify_), `onRotate` se marca nuevamente como `false`.
-  Por otro lado, mientras la tarea está activa (`ReceiveTickAI`), si `onRotate` es `true`,
+  Por otro lado, mientras la tarea está activa, si `onRotate` es `true`,
   el esqueleto rota suavemente hacia la posición del jugador en cada fotograma, interpolando
   su rotación actual hacia la calculada. De esta forma, el esqueleto se orienta hacia el
   jugador mientras se prepara para golpear, pero deja de hacerlo justo en el instante del
   impacto, evitando que el golpe se desvíe por una rotación a mitad de la animación. Al
   completarse el montage, la tarea finaliza exitosamente.
 
+#figure(
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 8pt,
+    image("imagenes/cap5/skeleton_attack1.png", width: 100%),
+    image("imagenes/cap5/skeleton_attack2.png", width: 100%),
+    image("imagenes/cap5/skeleton_attack3.png", width: 100%),
+  ),
+  caption: [Secuencia de los tres golpes del ataque cuerpo a cuerpo del esqueleto.],
+) <fig:skeleton-ataque>
 
 
+
+//TODO: En algun ladom no necesariamente aca, mencionar el tema como se anclo los static mesh de las armas a los juagdores
 === Esqueleto mago
 
 El esqueleto mago (`BP_SkeletonMage`) comparte la base estructural y gran parte de la lógica
@@ -1974,8 +1992,6 @@ diferencia de altura (eje Z) entre el mago y el jugador no supere las 300 unidad
 verificación evita que el mago detecte y reaccione al jugador cuando este se encuentra en un
 piso o nivel de altura distinto.
 
-A diferencia del esqueleto normal, el mago no reproduce un sonido al morir.
-
 ==== Behaviour Tree
 
 El Behaviour Tree del mago reutiliza la secuencia "Look Around" del esqueleto
@@ -1987,12 +2003,11 @@ que, en cada fotograma, calcula la distancia entre el mago y el jugador y la alm
 _Blackboard key_ `distanceToPlayer`:
 
 - *Secuencia "FarSeq"* (distancia mayor a 280 unidades): el mago se acerca al jugador
-  mediante `BTTask_ChaseB4Attack`, la misma tarea utilizada por el esqueleto normal, pero
-  con la variable `infiniteRange` activada. Esto provoca que el `AIMoveTo` subyacente reciba
-  un radio de aceptación extremadamente amplio, por lo que la tarea se da por completada de
-  inmediato sin que el mago efectivamente se desplace hacia el jugador; en la práctica, el
-  mago no persigue al jugador en esta secuencia. A continuación, ejecuta `MagicAttack`,
-  descrito más abajo.
+  mediante `BTTask_ChaseB4Attack`, la misma tarea utilizada por el esqueleto normal. En
+  algunos casos, según la configuración del mago en cuestión, la variable `infiniteRange`
+  puede estar activada, lo que provoca que el `AIMoveTo` subyacente reciba un radio de
+  aceptación extremadamente amplio y la tarea se dé por completada de inmediato sin que el
+  mago se desplace efectivamente. A continuación, ejecuta `MagicAttack`, descrito más abajo.
 - *Secuencia "CloseSeq"* (distancia menor o igual a 280 unidades): el mago ejecuta
   directamente `CloseMage`, su ataque cuerpo a cuerpo, descrito más abajo.
 
@@ -2001,6 +2016,11 @@ finaliza (`FinishExecute`) con éxito si la distancia actual al jugador (_Blackb
 `distanceToPlayer`) es menor estricta que `max_dist` y, a la vez, mayor o igual que
 `min_dist`, es decir, si cae dentro del rango `[min_dist, max_dist)` propio de la
 secuencia evaluada, y con fracaso en caso contrario.
+
+#figure(
+  image("imagenes/cap5/BT_MageSkeleton.png", width: 60%),
+  caption: [Behaviour Tree del esqueleto mago.],
+) <fig:bt-mago>
 
 ==== Ataque a distancia (`MagicAttack`)
 
@@ -2015,6 +2035,11 @@ la rotación, y se instancia un proyectil (`BP_SkeletonBall`) desde una posició
 sin comportamiento de persecución (_Homing_ desactivado), y un daño base de 15. Al
 completarse el montage, la tarea finaliza exitosamente.
 
+#figure(
+  image("imagenes/cap5/range_attack_mage.png", width: 80%),
+  caption: [Ataque a distancia del esqueleto mago.],
+) <fig:mago-proyectil>
+
 ==== Ataque cuerpo a cuerpo (`CloseMage`)
 
 Cuando el jugador se encuentra a corta distancia, el mago recurre a un ataque cuerpo a
@@ -2026,17 +2051,27 @@ montage-completado-finalización empleado en el resto de las tareas de ataque de
 
 Al igual que en los ataques cuerpo a cuerpo del esqueleto normal, la ventana de
 detección está delimitada por un _Anim Notify State_ en el montage `MO_CloseStaff`,
-que dispara `BegomSwordTrace` y `EndSwordTrace`. Este mecanismo no aplica al ataque a
+que dispara `BeginSwordTrace` y `EndSwordTrace`. Este mecanismo no aplica al ataque a
 distancia (`MagicAttack`), cuya detección de impacto recae en el propio proyectil al
 colisionar.
 
 La detección de impacto de este ataque reutiliza el mismo sistema de _trace_ por
-temporizador descrito para el esqueleto normal (`BegomSwordTrace`, `Damage Trace` y
+temporizador descrito para el esqueleto normal (`BeginSwordTrace`, `Damage Trace` y
 `EndSwordTrace`), empleando los componentes `StartTrace` y `EndTrace` del mago. A diferencia
 del esqueleto normal, donde el daño se obtiene de una variable (`skeleton_damage`), en el
 mago el daño del ataque cuerpo a cuerpo está definido como un valor fijo de 11.
 
-   
+#figure(
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 8pt,
+    image("imagenes/cap5/skeleton_staffattack1.png", width: 100%),
+    image("imagenes/cap5/skeleton_staffattack2.png", width: 100%),
+    image("imagenes/cap5/skeleton_staffattack3.png", width: 100%),
+  ),
+  caption: [Secuencia del ataque cuerpo a cuerpo del esqueleto mago.],
+) <fig:mago-staffattack>
+
 === Esqueleto caballero
 
 El esqueleto caballero (`BP_KnightSkele`) comparte la estructura de componentes y gran
@@ -2049,7 +2084,7 @@ métrica de distancia previa al combate contra el jefe.
 
 ==== Detección y registro de distancia
 
-Al igual que el esqueleto normal, la barra de vida rota en cada fotograma (`ReceiveTick`)
+Al igual que el esqueleto normal, la barra de vida rota en cada fotograma
 para orientarse hacia la cámara del jugador.
 
 La detección del jugador mediante el evento `On See Pawn` de `PawnSensing` invoca
@@ -2070,11 +2105,11 @@ esqueleto mago.
 ==== Ataque cuerpo a cuerpo (trace por temporizador)
 
 Como en los demás enemigos melee, la ventana de detección está delimitada por un
-_Anim Notify State_ en cada montage de ataque, que dispara `BegomSwordTrace` y
+_Anim Notify State_ en cada montage de ataque, que dispara `BeginSwordTrace` y
 `EndSwordTrace`.
 
 El esqueleto caballero también posee, heredado del mismo patrón del esqueleto normal, un
-ataque cuerpo a cuerpo basado en _trace_ por temporizador (`BegomSwordTrace`,
+ataque cuerpo a cuerpo basado en _trace_ por temporizador (`BeginSwordTrace`,
 `Damage Trace`, `EndSwordTrace`), idéntico en su funcionamiento: temporizador en bucle de
 0.01 segundos, _Sphere Trace_ de radio 30 entre `StartTrace` y `EndTrace`, y detención
 inmediata del temporizador tras el primer impacto exitoso. La única diferencia es el
@@ -2091,15 +2126,21 @@ nodo compuesto personalizado llamado "Alternating Selector", con dos ramas: `Att
 (tarea `KnightAttack1` seguida de una espera de 1 segundo) y `Attack 2` (tarea
 `KnightAttack2` seguida de una espera de 1 segundo).
 
+//poner bh
+
 ===== Selector alternante de ataques
 
 El nodo "Alternating Selector" corresponde a la clase `UBTComposite_RandomSelector`,
 implementada en C++. A pesar de que el nombre de la clase sugiere una selección
-aleatoria, su lógica (`GetNextChildHandler`) no es aleatoria: en cada ejecución elige el
+aleatoria, su lógica no es aleatoria: en cada ejecución elige el
 hijo siguiente al último ejecutado mediante el operador módulo sobre la cantidad de
-hijos (`(LastExecutedChild + 1) % GetChildrenNum()`), partiendo del hijo 0 la primera vez.
-Es decir, el nodo alterna de forma determinística entre `Attack 1` y `Attack 2` en cada
+hijos, partiendo del hijo 0 la primera vez. Es decir, el nodo alterna de forma determinística entre `Attack 1` y `Attack 2` en cada
 ciclo, en lugar de elegir entre ellos al azar.
+
+#figure(
+  image("imagenes/cap5/BT_Knight.png", width: 90%),
+  caption: [Behaviour Tree del esqueleto caballero.],
+) <fig:bt-caballero>
 
 ===== Tareas `KnightAttack1` y `KnightAttack2`
 
@@ -2109,8 +2150,8 @@ Ambas tareas comparten una misma estructura. Al activarse (`ReceiveExecuteAI`), 
 reproduce un _Animation Montage_: `MO_AvanceV3` con velocidad de reproducción 1.0 en
 `KnightAttack1`, y `MO_AOEKnightV3` con velocidad de reproducción 1.2 en `KnightAttack2`.
 
-Al completarse el montage (`OnCompleted`), la tarea finaliza con éxito (`FinishExecute`).
-En el instante señalado por un único _Animation Notify_ del montage (`OnNotifyBegin`), se
+Al completarse el montage, la tarea finaliza con éxito.
+En el instante señalado por un único _Animation Notify_ del montage, se
 marca `onRotate` como `false`, deteniendo la rotación hacia el jugador, igual que en el
 resto de las tareas de ataque del juego, y, a diferencia del ataque con espada por
 temporizador, se ejecuta un único _Box Trace_ (sin temporizador en bucle) entre dos puntos
@@ -2121,10 +2162,23 @@ caja de 30×80×50 unidades, más ancha. De detectarse una colisión válida, se
 mediante `ApplyDamage`, con un valor fijo de 20 en ambas tareas (a diferencia de la
 variable `KnightDamage`, utilizada en el ataque con espada).
 
-Mientras la tarea está activa (`ReceiveTickAI`), y siguiendo el mismo patrón visto en el
-resto de los enemigos, el caballero rota suavemente hacia el jugador mediante `RInterpTo`
-(con una velocidad de interpolación de 3.0) mientras `onRotate` sea `true`, deteniéndose
+Mientras la tarea está activa, y siguiendo el mismo patrón visto en el
+resto de los enemigos, el caballero interpola suavemente su rotación hacia el jugador mientras `onRotate` sea
+`true`, deteniéndose
 justo en el instante del impacto.
+
+#figure(
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 8pt,
+    row-gutter: 8pt,
+    image("imagenes/cap5/knightdash1.png", width: 100%),
+    image("imagenes/cap5/knightdash2.png", width: 100%),
+    image("imagenes/cap5/knightdash3.png", width: 100%),
+    image("imagenes/cap5/knightdash4.png", width: 100%),
+  ),
+  caption: [Secuencia del ataque de avance del esqueleto caballero.],
+) <fig:knight-dash>
 
 == Jefe (BP_Slime)
 
@@ -2174,6 +2228,11 @@ Las variables propias del Blueprint son:
 + `max_health` (Float): vida máxima del jefe.
 + `progressbarref` (Progress Bar): referencia al widget de la barra de vida.
 + `bIsCharco` (Bool): indica si el jefe se encuentra en su forma de charco.
+
+#figure(
+  image("imagenes/cap5/blueprint-del-jefe.png", width: 80%),
+  caption: [Blueprint del jefe (`BP_Slime`).],
+) <fig:blueprint-jefe>
 
 === AI Controller <sec:activacion-jefe>
 
@@ -2245,17 +2304,20 @@ los nueve ataques del jefe:
 + Secuencia cercana: Básico (`BA_BasicAttack`), espinas (`BA_AOEAttack`) y muro
   (`BA_WallAttack`).
 
+#figure(
+  image("imagenes/cap5/BT_Jefe.png", width: 100%),
+  caption: [Behaviour Tree del jefe (`BT_BaseSlimeBoss`).],
+) <fig:bt-jefe>
+
 ==== BTComposite_RandomSelector (C++)
 
 La elección del ataque dentro de cada secuencia de rango se gestiona mediante un nodo
-compuesto personalizado implementado en C++ (`UCustomCompositeNode`, mostrado en el
-editor como "RandomSelectWeight"). A diferencia de un Selector convencional, que
+compuesto personalizado implementado en C++. A diferencia de un Selector convencional, que
 recorre sus hijos en orden hasta que uno tiene éxito, este nodo elige un único hijo
 mediante una selección aleatoria ponderada y, una vez que dicho hijo termina de
-ejecutarse, retorna directamente a su padre (`GetNextChildHandler` siempre devuelve
-`ReturnToParent` tras la primera ejecución), sin intentar el resto de sus hijos.
+ejecutarse, retorna directamente a su padre, sin intentar el resto de sus hijos.
 
-La selección (`ChooseWeightedChild`) asigna a cada hijo un peso base de 1.0, el cual es
+La selección asigna a cada hijo un peso base de 1.0, el cual es
 sobrescrito si existe una entrada con su nombre dentro del JSON almacenado en la
 _Blackboard key_ `AttackWeightsJSON` (ver @sec:pesos-ataque). Sobre estos pesos se
 aplica además una regla anti-repetición: si el último ataque ejecutado
@@ -2272,6 +2334,8 @@ En la raíz del Behaviour Tree corre un service (`BTS_UPDTPlayerDistance`), aná
 al `BTS_MageUpdt` del esqueleto mago, que en cada fotograma calcula la distancia
 entre el jefe y el jugador y la almacena en la _Blackboard key_ `PlayerDistance`.
 
+//TODO: poner figura del BT del jefe
+
 ==== Tareas de ataque <sec:tareas-ataque-jefe>
 
 El jefe cuenta con nueve tareas de ataque distintas, identificadas mediante el enum
@@ -2282,7 +2346,7 @@ sección anterior.
 
 ===== Ataque básico (`BA_BasicAttack`)
 
-Al activarse la tarea (`ReceiveExecuteAI`), se registra el intento de ataque
+Al activarse la tarea, se registra el intento de ataque
 (`RegisterBossAttackAttempt`, con tipo `BA_BasicAttack`) y se reproduce el montage
 `MO_FixBasicAttack`, deteniendo cualquier otro montage en reproducción
 (`bShouldStopAllMontages`). Al completarse o interrumpirse el montage, la tarea
@@ -2292,12 +2356,19 @@ ejecuta un único _Box Trace_ (sin temporizador en bucle) sobre una caja estáti
 orientada según su rotación; de detectarse una colisión válida, se aplica un daño
 fijo de 10.
 
-/*
 #figure(
-  image("imagenes/slime-basic-attack.png", width: 80%),
-  caption: [Montage del ataque básico del jefe],
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 8pt,
+    row-gutter: 8pt,
+    image("imagenes/cap5/slimebasicattack-1.png", width: 100%),
+    image("imagenes/cap5/slimebasicattack-2.png", width: 100%),
+    grid.cell(colspan: 2, align(center,
+      image("imagenes/cap5/slimebasicattack-3.png", width: 50%),
+    )),
+  ),
+  caption: [Secuencia del ataque básico del jefe.],
 ) <fig:slime-basic-attack>
-*/
 
 ===== Ataque de área (`BA_AOEAttack`)
 
@@ -2307,12 +2378,15 @@ instante señalado por el _Animation Notify_, se ejecuta un _Sphere Trace_ de ra
 370 unidades centrado en la posición del jefe; de detectarse una colisión válida, se
 aplica un daño definido por la variable `SpykeDmg`.
 
-/*
 #figure(
-  image("imagenes/slime-aoe-attack.png", width: 80%),
-  caption: [Montage del ataque de área del jefe],
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 8pt,
+    image("imagenes/cap5/slimespikeattack-1.png", width: 100%),
+    image("imagenes/cap5/slimespikeattack-2.png", width: 100%),
+  ),
+  caption: [Secuencia del ataque de espinas del jefe.],
 ) <fig:slime-aoe-attack>
-*/
 
 ===== Ataque pesado (`BA_HeavyAttack`)
 
@@ -2337,12 +2411,18 @@ su colisión con Pawns y, si completó normalmente, comprueba si quedó atrapado
 algún actor mediante el componente `PULL_OUT`, de la misma forma descrita para el
 ataque de charco (`BA_Poddle`) más abajo, antes de finalizar la tarea con éxito.
 
-/*
 #figure(
-  image("imagenes/slime-heavy-attack.png", width: 80%),
-  caption: [Montage del ataque con salto del jefe],
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 8pt,
+    row-gutter: 8pt,
+    image("imagenes/cap5/slimejumpattack-1.png", width: 100%),
+    image("imagenes/cap5/slimejumpattack-2.png", width: 100%),
+    image("imagenes/cap5/slimejumpattack-3.png", width: 100%),
+    image("imagenes/cap5/slimejumpattack-4.png", width: 100%),
+  ),
+  caption: [Secuencia del ataque de salto del jefe.],
 ) <fig:slime-heavy-attack>
-*/
 
 ===== Ataque de proyectil (`BA_ProjectilAttack`)
 
@@ -2355,20 +2435,22 @@ rotación compuesta a partir de la desviación correspondiente y la rotación de
 jefe, generando un disparo en abanico de siete proyectiles. Cada proyectil se
 configura con el jefe como dueño (_Owner_), velocidad 1000, sin gravedad, sin
 comportamiento de persecución (_Homing_ desactivado) y un daño base de 10. Mientras
-la tarea está activa (`ReceiveTickAI`), el jefe rota hacia el jugador con una
-velocidad de interpolación de 0.5.
+la tarea está activa, el jefe rota hacia el jugador con una velocidad de interpolación de 0.5.
 
 A diferencia del resto de las tareas de ataque, ni esta ni el ataque homing
 (`BA_HomingAttack`, descrito más abajo) invocan `RegisterBossAttackAttempt`: al
 tratarse de ataques a distancia, no es directo determinar si efectivamente
 conectaron con el jugador, por lo que no se registran en las métricas de ataque.
 
-/*
 #figure(
-  image("imagenes/slime-projectil-attack.png", width: 80%),
-  caption: [Montage del ataque de proyectil del jefe],
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 8pt,
+    image("imagenes/cap5/slimeproyectileattack-1.png", width: 100%),
+    image("imagenes/cap5/slimeproyectileattack-2.png", width: 100%),
+  ),
+  caption: [Secuencia del ataque de proyectil del jefe.],
 ) <fig:slime-projectil-attack>
-*/
 
 ===== Persecución (`BA_BossChase`)
 
@@ -2379,12 +2461,7 @@ límite de tiempo. Si el `Delay` se completa primero, se detiene el movimiento y
 tarea finaliza con éxito. Si el `AIMoveTo` tiene éxito primero, se ejecuta ese mismo
 bloque de detención de movimiento y finalización.
 
-/*
-#figure(
-  image("imagenes/slime-boss-chase.png", width: 80%),
-  caption: [Montage de la persecución del jefe],
-) <fig:slime-boss-chase>
-*/
+
 
 ===== Charco (`BA_Poddle`)
 
@@ -2425,12 +2502,10 @@ dirección normalizada desde el actor encontrado hacia el jefe (a 1000 unidades 
 distancia, con la altura igualada a la del jugador), y la tarea finaliza con éxito a
 continuación.
 
-/*
 #figure(
-  image("imagenes/slime-poddle.png", width: 80%),
-  caption: [Montage del ataque de charco del jefe],
+  image("imagenes/cap5/slimepoddlestate.png", width: 80%),
+  caption: [El jefe en su forma de charco durante el ataque `BA_Poddle`.],
 ) <fig:slime-poddle>
-*/
 
 ===== Ataque homing (`BA_HomingAttack`)
 
@@ -2443,32 +2518,30 @@ vez de 1000) y que estos sí tienen activado el comportamiento de persecución
 (_Homing_). Al igual que el ataque de proyectil normal, esta tarea no invoca
 `RegisterBossAttackAttempt`.
 
-/*
-#figure(
-  image("imagenes/slime-homing-attack.png", width: 80%),
-  caption: [Montage del ataque homing del jefe],
-) <fig:slime-homing-attack>
-*/
 
 ===== Ataque de látigo (`BA_WhipAttack`)
 
 El ataque de látigo corresponde a un ataque tipo espada/látigo. Al activarse, se
 registra el intento de ataque y se reproduce el montage `MO_SwordSlimeAttack`.
-Mientras la tarea está activa (`ReceiveTickAI`), el jefe rota hacia el jugador con
-una velocidad de interpolación de 1.0. Al completarse el montage (`OnCompleted`),
-la tarea finaliza con éxito (`FinishExecute`), siguiendo el mismo patrón
+Mientras la tarea está activa, el jefe rota hacia el jugador con
+una velocidad de interpolación de 1.0. Al completarse el montage,
+la tarea finaliza con éxito, siguiendo el mismo patrón
 montage-completado-finalización del resto de las tareas de ataque.
 
 A diferencia del resto de los ataques del jefe, la detección de impacto de este
 ataque no se resuelve mediante un trace dentro de esta misma tarea, sino a través
 de una interfaz de notificación de daño aparte.
 
-/*
 #figure(
-  image("imagenes/slime-whip-attack.png", width: 80%),
-  caption: [Montage del ataque de látigo del jefe],
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 8pt,
+    image("imagenes/cap5/sword_slime1.png", width: 100%),
+    image("imagenes/cap5/sword_slime2.png", width: 100%),
+    image("imagenes/cap5/sword_slime3.png", width: 100%),
+  ),
+  caption: [Secuencia del ataque de látigo del jefe.],
 ) <fig:slime-whip-attack>
-*/
 
 ===== Ataque de muro (`BA_WallAttack`)
 
@@ -2482,12 +2555,16 @@ completarse el montage, la tarea finaliza con éxito. Mientras la tarea está ac
 `canRotate` sea `true`, el jefe rota hacia el jugador en cada fotograma con una
 velocidad de interpolación de 1.0.
 
-/*
 #figure(
-  image("imagenes/slime-wall-attack.png", width: 80%),
-  caption: [Montage del ataque de muro del jefe],
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 8pt,
+    image("imagenes/cap5/wallattack1.png", width: 100%),
+    image("imagenes/cap5/wallattack2.png", width: 100%),
+    image("imagenes/cap5/wallattack3.png", width: 100%),
+  ),
+  caption: [Secuencia del ataque de muro del jefe.],
 ) <fig:slime-wall-attack>
-*/
 
 === PlayerMetricsComponent
 
