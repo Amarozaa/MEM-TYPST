@@ -1381,9 +1381,11 @@ inicia un _timer_ en bucle que, cada 0.1 segundos, ejecuta un _Sphere Trace_ ent
 componentes de escena anclados al arma (`Start Sword Trace Pos` y `End Sword Trace Pos`),
 que marcan la base y la punta de la hoja. Si el _trace_ detecta una colisión válida, se
 llama a la función `ApplyDamage` sobre el actor impactado, utilizando el valor de la
-variable `SwordDamage` y al jugador como causante del daño. Al recibirse la señal de fin,
-se invoca el evento `End Damage Trace`, que invalida el _timer_, desactivando la detección
-hasta el siguiente golpe.
+variable `SwordDamage` y al jugador como causante del daño, y se detiene inmediatamente el
+_timer_, deteniendo la detección tras el primer impacto exitoso. Al recibirse la señal de
+fin, se invoca el evento `End Damage Trace`, que invalida el _timer_ si aún se encontraba
+activo, como medida de seguridad en caso de que el ataque no haya conectado, desactivando la
+detección hasta el siguiente golpe.
 
 == Proyectiles
 
@@ -1882,23 +1884,24 @@ cual invoca los eventos `BeginSwordTrace` y `EndSwordTrace` al comenzar y termin
 dicha ventana respectivamente.
 
 El ataque del esqueleto utiliza el mismo patrón de detección por temporizador que el ataque
-del jugador, aunque con una diferencia en su mecanismo de corte. Al iniciar el ataque
-(`BeginSwordTrace`), se reproduce el sonido de ataque (`SFX_SwordSkele`) y se inicia un temporizador en bucle
-cada 0.01 segundos que ejecuta el evento `Damage Trace`. Este evento realiza un
+del jugador. Al iniciar el ataque
+(`BeginSwordTrace`), se inicia un temporizador en bucle cada 0.01 segundos que ejecuta el evento `Damage Trace`. Este evento realiza un
 _Sphere Trace_ de radio 30 entre los componentes `StartOfTrace` y `EndOfTrace`; si detecta
 una colisión válida, aplica el daño definido en la variable `skeleton_damage` sobre el actor
-impactado y, a diferencia del ataque del jugador, **detiene inmediatamente el temporizador**, deteniendo la detección tras el primer impacto
+impactado y detiene inmediatamente el temporizador, deteniendo la detección tras el primer impacto
 exitoso. Al finalizar la animación de ataque (`EndSwordTrace`), se invalida el temporizador
 si aún se encontraba activo, como medida de seguridad en caso de que el ataque no haya
 conectado con el jugador.
 
 ==== Behaviour Tree
 
-El Behaviour Tree (árbol de comportamiento) es el sistema que se encarga de controlar
-todas las decisiones y acciones de un enemigo en el juego. Funciona evaluando
-constantemente la situación y eligiendo qué comportamiento ejecutar según la distancia
-del jugador y otras condiciones. La estructura se organiza en niveles jerárquicos donde
-cada nivel toma decisiones más específicas que el anterior.
+El Behaviour Tree (árbol de comportamiento) es el sistema de Unreal Engine utilizado para
+modelar el comportamiento de un agente de IA mediante una estructura jerárquica de nodos. Se
+compone de nodos compuestos, como _Selectors_ y _Sequences_, que determinan el orden y las
+condiciones bajo las cuales se ejecutan sus nodos hijos; de tareas (_Tasks_), que representan
+acciones concretas ejecutadas por el agente; y de decoradores y servicios, que agregan
+condiciones o lógica auxiliar a otros nodos. En cada tick, el árbol se recorre desde la raíz,
+evaluando los nodos según su tipo hasta determinar qué acción ejecutar.
 
 El esqueleto utiliza un Behaviour Tree (`BT_AI`) con una estructura simple de tipo
 Selector, que evalúa dos secuencias según el estado de la _Blackboard key_
