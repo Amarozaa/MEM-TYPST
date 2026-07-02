@@ -652,7 +652,7 @@
     #let icono-punto(color, borde: none) = circle(radius: 4pt, fill: color, stroke: borde)
     #let icono-triangulo(color, borde: none) = polygon(
       fill: color, stroke: borde,
-      (5pt, 0pt), (10pt, 9pt), (0pt, 9pt),
+      (0pt, 0pt), (9pt, 4.5pt), (0pt, 9pt),
     )
     #let icono-barra(color, w, h) = rect(width: w, height: h, fill: color)
     #let icono-puerta-salida = box(width: 16pt, height: 16pt)[
@@ -661,6 +661,10 @@
         stroke: 0.7pt, fill: none,
         (0pt, 0pt), (6pt, 4pt), (0pt, 8pt),
       ))
+    ]
+    #let icono-palanca = box(width: 18pt, height: 18pt)[
+      #place(top + left, dx: 1pt, dy: 2pt, rect(width: 12pt, height: 16pt, stroke: red + 0.7pt, fill: none))
+      #place(top + left, dx: 15pt, dy: -2pt, line(end: (-8pt, 10pt), stroke: red + 2pt))
     ]
 
     #figure(
@@ -752,14 +756,30 @@
     capítulo 4. Por ahora basta con entender este nivel como el último punto de referencia
     sobre el jugador antes de que comience el combate final.
 
-    // TODO: agregar minimapa del nivel previo al jefe una vez se tenga el PNG, mostrando
-    // la sala amplia central y las dos zonas laterales (tanque y rango).
-    /*
     #figure(
-      image("imagenes/minimapa-previo-jefe.png", width: 80%),
-      caption: [Distribución de salas del nivel previo al jefe.],
-    ) <fig:minimapa-previo-jefe>
-    */
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 12pt,
+        image("imagenes/cap3/dungeon_minimap_1.png", width: 100%),
+        image("imagenes/cap3/dungeon_minimap_2.png", width: 100%),
+      ),
+      caption: [Distribución de salas del nivel previo al jefe: piso 1 (izquierda) y piso 2 (derecha).],
+    ) <fig:minimapa-dungeon>
+
+    #figure(
+      align(center, grid(
+        columns: (46pt, 46pt, 46pt, 46pt, 46pt, 46pt, 46pt, 46pt),
+        row-gutter: 4pt,
+        align: center + horizon,
+        icono-triangulo(red), icono-punto(white, borde: 0.5pt), icono-punto(blue),
+        icono-punto(red), icono-barra(yellow, 16pt, 4pt),
+        text(size: 16pt, fill: rgb("#5500cc"))[↑], icono-puerta-salida, icono-palanca,
+        text(size: 9pt)[Inicio], text(size: 9pt)[Esqueleto], text(size: 9pt)[Mago],
+        text(size: 9pt)[Caballero], text(size: 9pt)[Puerta], text(size: 9pt)[Escaleras],
+        text(size: 9pt)[Salida], text(size: 9pt)[Palanca],
+      )),
+      caption: [Simbología utilizada en los minimapas del nivel previo al jefe.],
+    ) <tbl:simbologia-dungeon>
 
     === Arena del jefe
 
@@ -1043,28 +1063,28 @@ presentados parecen utilizables directamente para la implementación del proyect
 plantilla posee diversos aspectos que difieren del objetivo buscado y que requieren
 modificaciones específicas.
 
-La plantilla _Third Person_ proporciona una estructura de proyecto preconfigurada que
-incluye varios componentes clave. El elemento principal es el `BP_ThirdPersonCharacter`,
-un Blueprint que representa al personaje jugable y contiene toda la lógica de movimiento,
-entrada de usuario y comportamiento básico.
-
 A lo largo de esta sección se hará referencia frecuente al concepto de Blueprint. Los
 Blueprints son el sistema de _scripting_ visual de Unreal Engine que permite crear lógica
 de juego mediante nodos interconectados, sin necesidad de escribir código tradicional.
 Esto facilita la iteración rápida y permite a diseñadores y artistas contribuir
 directamente a la programación del juego.
 
-Este Blueprint incluye componentes como la cápsula de colisión, la malla del personaje
-(_Skeletal Mesh_), el componente de movimiento (_Character Movement Component_) y la
-cámara con su brazo de resorte (_Spring Arm_). Adicionalmente, la plantilla incluye el
-_Game Mode_, que define las reglas básicas del juego, y diversos assets como animaciones
-base, materiales y el escenario de demostración.
-/*
+La plantilla _Third Person_ proporciona una estructura de proyecto preconfigurada que
+incluye varios componentes clave. El elemento principal es el `BP_ThirdPersonCharacter`,
+un Blueprint que representa al personaje jugable y contiene toda la lógica de movimiento,
+entrada de usuario y comportamiento básico. Sus componentes principales son la cápsula de
+colisión, la malla del personaje (_Skeletal Mesh_), el componente de movimiento
+(_Character Movement Component_) y la cámara con su brazo de resorte (_Spring Arm_). La
+_Skeletal Mesh_ se reemplazo por un modelo 3D de elaboración propia, originalmente un
+proyecto personal desarrollado en Blender, al que se le aplicó un rig con herramientas de
+_auto-rig_ y se integró en Unreal Engine 5 mediante el sistema de _retargeting_, para
+redirigir las animaciones del Mannequin por defecto al esqueleto del personaje.
+Adicionalmente, la plantilla incluye el _Game Mode_, que define las reglas básicas del
+juego, y diversos assets como animaciones base, materiales y el escenario de demostración.
 #figure(
-  image("imagenes/blueprint-jugador.png", width: 80%),
-  caption: [Screenshot de Blueprint del jugador.],
+  image("imagenes/cap5/bp-jugador.png", width: 80%),
+  caption: [Vista del Blueprint del jugador con sus componentes.],
 ) <fig:blueprint-jugador>
-*/
 
 
 Un ejemplo de los ajustes necesarios es la estructura del personaje y sus sistemas de
@@ -1096,16 +1116,11 @@ animaciones basándose en valores de entrada. En este caso, se configuró con do
 horizontal que representa la dirección lateral del movimiento y uno vertical que representa
 la velocidad hacia adelante o atrás.
 
-/*
 #figure(
-  image("imagenes/blendspace-strafe.png", width: 80%),
-  caption: [
-    BlendSpace del Strafe Movement, donde el eje X representa la dirección, y el Y la
-    velocidad.
-  ],
+  image("imagenes/cap5/blendspace-jugador.png", width: 80%),
+  caption: [Blend Space `BS_StrafeMovement`, con la dirección en el eje X y la velocidad en el eje Y.],
 ) <fig:blendspace-strafe>
-*/
-En el _Animation Blueprint_ del personaje (`ABP_Manny`), específicamente en el _Animation
+En el _Animation Blueprint_ del personaje (`ABP_Daiko`), específicamente en el _Animation
 Graph_ dentro de la máquina de estados de _Locomotion_, se reemplazó la animación de
 _Idle_ que venía en el template por una propia, perteneciente al conjunto de animaciones
 del _Strafe Movement_.
@@ -1117,13 +1132,39 @@ personaje. También se desactivó el parámetro "Orient Rotation to Movement" y 
 parámetro "Use Controller Desired Rotation" para que el jugador mire siempre hacia la
 dirección que indica la cámara, independientemente de la dirección en la que se mueva.
 
-Cabe recalcar que la mayoría del desarrollo de las implementaciones está realizado en
-Blueprint. Sin embargo, en el futuro se espera incorporar componentes heredados de C++.
-
 Para desarrollar las capacidades de combate del jugador, se decidió crear un componente
-`BPC_Combat` que hereda de _Actor Component_ y se ancla al Blueprint del jugador, de tal
+`BPC_Combat` que hereda de _Actor Component_, el cual se ancla al Blueprint del jugador de tal
 forma que esté centralizada la lógica de combate. De igual forma, para las estadísticas
 del jugador se creó y ancló un componente `BPC_Stats`.
+
+== Sistema de input
+
+La entrada del jugador se gestiona mediante el sistema _Enhanced Input_ de Unreal Engine.
+Cada acción del jugador (atacar, esquivar, correr, etc.) se representa como un
+_Input Action_ independiente, desacoplado de la tecla o botón físico que lo activa. Esta
+asociación entre la entrada física y el `Input Action` correspondiente se define en un
+_Input Mapping Context_, lo que facilita el remapeo de controles sin modificar la lógica
+interna de cada Blueprint. Actualmente el juego solo cuenta con soporte para teclado y mouse.
+
+Los `Input Actions` del juego y sus controles asociados son los siguientes:
+
+#align(center, table(
+  columns: 2,
+  align: (left, left),
+  table.header([*Input Action*], [*Control*]),
+  [`IA_Attack`], [Click izquierdo],
+  [`IA_Dash-Roll`], [Barra espaciadora],
+  [`IA_Run`], [Shift],
+  [`IA_Magic`], [Q],
+  [`IA_ScrollMagic`], [Rueda del mouse],
+  [`IA_Lock`], [Click rueda del mouse],
+  [`IA_MyInteract`], [E],
+  [`IA_EscapeMenu`], [Escape],
+))
+
+En las secciones siguientes, cada acción del jugador se describe haciendo referencia
+explícita al `Input Action` correspondiente (por ejemplo, `IA_Attack` o `IA_Dash-Roll`),
+ya activado mediante el _Input Mapping Context_ descrito anteriormente.
 
 == Estadísticas del jugador
 
@@ -1149,15 +1190,14 @@ cual recibe como parámetros un enum que indica la estadística que se quiere mo
 junto con el valor del cambio (positivo para incrementar, negativo para disminuir). Según
 el valor del enum, se actualiza la estadística correspondiente sumándole el valor recibido,
 acotando siempre el resultado entre cero y su valor máximo (`maxHealth`, `maxMana` o
-`maxStamina`, según corresponda) mediante la función `FClamp`, de modo que ninguna
+`maxStamina`, según corresponda) mediante la función `Clamp`, de modo que ninguna
 estadística pueda exceder su máximo ni quedar en negativo.
 
-Si la estadística modificada es la vida (`health`), tras actualizarla se realizan dos
-acciones en paralelo: por un lado, se comprueba si la vida resultante es menor o igual a
-cero, y de ser así se invoca el evento `Die`, que da inicio a la secuencia de muerte del
-jugador; por otro, se calcula el porcentaje de vida actual (`health`/`maxHealth`) y, desde
-la referencia a la barra (`Progress Bar Ref`), se llama al método `Set Percent`, que
-actualiza visualmente la barra con dicho porcentaje. En caso de recibir el enum
+Si la estadística modificada es la vida (`health`), tras actualizarla se comprueba si el
+valor resultante es menor o igual a cero; de ser así, se invoca el evento `Die`, que da
+inicio a la secuencia de muerte del jugador. Luego de esa comprobación, se calcula el porcentaje de vida
+actual (`health`/`maxHealth`) y se llama al método `Set Percent` sobre la referencia a la
+barra (`Progress Bar Ref`), actualizando su valor visual. En caso de recibir el enum
 perteneciente a la estadística de maná, el proceso de actualización visual es análogo.
 
 Para la estadística de stamina también es similar, con la diferencia de que el widget de
@@ -1184,9 +1224,7 @@ Al iniciarse el componente este activa dos timers que se ejecutan cada 0.01 segu
 llaman a los eventos `RegainStamina` y `RegainMana`. Estos eventos pasan por una rama que
 verifica si corresponde regenerar la estadística respectiva; si la condición es verdadera,
 se usa el nodo `IncreaseVal` para aumentar la stamina o el maná en pequeñas cantidades,
-creando así un sistema de regeneración continua controlada por condiciones. Es importante
-mencionar que este enfoque de regeneración mediante timers de alta frecuencia podría
-optimizarse en el futuro.
+creando así un sistema de regeneración continua controlada por condiciones. 
 
 == Recepción de daño y muerte
 
@@ -1230,13 +1268,13 @@ widget de "Try Again" y habilita el cursor del mouse. Si la derrota ocurrió en 
 jefe, adicionalmente se vuelca a un archivo el registro de resultados del combate mediante
 `DumpCombatResultToFile`, dato que forma parte del sistema de recolección de métricas del
 estudio de usuario.
-/*
 #figure(
-  image("imagenes/pantalla-muerte.png", width: 80%),
-  caption: [Pantalla mostrada al morir el jugador],
+  image("imagenes/cap5/deathscreen-jugador.png", width: 80%),
+  caption: [Pantalla de Game Over mostrada al morir el jugador.],
 ) <fig:pantalla-muerte>
-*/
 == Componente de combate
+
+// TODO: Ver bien lo de los índices de hechizos
 
 Como se mencionó anteriormente, se creó un _Actor Component_ llamado `BPC_Combat` que se
 ancla al jugador y centraliza toda la lógica relacionada con el combate.
@@ -1290,37 +1328,7 @@ Este componente posee múltiples variables, entre las cuales están:
 + `Potion Count Text Var`: Tipo _Text_. Referencia al elemento de texto de la interfaz que
   muestra la cantidad de pociones disponibles.
 + `healingPotion`: Tipo _Static Mesh_. Referencia al modelo 3D de la poción de curación utilizada por el jugador.
-+ `tmpTarget`: Tipo _Vector_. Almacena una ubicación temporal utilizada por los enemigos como objetivo durante la ejecución de sus comportamientos.
-
-== Sistema de input
-
-La entrada del jugador se gestiona mediante el sistema _Enhanced Input_ de Unreal Engine.
-Cada acción del jugador (atacar, esquivar, correr, etc.) se representa como un
-_Input Action_ independiente, desacoplado de la tecla o botón físico que lo activa. Esta
-asociación entre la entrada física y el `Input Action` correspondiente se define en un
-_Input Mapping Context_, lo que facilita el remapeo de controles sin modificar la lógica
-interna de cada Blueprint. Actualmente el juego solo cuenta con soporte para teclado y mouse.
-
-Los `Input Actions` utilizados por el componente de combate (`BPC_Combat`) y sus controles
-asociados son los siguientes:
-
-#align(center, table(
-  columns: 2,
-  align: (left, left),
-  table.header([*Input Action*], [*Control*]),
-  [`IA_Attack`], [Click izquierdo],
-  [`IA_Dash-Roll`], [Barra espaciadora],
-  [`IA_Run`], [Shift],
-  [`IA_Magic`], [Q],
-  [`IA_ScrollMagic`], [Rueda del mouse],
-  [`IA_Lock`], [Click rueda del mouse],
-  [`IA_MyInteract`], [E],
-  [`IA_EscapeMenu`], [Escape],
-))
-
-En las secciones siguientes, cada acción del jugador se describe haciendo referencia
-explícita al `Input Action` correspondiente (por ejemplo, `IA_Attack` o `IA_Dash-Roll`),
-ya activado mediante el _Input Mapping Context_ descrito anteriormente.
++ `tmpTarget`: Tipo _Vector_. Almacena una ubicación temporal utilizada por el sistema de _Target Lock_ como punto de referencia durante el fijado de objetivo.
 
 == Ataque melee del jugador
 
@@ -1334,11 +1342,11 @@ _Game Instance_ (para fines de telemetría) y se ejecuta el _Animation Montage_ 
 ataque, que contiene una secuencia de tres golpes consecutivos.
 
 El encadenamiento de golpes (combo) se controla mediante la variable `isCombo`, que
-representa la intención del jugador de continuar la secuencia. Esta variable se activa de
-forma diferida: si el jugador vuelve a recibir el `Input Action` `IA_Attack` mientras un ataque ya
-está en curso (es decir, cuando la condición inicial es `false` porque `isAttacking` es
-`true`), en lugar de iniciar un ataque nuevo se setea `isCombo` como `true`. De esta forma
-el sistema "almacena" la intención de combo hasta el siguiente punto de decisión.
+representa la intención del jugador de continuar la secuencia. Si el jugador vuelve a
+presionar `IA_Attack` mientras un ataque ya está en curso (`isAttacking` es `true`), no se
+inicia un ataque nuevo sino que se activa `isCombo`. Ese valor queda almacenado hasta que
+la animación alcanza el siguiente punto de decisión, momento en que el sistema lo lee y
+decide si continuar el combo o detenerlo.
 
 Dicho punto de decisión se evalúa mediante un _Animation Notify_ ubicado en el montage, al
 final del primer y segundo golpe. Cada vez que el notify se activa, se comprueba si el
@@ -1351,26 +1359,19 @@ montage prematuramente mediante `Montage_Stop` y se limpian las variables `isAtt
 en el caso de interrupción, se distingue además si la causa fue la reproducción del
 `HitReact_Montage`.
 
-/*
 #figure(
-  image("imagenes/montage-golpe1.png", width: 80%),
-  caption: [Primer golpe del montage de ataque],
-) <fig:montage-golpe1>
-*/
-
-/*
-#figure(
-  image("imagenes/montage-golpe2.png", width: 80%),
-  caption: [Segundo golpe del montage de ataque],
-) <fig:montage-golpe2>
-*/
-
-/*
-#figure(
-  image("imagenes/montage-golpe3.png", width: 80%),
-  caption: [Tercer golpe del montage de ataque],
-) <fig:montage-golpe3>
-*/
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 8pt,
+    row-gutter: 8pt,
+    image("imagenes/cap5/montageattack_golpe1.png", width: 100%),
+    image("imagenes/cap5/montageattack_golpe2.png", width: 100%),
+    grid.cell(colspan: 2, align(center,
+      image("imagenes/cap5/montageattack_golpe3.png", width: 50%),
+    )),
+  ),
+  caption: [Secuencia de los tres golpes del ataque melee del jugador.],
+) <fig:montage-golpes>
 
 Con respecto a la detección de impacto del ataque, la implementación se basa en un sistema
 de _trace_ por temporizador. El montage tiene asociado un Blueprint que hereda de _Animation Notify State_, el cual delimita la ventana en la
@@ -1418,22 +1419,20 @@ Las variables de las que se compone son:
   proyectil impacta.
 
 
-/*
 #figure(
-  image("imagenes/blueprint-proyectil-base.png", width: 80%),
-  caption: [Blueprint del proyectil base],
+  image("imagenes/cap5/BP_BaseProj.png", width: 80%),
+  caption: [Blueprint del proyectil base.],
 ) <fig:blueprint-proyectil-base>
-*/
 El comportamiento del proyectil base se define mediante los siguientes eventos. Al
-inicializarse (`BeginPlay`), el proyectil configura su componente de colisión para ignorar
-al actor que lo originó (`GetOwner`), evitando así que colisione consigo mismo o con quien
+inicializarse, el proyectil configura su componente de colisión para ignorar
+al actor que lo originó, evitando así que colisione consigo mismo o con quien
 lo disparó. Además, si la variable `Homing` está activada, se habilita el modo de
 persecución del componente _Projectile Movement_ (`bIsHomingProjectile`) y se establece el
 componente objetivo de la persecución.
 
 La detección de impacto se gestiona mediante un evento ligado al solapamiento del
 componente de colisión. Cuando el proyectil se solapa con otro actor, se comprueba que dicho
-actor no sea su propio dueño (`GetOwner`); de no serlo, se invoca la función
+actor no sea su propio dueño; de no serlo, se invoca la función
 `SpawnImpactEffect`, que reproduce el sistema de partículas `Impact Effect` en el punto de
 colisión junto con el sonido `Sound Impact`. A continuación se aplica el daño definido en
 `Base Damage` sobre el actor impactado, indicando al dueño del proyectil como causante del
@@ -1450,12 +1449,10 @@ VFX de explosión de fuego. En cuanto a los componentes visuales, el `StaticMesh
 vacío y en su lugar se utiliza un componente _Particle System_ que representa el efecto
 visual del proyectil en movimiento.
 
-/*
 #figure(
-  image("imagenes/bp-playerfireball.png", width: 80%),
-  caption: [Blueprint del proyectil del jugador],
+  image("imagenes/cap5/BP_PlayerFireball.png", width: 80%),
+  caption: [Blueprint del proyectil del jugador.],
 ) <fig:bp-playerfireball>
-*/
 
 
 
@@ -1476,20 +1473,17 @@ Esta subclase sobreescribe (_override_) el evento `BeginPlay` para extender el
 comportamiento heredado: al instanciarse, primero ejecuta el `BeginPlay` de la clase base
 (configurando la colisión y el _homing_ según corresponda) y, a continuación, inicia un
 temporizador de 5 segundos. Transcurrido ese tiempo, si el proyectil aún no ha impactado
-contra nada, spawnea un sistema de partículas Niagara (`NS_Projectile_03_Hit`) en su
+contra nada, spawnea un sistema de partículas Niagara en su
 ubicación actual y se autodestruye, garantizando así que los proyectiles que no alcancen al
 jugador no permanezcan indefinidamente en la escena.
 
 
 
 
-/*
 #figure(
-  image("imagenes/bp-bossslimeball.png", width: 80%),
-  caption: [Blueprint del proyectil del jefe],
+  image("imagenes/cap5/BP_BossSlimeBall.png", width: 80%),
+  caption: [Blueprint del proyectil del jefe.],
 ) <fig:bp-bossslimeball>
-
-*/
 
 == Hechizos y consumibles del jugador
 
@@ -1503,7 +1497,7 @@ El jugador puede intercambiar entre el hechizo de fuego y la poción utilizando 
 mouse, y la opción actualmente equipada se muestra representada con un símbolo en la esquina
 inferior derecha de la pantalla. La selección se representa mediante la variable
 `CurrentSpellIndex`, que cambia al mover la rueda del mouse (`IA_ScrollMagic`); además de
-actualizar el valor, se modifica el ícono y la opacidad de la imagen del HUD para reflejar
+actualizar el valor, se modifica la opacidad de la imagen del HUD para reflejar
 la opción activa.
 
 Cuando el jugador ejecuta la acción de lanzar (`IA_Magic`), el sistema evalúa la variable
@@ -1531,13 +1525,10 @@ lanzamiento y se realiza el consumo de maná, llamando a la función `IncreaseVa
 componente `BPC_Stats`, pasando como parámetro el valor de la variable `magicManaUse` con
 signo negativo para representar la disminución.
 
-/*
 #figure(
-  image("imagenes/hechizo-proyectil.png", width: 80%),
-  caption: [Jugador lanzando el hechizo de proyectil],
+  image("imagenes/cap5/player-casting-firespell.png", width: 80%),
+  caption: [Jugador lanzando el hechizo de proyectil de fuego.],
 ) <fig:hechizo-proyectil>
-
-*/
 === Poción de vida
 
 La poción de vida constituye la opción defensiva del jugador. No restaura la vida de forma
@@ -1550,7 +1541,7 @@ fundamentalmente, que disponga de al menos una poción (`PotiCount` mayor que ce
 Si la condición se cumple, se registra el momento de curación en el _Game Instance_ (junto
 con la vida actual y máxima del jugador), se decrementa el contador de pociones y se
 actualiza el HUD, y se desactiva el movimiento mientras se reproduce la animación de beber,
-que corresponde a un _Animation Montage_. Para reforzar visualmente la acción, durante la
+que corresponde a un _Animation Montage_. Durante la
 animación se genera y se ancla la malla de la poción a la mano del jugador, la cual se
 destruye una vez finalizada. La restauración de vida se realiza mediante un _Animation
 Notify_ anclado al montage: en el momento en que la animación muestra al jugador bebiendo,
@@ -1559,12 +1550,52 @@ interrumpirse la animación, se restablece el movimiento del jugador.
 
 
 
-/*
 #figure(
-  image("imagenes/pocion-vida.png", width: 80%),
-  caption: [Jugador bebiendo una poción de vida],
+  image("imagenes/cap5/player-taking-potion.png", width: 80%),
+  caption: [Jugador bebiendo una poción de vida.],
 ) <fig:pocion-vida>
-*/
+== Fijado de objetivo (Target Lock)
+
+El sistema de fijado de objetivo (_Target Lock_) permite al jugador centrar la cámara sobre
+un enemigo y mantenerla orientada hacia él durante el combate, facilitando el seguimiento del
+objetivo mientras se ataca o esquiva. Está implementado en el componente `BPC_Combat` y se
+reparte entre dos partes: la activación/desactivación del fijado, gestionada por el
+`Input Action` `IA_Lock`, y el mantenimiento de la orientación de la cámara, ejecutado en
+cada fotograma dentro del evento `Tick`.
+
+Al recibirse el `Input Action` `IA_Lock`, el sistema actúa según si ya existe un objetivo
+fijado, almacenado en la variable `Target Lock`. Si ya hay un objetivo, se interpreta como
+una orden de soltarlo: se limpia la referencia, se restauran los parámetros de rotación del
+personaje a su comportamiento normal (orientación según el movimiento) y se destruye el
+widget visual del fijado. Si no hay objetivo, se procede a buscar uno: se realiza un
+_Sphere Trace_ hacia adelante desde el personaje (con un radio y un alcance determinados);
+si dicho trazado detecta un objetivo válido, se almacena en `Target Lock`, se ajustan los
+parámetros de rotación para que el personaje se oriente hacia el objetivo, y se genera un
+widget (`BP_TargetLockWidget`) que se ancla al enemigo como indicador visual del fijado.
+
+Una vez fijado el objetivo, su seguimiento se realiza en el evento `Tick`. Mientras exista
+un objetivo, cada fotograma se calcula la rotación necesaria para que la cámara apunte hacia
+él y se aplica a la rotación del controlador del jugador. Para obtener el punto exacto al que
+mirar, el sistema comprueba si el objetivo implementa la interfaz `BPI_Lockable`: si la
+implementa, solicita a través de ella un punto de fijado personalizado, lo que permite que
+ciertos enemigos, como aquellos cuya geometría se deforma o cuyo centro visual no coincide
+con su origen, definan explícitamente dónde debe apuntar la cámara; si no la implementa, se
+utiliza directamente la ubicación del objetivo. Además, mientras el fijado está activo, se
+reposiciona en pantalla el widget de la barra de stamina.
+
+Actualmente, la única clase que implementa la interfaz `BPI_Lockable` es el jefe
+(`BP_Slime`). Esto se debe a que su animación de ataque de charco desplaza visualmente al personaje hacia abajo, simulando que se hunde o agacha en el charco, sin que dicho desplazamiento se traduzca en un movimiento real del
+actor en el mundo. Si la cámara utilizara directamente la ubicación del actor (su origen),
+el punto de fijado quedaría desalineado respecto a la posición visual del jefe durante esta
+animación. Al implementar `BPI_Lockable`, el jefe puede reportar un punto de fijado ajustado
+a su posición visual real en cada momento, manteniendo la cámara correctamente orientada
+incluso cuando la animación no coincide con la posición lógica del actor.
+
+#figure(
+  image("imagenes/cap5/player-locking-enemy.png", width: 80%),
+  caption: [Jugador con un objetivo fijado mediante el sistema de Target Lock.],
+) <fig:target-lock>
+
 == Esquiva
 
 La esquiva del jugador está implementada en el componente `BPC_Combat`. Se creó una función
@@ -1625,56 +1656,18 @@ indica su nombre, solo se ejecuta una vez hasta que se resetee. El reseteo se re
 de 0.45 segundos mediante un nodo _Delay_. Esto permite que el jugador pueda hacer un roll
 cada 0.45 segundos, pudiendo así encadenar rolls consecutivos para evadir múltiples ataques.
 
-/*
 #figure(
-  image("imagenes/roll-adelante.png", width: 80%),
-  caption: [Jugador haciendo roll hacia adelante],
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 8pt,
+    row-gutter: 8pt,
+    image("imagenes/cap5/player-dodge-1.png", width: 100%),
+    image("imagenes/cap5/player-dodge-2.png", width: 100%),
+    image("imagenes/cap5/player-dodge-3.png", width: 100%),
+    image("imagenes/cap5/player-dodge-4.png", width: 100%),
+  ),
+  caption: [Secuencia de la animación de esquiva del jugador.],
 ) <fig:roll-adelante>
-*/
-
-== Fijado de objetivo (Target Lock)
-
-El sistema de fijado de objetivo (_Target Lock_) permite al jugador centrar la cámara sobre
-un enemigo y mantenerla orientada hacia él durante el combate, facilitando el seguimiento del
-objetivo mientras se ataca o esquiva. Está implementado en el componente `BPC_Combat` y se
-reparte entre dos partes: la activación/desactivación del fijado, gestionada por el
-`Input Action` `IA_Lock`, y el mantenimiento de la orientación de la cámara, ejecutado en
-cada fotograma dentro del evento `Tick`.
-
-Al recibirse el `Input Action` `IA_Lock`, el sistema actúa según si ya existe un objetivo
-fijado, almacenado en la variable `Target Lock`. Si ya hay un objetivo, se interpreta como
-una orden de soltarlo: se limpia la referencia, se restauran los parámetros de rotación del
-personaje a su comportamiento normal (orientación según el movimiento) y se destruye el
-widget visual del fijado. Si no hay objetivo, se procede a buscar uno: se realiza un
-_Sphere Trace_ hacia adelante desde el personaje (con un radio y un alcance determinados);
-si dicho trazado detecta un objetivo válido, se almacena en `Target Lock`, se ajustan los
-parámetros de rotación para que el personaje se oriente hacia el objetivo, y se genera un
-widget (`BP_TargetLockWidget`) que se ancla al enemigo como indicador visual del fijado.
-
-Una vez fijado el objetivo, su seguimiento se realiza en el evento `Tick`. Mientras exista
-un objetivo, cada fotograma se calcula la rotación necesaria para que la cámara apunte hacia
-él y se aplica a la rotación del controlador del jugador. Para obtener el punto exacto al que
-mirar, el sistema comprueba si el objetivo implementa la interfaz `BPI_Lockable`: si la
-implementa, solicita a través de ella un punto de fijado personalizado, lo que permite que
-ciertos enemigos, como aquellos cuya geometría se deforma o cuyo centro visual no coincide
-con su origen, definan explícitamente dónde debe apuntar la cámara; si no la implementa, se
-utiliza directamente la ubicación del objetivo. Además, mientras el fijado está activo, se
-reposiciona en pantalla el widget de la barra de stamina.
-
-Actualmente, la única clase que implementa la interfaz `BPI_Lockable` es el jefe
-(`BP_Slime`). Esto se debe a que su animación de ataque de charco desplaza visualmente al personaje hacia abajo, simulando que se hunde o agacha en el charco, sin que dicho desplazamiento se traduzca en un movimiento real del
-actor en el mundo. Si la cámara utilizara directamente la ubicación del actor (su origen),
-el punto de fijado quedaría desalineado respecto a la posición visual del jefe durante esta
-animación. Al implementar `BPI_Lockable`, el jefe puede reportar un punto de fijado ajustado
-a su posición visual real en cada momento, manteniendo la cámara correctamente orientada
-incluso cuando la animación no coincide con la posición lógica del actor.
-
-/*
-#figure(
-  image("imagenes/target-lock.png", width: 80%),
-  caption: [Jugador con un objetivo fijado mediante el sistema de Target Lock],
-) <fig:target-lock>
-*/
 
 == Correr
 
@@ -1692,9 +1685,10 @@ disponible durante la carrera. Finalmente, al soltar el input, se restaura la ve
 movimiento a su valor normal y se vuelve a habilitar la regeneración de stamina, devolviendo
 al jugador a su estado de desplazamiento habitual.
 
-/*
-Aca pondre una figura del jugador corriendo, pero no tengo una imagen todavia
-*/
+#figure(
+  image("imagenes/cap5/player running.png", width: 80%),
+  caption: [Jugador corriendo.],
+) <fig:jugador-corriendo>
 
 == Interactuar
 
@@ -1718,12 +1712,10 @@ encuentra pausado; si no lo está, se procede a abrirlo: se instancia el widget 
 pausa (`WB_PauseMenu`) y se añade al _viewport_, se cambia el modo de entrada a uno orientado
 exclusivamente a la interfaz (de forma que el movimiento del mouse deje de controlar la
 cámara), se habilita la visibilidad del cursor, y finalmente se pausa el juego.
-/*
 #figure(
-  image("imagenes/menu-pausa.png", width: 80%),
-  caption: [Menú de pausa del juego],
+  image("imagenes/cap5/pause-menu.png", width:80%),
+  caption: [Menú de pausa del juego.],
 ) <fig:menu-pausa>
-*/
 
 
 == Widgets del jugador
@@ -1733,6 +1725,11 @@ uno encargado de mostrar un aspecto específico del estado del jugador o de gest
 pantalla concreta. La mayoría de estos widgets se actualizan desde la lógica de juego ya
 descrita, principalmente desde el componente `BPC_Stats`, por lo que su Blueprint interno
 es mínimo y se limitan a su composición visual.
+
+#figure(
+  image("imagenes/cap5/player-widgets.png", width: 80%),
+  caption: [HUD del jugador en juego.],
+) <fig:player-hud>
 
 El widget principal es el HUD del jugador (`WB_PlayerHUD`), que actúa como contenedor de los
 elementos que se muestran de forma persistente durante el juego. Está compuesto por un
@@ -1773,6 +1770,11 @@ con el nuevo valor. Si aún no existe, crea una instancia dinámica a partir del
 `Percent`. De esta forma, la instancia del material se crea una sola vez (la primera vez que
 se actualiza la barra) y se reutiliza en las llamadas posteriores.
 
+#figure(
+  image("imagenes/cap5/stamina_widget.png", width: 20%),
+  caption: [Barra de stamina circular del jugador.],
+) <fig:stamina-widget>
+
 === Widget del menú de pausa (`WB_PauseMenu`)
 
 El widget del menú de pausa presenta dos botones dispuestos verticalmente: reanudar
@@ -1781,7 +1783,9 @@ de pulsación de cada botón. Al presionar el botón de reanudar, se reanuda el 
 (quitando la pausa), se restablece el modo de entrada a uno orientado exclusivamente al
 juego, se oculta el cursor del mouse, y se elimina el propio widget de la pantalla,
 devolviendo al jugador al combate. Al presionar el botón de menú principal, se reanuda el
-juego y se carga el nivel del menú principal (`Lvl_MainMenu`).
+juego y se carga el nivel del menú principal (`Lvl_MainMenu`). 
+
+El aspecto visual de este widget puede verse en la @fig:menu-pausa, mostrada previamente en la sección del menú de pausa.
 
 === Pantalla de derrota (`WB_TryAgain`)
 
@@ -1792,19 +1796,28 @@ de intentos (`AttemptNumber`) almacenado en el `SlimeGameInstance`, dato relevan
 seguimiento del estudio, y se recarga el nivel actual, permitiendo al jugador volver a
 enfrentar el combate. Al presionar el botón de menú principal, se reanuda el juego y se carga
 el nivel del menú principal.
+
+El aspecto visual de esta pantalla puede verse en la @fig:pantalla-muerte, mostrada previamente en la sección de recepción de daño y muerte.
+
 == Enemigos
 
+Los modelos de los enemigos regulares y algunos props del juego se obtuvieron de Sketchfab
+y del Fab de Epic Games. Las animaciones de estos enemigos se generaron con Mixamo, un 
+servicio que permite aplicar animaciones de forma automática sobre modelos 3D. El
+jefe es la excepción: su modelo y animaciones fueron creados desde cero por el autor, como
+se describe en la @sec:modelo-animaciones-jefe.
 
 === Esqueleto normal
 
 El enemigo más simple del juego es el esqueleto normal (`BP_Skeleton`), un enemigo de
 combate cuerpo a cuerpo cuya estructura de componentes y comportamiento sientan la base
-sobre la cual se construyen los demás enemigos. Se compone de una cápsula de colisión como
-componente raíz, sobre la cual se ancla un componente de barra de vida (_Widget Component_);
-una malla esquelética (`Mesh`) que incluye dos componentes de escena (`StartOfTrace` y
-`EndOfTrace`) ubicados en la espada, utilizados para la detección de impacto del ataque, y
-un componente _Arrow_ como referencia direccional; un componente de movimiento de personaje;
-y un componente `PawnSensing`, encargado de la detección del jugador.
+sobre la cual se construyen los demás enemigos. Sus componentes son:
+
++ Cápsula de colisión (_Capsule Component_). Define el volumen de colisión principal del enemigo y actúa como raíz del Blueprint.
++ `HealthBar`: Componente de barra de vida (_Widget Component_), anclado sobre la cápsula.
++ `Mesh`: Componente de malla esquelética. Incluye dos componentes de escena (`StartOfTrace` y `EndOfTrace`) ubicados en la espada, usados para la detección de impacto del ataque, y un componente _Arrow_ como referencia direccional.
++ `CharMoveComp`: Componente de movimiento de personaje (_Character Movement Component_).
++ `PawnSensing`: Componente encargado de la detección del jugador.
 
 
 #figure(
@@ -1815,11 +1828,11 @@ y un componente `PawnSensing`, encargado de la detección del jugador.
 
 ==== Comportamiento general
 
-Durante el juego (`ReceiveTick`), la barra de vida rota constantemente para orientarse hacia
-la cámara del jugador, de modo que siempre se muestre de frente independientemente de la
+En cada fotograma dentro del evento `Tick`, la barra de vida rota para orientarse hacia la
+cámara del jugador, de modo que siempre se muestre de frente independientemente de la
 posición del enemigo.
 
-Al iniciarse (`ReceiveBeginPlay`), el esqueleto inicializa su barra de vida al 100% y
+Al iniciarse, el esqueleto inicializa su barra de vida al 100% y
 almacena su posición de aparición en la _Blackboard key_ `spawnPoint`, la cual utiliza
 posteriormente para regresar a su punto de origen.
 
@@ -1831,11 +1844,11 @@ corresponda efectivamente al jugador, y, de ser así, marca la _Blackboard key_
 evento de recepción de daño, descrito a continuación.
 
 Adicionalmente, al detectar al jugador se inicia un temporizador en bucle de 0.5 segundos
-que dispara el evento `REGISTER_DISTANCE`, el cual obtiene la referencia al
-`SlimeGameInstance` e invoca `RegisterDistance`, pasando como parámetro la distancia
-actual entre el esqueleto y el jugador. Este mecanismo, compartido con el esqueleto
-caballero descrito más adelante, es el que alimenta las variables de distancia de la
-sección de métricas y telemetría durante la fase previa al combate contra el jefe.
+que dispara un evento encargado de obtener la referencia al `SlimeGameInstance` e invocar
+`RegisterDistance`, pasando como parámetro la distancia actual entre el esqueleto y el
+jugador. Este mecanismo, compartido con el esqueleto caballero descrito más adelante, es el
+que alimenta las variables de distancia de la sección de métricas y telemetría durante la
+fase previa al combate contra el jefe.
 
 ==== Recepción de daño y muerte
 
@@ -1851,36 +1864,30 @@ Si la vida resultante es menor o igual a cero, el esqueleto reproduce un sonido 
 Blueprint de `Lvl_Tutorial` y descrito en su sección correspondiente, antes de
 destruirse. Adicionalmente, se obtiene la referencia al jugador
 (`BP_ThirdPersonCharacter`) y se invoca sobre él la función `RemoveWidget`, encargada de
-eliminar el indicador visual asociado a este enemigo (por ejemplo, el del sistema de _Target
-Lock_, en caso de que estuviera fijado sobre él al momento de morir).
+eliminar el widget de _Target Lock_ sobre este enemigo, en caso de que el jugador lo tuviera
+fijado al momento de su muerte.
 
 Internamente, `RemoveWidget` limpia la variable `Target Lock` del jugador y obtiene la
-referencia al widget asociado (`TargetLockWidget`), al cual destruye mediante
-`K2_DestroyActor`. A continuación, restablece las variables de movimiento del jugador
+referencia al widget asociado (`TargetLockWidget`), al cual destruye. A continuación, restablece las variables de movimiento del jugador
 (`bOrientRotationToMovement` a `true` y `bUseControllerDesiredRotation`), revirtiendo el
 cambio de orientación aplicado mientras el enemigo estaba fijado como objetivo, y finalmente
-destruye el componente del widget (`K2_DestroyComponent`).
+destruye el componente del widget.
 
 
 ==== Ataque
 
 Al igual que en el ataque del jugador, el inicio y fin de la ventana de detección de
 impacto están delimitados por un _Anim Notify State_ anclado al montage de ataque, el
-cual invoca los eventos `BegomSwordTrace` y `EndSwordTrace` al comenzar y terminar
+cual invoca los eventos `BeginSwordTrace` y `EndSwordTrace` al comenzar y terminar
 dicha ventana respectivamente.
 
 El ataque del esqueleto utiliza el mismo patrón de detección por temporizador que el ataque
 del jugador, aunque con una diferencia en su mecanismo de corte. Al iniciar el ataque
-(`BegomSwordTrace`)
-#footnote[
-  Tal como aparece en el Blueprint; se mantiene el nombre original a pesar de la
-  inconsistencia de escritura respecto a `EndSwordTrace`.
-], se reproduce el sonido de ataque (`SFX_SwordSkele`) y se inicia un temporizador en bucle
+(`BeginSwordTrace`), se reproduce el sonido de ataque (`SFX_SwordSkele`) y se inicia un temporizador en bucle
 cada 0.01 segundos que ejecuta el evento `Damage Trace`. Este evento realiza un
 _Sphere Trace_ de radio 30 entre los componentes `StartOfTrace` y `EndOfTrace`; si detecta
 una colisión válida, aplica el daño definido en la variable `skeleton_damage` sobre el actor
-impactado y, a diferencia del ataque del jugador, **detiene inmediatamente el temporizador**
-mediante `K2_ClearAndInvalidateTimerHandle`, deteniendo la detección tras el primer impacto
+impactado y, a diferencia del ataque del jugador, **detiene inmediatamente el temporizador**, deteniendo la detección tras el primer impacto
 exitoso. Al finalizar la animación de ataque (`EndSwordTrace`), se invalida el temporizador
 si aún se encontraba activo, como medida de seguridad en caso de que el ataque no haya
 conectado con el jugador.
