@@ -1810,6 +1810,10 @@ cada 0.45 segundos, pudiendo así encadenar rolls consecutivos para evadir múlt
   caption: [Secuencia de la animación de esquiva del jugador.],
 ) <fig:roll-adelante>
 
+// acá debería ir el diagrama que resume los dos flujos de esquiva:
+// Flujo 1 (Dash): isEnemyDashing → Roll en zona tanque → RegisterDashDodge(lateral/atrás)
+// Flujo 2 (DelayWindow): ANS_DelayWindow activa isInCorrectDodgeWindow → Roll → RegisterDodgeFromDelayAttack
+
 == Correr
 
 La carrera permite al jugador desplazarse a mayor velocidad a cambio de consumir stamina, y está implementada en el componente `BPC_Combat` mediante el `Input Action` `IA_Run`. A diferencia de otras acciones, esta responde a las distintas fases del input: el momento en que se presiona, mientras se mantiene presionado, y cuando se suelta, lo que permite controlar tanto la activación como el gasto continuo de stamina y el regreso al estado normal.
@@ -2908,17 +2912,19 @@ el de `BA_Poddle` si predominó el ataque a distancia.
 
 *Esquiva* (`ApplyPreCombatDodges`): requiere `TotalDodges` >= 5. Calcula
 `DodgeRatio = DodgesFromDelayAttack / TotalDodges`, es decir, la proporción de esquivas
-totales que corresponden específicamente a esquivas exitosas contra el ataque
-telegrafiado del caballero. Si `DodgeRatio` > 0.6, incrementa en 15 el peso de
+totales realizadas dentro de la ventana de delay de un ataque telegrafiado (compartida
+por el esqueleto normal, el caballero y el jefe melee mediante `ANS_DelayWindow`). Si `DodgeRatio` > 0.6, incrementa en 15 el peso de
 `BA_BasicAttack`. Si `DodgeRatio` < 0.4, incrementa en 15 los pesos de `BA_AOEAttack`,
 `BA_WallAttack` y `BA_HeavyAttack`. Entre ambos umbrales, no hay ajuste.
+
+//Por aca pondre una foto de la ventana de delaywindow para que se entienda
 
 *Zona de tanque* (`ApplyPreCombatTankZone`): evalúa dos aspectos. Si
 `LateralDodgesFromDash` + `BackwardDodgesFromDash` >= 2, incrementa en 10 el peso de
 `BA_WhipAttack` (si predominaron las laterales) o de `BA_HeavyAttack` (si predominaron las
 de retroceso). Si `TotalDodgesTankZone` >= 3, compara si
 `DodgesFromDelayAttack_TankZone * 2` >= `TotalDodgesTankZone`, es decir, si la proporción
-de esquivas exitosas contra el ataque telegrafiado del caballero alcanza o supera el
+de esquivas realizadas dentro de la ventana de delay en la zona de tanque alcanza o supera el
 50%: de ser así, incrementa en 10 el peso de `BA_BasicAttack`; en caso contrario,
 incrementa en 10 los pesos de `BA_HeavyAttack` y `BA_WhipAttack`.
 
