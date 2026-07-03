@@ -1438,7 +1438,7 @@ final del primer y segundo golpe. Cada vez que el notify se activa, se comprueba
 jugador sigue atacando y si tiene la intención de continuar (variables `isAttacking` e
 `isCombo`). Si ambas son verdaderas, se permite que la secuencia continúe y se resetea
 `isCombo` a `false` (a la espera de un nuevo input). En caso contrario, se detiene el
-montage prematuramente mediante `Montage_Stop` y se limpian las variables `isAttacking` e
+montage prematuramente y se limpian las variables `isAttacking` e
 `isCombo`. Cuando el montage se completa o es interrumpido, se restablecen también
 `isAttacking` e `isCombo` a `false` y se restaura el estado de movimiento del personaje;
 en el caso de interrupción, se distingue además si la causa fue la reproducción del
@@ -1908,7 +1908,7 @@ sobre la cual se construyen los demás enemigos. Sus componentes son:
 
 
 #figure(
-  image("imagenes/BP_Skeleton.png", height: 40%),
+  image("imagenes/cap5/BP_Skeleton.png", height: 40%),
   caption: [Blueprint perteneciente al esqueleto normal],
 ) <fig:bp-skeleton>
 
@@ -1955,10 +1955,8 @@ eliminar el widget de _Target Lock_ sobre este enemigo, en caso de que el jugado
 fijado al momento de su muerte.
 
 Internamente, `RemoveWidget` limpia la variable `Target Lock` del jugador y obtiene la
-referencia al widget asociado (`TargetLockWidget`), al cual destruye. A continuación, restablece las variables de movimiento del jugador
-(`bOrientRotationToMovement` a `true` y `bUseControllerDesiredRotation`), revirtiendo el
-cambio de orientación aplicado mientras el enemigo estaba fijado como objetivo, y finalmente
-destruye el componente del widget.
+referencia al widget asociado (`TargetLockWidget`), al cual destruye. A continuación, revierte el cambio de orientación aplicado mientras el enemigo estaba
+fijado como objetivo y finalmente destruye el componente del widget.
 
 
 ==== Ataque
@@ -2173,11 +2171,10 @@ Al igual que el esqueleto normal, la barra de vida rota en cada fotograma
 para orientarse hacia la cámara del jugador.
 
 La detección del jugador mediante el evento `On See Pawn` de `PawnSensing` invoca
-`hasseen`, igual que en los demás esqueletos, e inicia el mismo temporizador en bucle de
-0.5 segundos que dispara el evento `REGISTER_DISTANCE`, descrito en la sección del
-esqueleto normal. La única diferencia es que, naturalmente, la distancia que se calcula y
-registra corresponde a la posición del esqueleto caballero respecto al jugador, en lugar
-de la del esqueleto normal.
+`hasseen`, igual que en los demás esqueletos, e inicia el mismo temporizador en bucle de 0.5 segundos que invoca `RegisterDistance`,
+descrito en la sección del esqueleto normal. La única diferencia es que, naturalmente,
+la distancia que se calcula y registra corresponde a la posición del esqueleto caballero
+respecto al jugador, en lugar de la del esqueleto normal.
 
 ==== Recepción de daño y muerte
 
@@ -2210,8 +2207,6 @@ tras la persecución el caballero no ejecuta una única tarea de ataque, sino qu
 nodo compuesto personalizado llamado "Alternating Selector", con dos ramas: `Attack 1`
 (tarea `KnightAttack1` seguida de una espera de 1 segundo) y `Attack 2` (tarea
 `KnightAttack2` seguida de una espera de 1 segundo).
-
-//poner bh
 
 ===== Selector alternante de ataques
 
@@ -2419,8 +2414,6 @@ En la raíz del Behaviour Tree corre un service (`BTS_UPDTPlayerDistance`), aná
 al `BTS_MageUpdt` del esqueleto mago, que en cada fotograma calcula la distancia
 entre el jefe y el jugador y la almacena en la _Blackboard key_ `PlayerDistance`.
 
-//TODO: poner figura del BT del jefe
-
 ==== Tareas de ataque <sec:tareas-ataque-jefe>
 
 El jefe cuenta con nueve tareas de ataque distintas, identificadas mediante el enum
@@ -2433,8 +2426,7 @@ sección anterior.
 
 Al activarse la tarea, se registra el intento de ataque
 (`RegisterBossAttackAttempt`, con tipo `BA_BasicAttack`) y se reproduce el montage
-`MO_FixBasicAttack`, deteniendo cualquier otro montage en reproducción
-(`bShouldStopAllMontages`). Al completarse o interrumpirse el montage, la tarea
+`MO_FixBasicAttack`, deteniendo cualquier otro montage en reproducción. Al completarse o interrumpirse el montage, la tarea
 finaliza con éxito. En el instante señalado por un único _Animation Notify_, se
 ejecuta un único _Box Trace_ (sin temporizador en bucle) sobre una caja estática de
 100×100×100 unidades, centrada 200 unidades hacia adelante de la posición del jefe y
@@ -2539,12 +2531,11 @@ conectaron con el jugador, por lo que no se registran en las métricas de ataque
 
 ===== Persecución (`BA_BossChase`)
 
-Al activarse, esta tarea inicia un `AIMoveTo` hacia el jugador (`TargetActor`), con
-un radio de aceptación propio de la tarea (`Acceptance Radius`). En paralelo, corre
-un `Delay` de una duración también propia de la tarea (`Duration`), que actúa como
-límite de tiempo. Si el `Delay` se completa primero, se detiene el movimiento y la
-tarea finaliza con éxito. Si el `AIMoveTo` tiene éxito primero, se ejecuta ese mismo
-bloque de detención de movimiento y finalización.
+Al activarse, esta tarea mueve al jefe hacia el jugador con un radio de aceptación
+propio de la tarea. En paralelo, corre un temporizador de una duración también propia
+de la tarea, que actúa como límite de tiempo. Si el temporizador se completa primero,
+se detiene el movimiento y la tarea finaliza con éxito. Si el movimiento llega al
+destino primero, se ejecuta ese mismo bloque de detención y finalización.
 
 
 
@@ -2554,7 +2545,7 @@ Esta tarea hace uso de la forma de charco del jefe, modelada mediante _shape key
 (ver @sec:modelo-animaciones-jefe). Al activarse, se registra el intento de ataque,
 se ajusta la velocidad de movimiento a 600 y se desactiva la colisión del jefe
 contra Pawns y contra dos canales de colisión adicionales del proyecto. Se
-reproduce el montage `MO_PoddleStart`, se inicia un `AIMoveTo` hacia el jugador (sin
+reproduce el montage `MO_PoddleStart`, se inicia el movimiento hacia el jugador (sin
 radio de aceptación), y se programan dos temporizadores: uno a 4 segundos
 (`StartDetecting`) y otro a 7 segundos (`TimeoutdeAtaque`). Finalmente, se marca
 `bIsCharco` como `true` y se reproduce el montage `MO_PoddleDown`, quedando el jefe
@@ -2947,7 +2938,10 @@ una vez.
 Finalmente, en cada fotograma, la barra de vida del maniquí rota
 para orientarse hacia la cámara del jugador, igual que en el resto de los enemigos del juego.
 
-
+#figure(
+  image("imagenes/cap5/bp-manequinn.png", width: 80%),
+  caption: [Blueprint del maniquí.],
+) <fig:bp-manequinn>
 
 ==== Puerta
 
@@ -2969,6 +2963,10 @@ de tutorial la malla estática corresponde a una puerta de madera, en el nivel p
 al jefe se reutiliza el mismo Blueprint con una malla distinta: un portón metálico,
 más acorde con la ambientación de mazmorra.
 
+#figure(
+  image("imagenes/cap5/bp_door.png", width: 80%),
+  caption: [Blueprint de la puerta.],
+) <fig:bp-door>
 
 ==== Espinas
 
@@ -2977,16 +2975,21 @@ Las espinas corresponden al Blueprint `BP_Spykes`, que hereda directamente de
 
 + `DefaultSceneRoot`: componente de escena, raíz del actor.
   + `Box`: componente de colisión, utilizado para detectar el contacto del jugador.
-  + `OPM00411`: malla estática de las espinas.
+  + `SpykesMesh`: malla estática de las espinas.
 
 Su única variable es `RespawnPoint` (Target Point), que referencia el punto al que
 se reposiciona al jugador al caer sobre ellas.
 
-Al superponerse el jugador con el componente `Box` (`ComponentBoundEvent`), se
+Al superponerse el jugador con el componente `Box`, se
 castea el actor superpuesto a `BP_ThirdPersonCharacter_C`; si el cast tiene éxito,
-se le aplica un daño fijo de 30 (`ApplyDamage`) y se lo reposiciona instantáneamente
+se le aplica un daño fijo de 30 y se lo reposiciona instantáneamente
 en la ubicación de `RespawnPoint`. De esta forma, luego de
 hacerle daño al jugador, lo hace aparecer en un lugar seguro.
+
+#figure(
+  image("imagenes/cap5/bp-spykes.png", width: 80%),
+  caption: [Blueprint de las espinas.],
+) <fig:bp-spykes>
 
 ==== Puente
 
@@ -3012,6 +3015,11 @@ Al activarse, guarda la rotación actual del componente `Scene` en `iniRot` y ca
 Timeline que, en cada fotograma, interpola la rotación del puente entre `iniRot` y
 `EndRot`, generando el efecto de que baja hasta quedar habilitado para cruzarlo.
 
+#figure(
+  image("imagenes/cap5/bp-bridge.png", width: 80%),
+  caption: [Blueprint del puente.],
+) <fig:bp-bridge>
+
 ==== Palanca
 
 La palanca corresponde al Blueprint `BP_Lever`, que hereda directamente de `Actor`.
@@ -3033,7 +3041,7 @@ Al superponerse el jugador con `InteractZone`, se castea el actor superpuesto a
 `BP_ThirdPersonCharacter_C` y se comprueba que el componente específico que originó
 la superposición sea su `CapsuleComponent`, filtrando así otras superposiciones no
 relevantes. De cumplirse, se marca `bPlayerInRange` como `true` y se asigna la
-referencia a la palanca (`self`) a la variable `currentLever` del jugador,
+referencia a la palanca a la variable `currentLever` del jugador,
 descrita en la sección de interacción del capítulo 5. Al salir de la zona, se
 revierte el mismo par de operaciones: `bPlayerInRange` vuelve a `false` y
 `currentLever` se limpia.
@@ -3045,6 +3053,11 @@ interacción) se invoca la función `PlayLever`, que reproduce la animación
 por el Level Blueprint de `Lvl_PreBoss`, que es quien efectivamente abre la puerta
 y el atajo correspondientes a cada palanca, según se detalla en la sección de ese
 nivel.
+
+#figure(
+  image("imagenes/cap5/bp-lever.png", width: 80%),
+  caption: [Blueprint de la palanca.],
+) <fig:bp-lever>
 
 ==== Zona de popup (`BP_ZonaPopChico`)
 
@@ -3066,8 +3079,7 @@ Sus variables son las siguientes:
   entrar a la zona.
 
 Al superponerse el jugador con `WidgetZone`, se castea el actor superpuesto a
-`BP_ThirdPersonCharacter_C` y se crea una instancia del widget `WB_PopChico_C`
-(`CreateWidget`), guardada en `WB_Ref` y añadida al _viewport_ (`AddToViewport`).
+`BP_ThirdPersonCharacter_C` y se crea una instancia del widget `WB_PopChico_C`, guardada en `WB_Ref` y añadida al _viewport_.
 A continuación, se invoca sobre ella la función `Calling_Array`, pasándole el
 contenido de `MensajePopUp` como parámetro. Al salir de la zona, se obtiene la
 referencia almacenada en `WB_Ref` y se la remueve de la pantalla
@@ -3085,11 +3097,9 @@ La estructura visual del widget es la siguiente:
 
 Su único evento con lógica es la función `Calling_Array`, invocada externamente,
 como se describió en la sección anterior, al entrar a una zona de popup. Al
-activarse, limpia los hijos actuales de `VerticalBox_71` (`ClearChildren`) y, para
-cada elemento del arreglo recibido como parámetro, crea un `TextBlock`
-(`GenericCreateObject`), le asigna como texto ese elemento (`Conv_StringToText`),
-lo agrega como hijo del `VerticalBox` (`AddChildToVerticalBox`) y centra su
-alineación horizontal (`HAlign_Center`). De esta forma, el widget muestra una línea
+activarse, limpia los hijos actuales de `VerticalBox_71` y, para cada elemento del
+arreglo recibido como parámetro, crea un `TextBlock`, le asigna como texto ese
+elemento, lo agrega como hijo del `VerticalBox` y centra su alineación horizontal. De esta forma, el widget muestra una línea
 de texto centrada por cada elemento del arreglo recibido, reemplazando por
 completo el contenido anterior cada vez que se activa.
 
@@ -3103,9 +3113,7 @@ cámara que acompañan la apertura de cada puerta.
 
 ==== Vinculación de delegados
 
-Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel
-(`MUSIC_TUT`) a un volumen reducido, y se suscribe, mediante la
-función `BindEvent`, a los delegados de derrota de tres actores específicos del
+Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel a un volumen reducido, y se suscribe a los delegados de derrota de tres actores específicos del
 nivel, cada uno asociado a un evento local propio:
 
 + El maniquí de la primera sala (`BP_Dummy`) dispara `OnDummyDied`, el mismo
@@ -3122,13 +3130,11 @@ nivel, cada uno asociado a un evento local propio:
 Cada uno de los tres eventos locales invoca la misma función, `CameraChange`,
 pasándole una cámara y una puerta como parámetros: `Camera Dummy` con
 `BP_DoorDummy`, `CameraLvl1` con `BP_Door`, y `BridgeCamera` con `BP_Bridge`. La
-función hace un blend de cámara hacia el actor recibido como cámara
-(`SetViewTargetWithBlend`) y, a continuación, intenta castear el actor recibido como
-puerta a `BP_Door_C`; si el cast tiene éxito, abre la puerta (`OpenDoor`). En
-cualquier caso, tanto si el cast tiene éxito como si falla, se programa un
-temporizador a 2 segundos que dispara el evento `ReturnToPlayer`, devolviendo el
-control de la cámara al jugador (`SetViewTargetWithBlend` hacia
-`GetPlayerCharacter`).
+función hace un blend de cámara hacia el actor recibido como cámara y, a
+continuación, intenta castear el actor recibido como puerta a `BP_Door_C`; si el
+cast tiene éxito, abre la puerta (`OpenDoor`). En cualquier caso, tanto si el cast
+tiene éxito como si falla, se programa un temporizador a 2 segundos que dispara el
+evento `ReturnToPlayer`, devolviendo el control de la cámara al jugador.
 
 El evento `BridgeCamera` aprovecha precisamente la rama de cast fallido: como
 `BP_Bridge` no corresponde a un `BP_Door_C`, el cast falla y `OpenDoor` nunca se
@@ -3145,10 +3151,8 @@ caballero). La distribución de salas se describe en la sección
 @sec:diseno-niveles; aquí se documenta únicamente la lógica propia de su Level
 Blueprint.
 
-Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel
-(`MUSIC_PRELEVEL`) a un volumen reducido, habilita las métricas
-del jugador (`bMetricsEnabled` en `SlimeGameInstance`), y se suscribe, mediante
-`BindEvent`, al delegado `OnLeverActivated`, descrito en la sección de la
+Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel a un volumen reducido, habilita las métricas
+del jugador (`bMetricsEnabled` en `SlimeGameInstance`), y se suscribe al delegado `OnLeverActivated`, descrito en la sección de la
 Palanca, de las dos palancas del nivel:
 
 + `BP_Lever`, la palanca de la zona de enemigos tanque, vinculada al evento local
@@ -3175,8 +3179,7 @@ y, de tener éxito, invoca su función `OpenDoor`, descrita en la sección de la
 Puerta. Tanto si el cast tiene éxito como si falla, se hace un blend de cámara de
 1.5 segundos hacia la cámara guardada en `CameraShortcut`, y se programa un
 temporizador a 3 segundos que dispara el evento `PlayerReturn`, el cual devuelve
-el control de la cámara al jugador (`SetViewTargetWithBlend` hacia
-`GetPlayerCharacter`).
+el control de la cámara al jugador.
 
 === Lvl_ThirdPerson
 
@@ -3203,16 +3206,15 @@ Sus variables, todas públicas y editables, son las siguientes:
   AI Controller.
 + `Door` (Actor): referencia a la puerta de entrada a la arena.
 
-Las tres cajas de colisión están vinculadas, mediante `ComponentBoundEvent`, a la
-misma secuencia de activación: al superponerse el jugador con cualquiera de ellas,
+Las tres cajas de colisión están vinculadas a la misma secuencia de activación: al superponerse el jugador con cualquiera de ellas,
 se castea el actor superpuesto a `BP_ThirdPersonCharacter_C` y se ingresa a un nodo
 `DoOnce`, que garantiza que la secuencia completa solo se ejecute una vez,
 independientemente de por cuál de las tres cajas haya entrado el jugador.
 
 La secuencia, una vez disparada, es la siguiente:
 
-+ Se deshabilita el input del jugador (`DisableInput`), se reproduce la música del
-  jefe (`MUSIC_BOSS`) a un volumen reducido, y se hace un blend de cámara de 1.5
++ Se deshabilita el input del jugador, se reproduce la música del
+  jefe a un volumen reducido, y se hace un blend de cámara de 1.5
   segundos hacia `CameraBoss`, mostrando al jefe. Transcurridos 3 segundos, se
   dispara el evento `FocusingDoorGate`.
 + `FocusingDoorGate` hace un blend de 1 segundo hacia `CameraDoor` y, sobre la
@@ -3221,12 +3223,10 @@ La secuencia, una vez disparada, es la siguiente:
   paso detrás del jugador en lugar de habilitarlo, dependiendo de la posición
   inicial con la que esta instancia de la puerta esté ubicada en el nivel.
   Transcurridos 2 segundos, se dispara el evento `GoingBackToPlayer`.
-+ `GoingBackToPlayer` hace un blend de 1 segundo de vuelta hacia el jugador
-  (`GetPlayerCharacter`). Transcurrido 1 segundo, se dispara el evento
-  `ActivatingBoss`.
-+ `ActivatingBoss` rehabilita el input del jugador (`EnableInput`) e invoca
-  `ActivateBossController` sobre el AI Controller del jefe (`BossRef.GetController()`,
-  casteado a `BP_BaseAI_Boss_C`), descrita en la sección @sec:activacion-jefe.
++ `GoingBackToPlayer` hace un blend de 1 segundo de vuelta hacia el jugador.
+  Transcurrido 1 segundo, se dispara el evento `ActivatingBoss`.
++ `ActivatingBoss` rehabilita el input del jugador e invoca `ActivateBossController`
+  sobre el AI Controller del jefe, descrita en la sección @sec:activacion-jefe.
   Finalmente, el propio actor `BP_ZonaEntradaJefe` se destruye a sí mismo,
   ya que su propósito se cumple una sola vez.
 
@@ -3252,18 +3252,23 @@ condición experimental vigente.
 
 Cada botón, al pulsarse, dispara la navegación correspondiente:
 
-+ `TutorialButton` carga el nivel `Lvl_Tutorial` (`OpenLevel`).
-+ `DungeonButton` carga el nivel `Lvl_PreBoss` (`OpenLevel`).
-+ `BossButton` carga directamente el nivel `Lvl_ThirdPerson` (`OpenLevel`),
++ `TutorialButton` carga el nivel `Lvl_Tutorial`.
++ `DungeonButton` carga el nivel `Lvl_PreBoss`.
++ `BossButton` carga directamente el nivel `Lvl_ThirdPerson`,
   permitiendo saltar directamente al combate contra el jefe sin pasar por los
   niveles anteriores.
-+ `QuitButton` cierra el juego (`QuitGame`).
++ `QuitButton` cierra el juego.
 
 Finalmente, `CheckBox_0` es la casilla mencionada en el capítulo 4 que controla la
 condición experimental (adaptativa vs. control), ubicada en la esquina inferior
 derecha de la pantalla, separada de los botones principales: al cambiar su
 estado, se castea el _Game Instance_ a `SlimeGameInstance` y se actualiza
 `bAdaptiveEnabled` con el nuevo valor de la casilla.
+
+#figure(
+  image("imagenes/cap5/mainmenu.png", width: 70%),
+  caption: [Menú principal del juego.],
+) <fig:main-menu>
 
 === Pantalla de victoria (`WB_WinnerScreen`)
 
@@ -3275,14 +3280,17 @@ La estructura visual del widget es la siguiente:
     - `Retry Button`: botón "Retry".
     - `Main Menu Button`: botón "Main Menu".
 
-Al pulsar `Retry Button`, se revierte la pausa del juego (`SetGamePaused`), se
-actualiza la visibilidad del cursor (`bShowMouseCursor`), se restablece el modo de
-input a solo-juego (`SetInputMode_GameOnly`) y se vuelve a cargar el nivel actual
-(`OpenLevel`, obteniendo su nombre mediante `GetCurrentLevelName`), reiniciando así
-el combate contra el jefe.
+Al pulsar `Retry Button`, se revierte la pausa del juego, se restablece el modo de
+input y se vuelve a cargar el nivel actual, reiniciando así el combate contra el
+jefe.
 
-Al pulsar `Main Menu Button`, se revierte la pausa del juego (`SetGamePaused`) y se
-carga el nivel `Lvl_MainMenu` (`OpenLevel`).
+Al pulsar `Main Menu Button`, se revierte la pausa del juego y se carga el nivel
+`Lvl_MainMenu`.
+
+#figure(
+  image("imagenes/cap5/winnerscreen.png", width: 70%),
+  caption: [Pantalla de victoria.],
+) <fig:winner-screen>
 
 === Barra de vida del jefe (`WB_BossHealth`)
 
@@ -3298,6 +3306,11 @@ posee lógica propia: es el propio jefe (`BP_Slime`) quien, mediante su variable
 referencia a `BossProgressBar` y actualiza directamente su porcentaje al recibir
 daño.
 
+#figure(
+  image("imagenes/cap5/boss-healthwidget.png", width: 70%),
+  caption: [Barra de vida del jefe.],
+) <fig:boss-health-widget>
+
 === Barra de vida de enemigos normales (`WB_NormalHealth`)
 
 La estructura visual del widget es la siguiente:
@@ -3307,10 +3320,15 @@ La estructura visual del widget es la siguiente:
 
 Al igual que `WB_BossHealth`, este widget no posee lógica propia: es cada actor
 que lo utiliza, el esqueleto normal, el mago, el caballero y el maniquí, quien
-referencia su componente `Health Bar` y actualiza directamente su porcentaje
-(`SetPercent`) al recibir daño, según se detalla en la sección de cada uno de
-ellos. La rotación de la barra hacia la cámara del jugador, descrita en esas
-mismas secciones, tampoco es lógica del widget, sino del actor que lo porta.
+referencia su componente `Health Bar` y actualiza directamente su porcentaje al
+recibir daño, según se detalla en la sección de cada uno de ellos. La rotación de
+la barra hacia la cámara del jugador, descrita en esas mismas secciones, tampoco
+es lógica del widget, sino del actor que lo porta.
+
+#figure(
+  image("imagenes/cap5/normalhealthwidget.png", width: 60%),
+  caption: [Barra de vida de enemigos normales.],
+) <fig:normal-health-widget>
 
 
 ]
