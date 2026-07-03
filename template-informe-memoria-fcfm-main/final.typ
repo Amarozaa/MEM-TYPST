@@ -173,6 +173,10 @@
     frontmatter-section(title: "Agradecimientos", doc)
 }
 
+#let declaracion-ia(doc) = {
+    frontmatter-section(title: "Declaración de uso de inteligencia artificial", doc)
+}
+
 #let abstract(doc) = {
     frontmatter-section(title: "Abstract", doc)
 }

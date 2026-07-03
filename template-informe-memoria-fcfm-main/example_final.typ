@@ -1,4 +1,4 @@
-#import "final.typ": conf, resumen, dedicatoria, agradecimientos, start-doc, end-doc, capitulo, apendice
+#import "final.typ": conf, resumen, dedicatoria, agradecimientos, declaracion-ia, start-doc, end-doc, capitulo, apendice
 #import "metadata.typ": example-metadata
 
 #show: conf.with(metadata: example-metadata)
@@ -17,10 +17,29 @@
 
 #agradecimientos[
     #lorem(150)
-    
+
     #lorem(100)
-    
+
     #lorem(100)
+]
+
+#declaracion-ia[
+    En la elaboración de esta memoria se utilizaron herramientas de inteligencia artificial
+    generativa. Específicamente, se empleó Claude (Anthropic) como asistente durante el
+    proceso de redacción y edición del documento escrito, y también como apoyo en la
+    planificación y diseño de aspectos de la implementación en Unreal Engine 5.6.
+
+    En cuanto a la redacción, la herramienta se utilizó para mejorar la claridad y
+    coherencia de distintas secciones del texto, reformular párrafos y revisar el estilo.
+    Los contenidos técnicos, los argumentos y las decisiones de diseño son de autoría
+    propia; el uso de IA se limitó a la edición y refinamiento de la expresión escrita,
+    no a la generación de ideas o análisis originales. En relación con el desarrollo,
+    la herramienta se consultó para planificar la estructura de ciertos sistemas en
+    Unreal Engine, discutir enfoques de implementación y resolver dudas puntuales
+    durante el proceso de desarrollo del juego.
+
+    Todo el contenido fue revisado y validado por el autor, quien asume plena
+    responsabilidad sobre el trabajo presentado.
 ]
 
 #show: start-doc
@@ -533,11 +552,10 @@
 
     El jefe, en cambio, no es una prueba más que se suma a las tres anteriores: es el
     primer enemigo que responde a las respuestas que el jugador ya dio sobre ritmo,
-    distancia y lectura de ataques. Por eso se descartó la
-    alternativa más común del género, usar múltiples jefes o un mismo jefe dividido en
-    fases fijas, ya que ahí la dificultad depende de qué enemigo o fase le toca a cada
-    jugador, una variable externa a su desempeño. Aquí es un único antagonista el que
-    cambia, en función de cómo jugó quien lo enfrenta.
+    distancia y lectura de ataques. Por eso se optó por un jefe de comportamiento
+    variable en lugar de uno con patrones fijos, donde la dificultad sería la misma para
+    todos los jugadores independientemente de su desempeño. Aquí es un único antagonista
+    el que cambia, en función de cómo jugó quien lo enfrenta.
 
     A diferencia de los demás enemigos, que reutilizan assets existentes, el jefe se
     construyó como un personaje propio (@fig:jefe-modelo). Esto permitió darle distintas
@@ -624,8 +642,7 @@
 
     == Diseño de niveles <sec:diseno-niveles>
 
-    Los niveles se diseñaron como una progresión que ordena, en el tiempo y el espacio,
-    los encuentros descritos en la sección anterior: primero se introduce al jugador en
+    Los niveles se diseñaron como una progresión de encuentros: primero se introduce al jugador en
     un entorno de bajo riesgo, luego se le enfrenta a los tres arquetipos regulares en
     conjunto, y finalmente se le lleva al combate contra el jefe. La ambientación de
     mazmorra que comparten los tres niveles responde a una decisión de producción,
@@ -900,6 +917,50 @@
     por qué se eligió medir eso en particular, y en qué dirección general empuja el
     comportamiento del jefe.
 
+    #figure(
+      {
+        let nb(cnt, fill: luma(215)) = rect(
+          fill: fill, stroke: 0.8pt, radius: 4pt, inset: 8pt, width: 100%, cnt
+        )
+        let db(cnt) = rect(
+          fill: luma(248),
+          stroke: (dash: "dashed", paint: luma(120), thickness: 0.8pt),
+          radius: 4pt, inset: 8pt, width: 100%, cnt
+        )
+
+        align(center,
+          block(width: 130mm,
+            stack(dir: ttb, spacing: 4pt,
+              nb(align(center)[*Nivel previo al jefe*]),
+              grid(columns: (1fr, 1fr, 1fr, 1fr),
+                align(center)[↓], align(center)[↓], align(center)[↓], align(center)[↓]),
+              grid(columns: (1fr, 1fr, 1fr, 1fr), column-gutter: 4pt,
+                nb(align(center)[#text(size: 9pt)[Distancia \ promedio]], fill: luma(238)),
+                nb(align(center)[#text(size: 9pt)[Melee vs. \ rango]], fill: luma(238)),
+                nb(align(center)[#text(size: 9pt)[Efectividad \ de esquiva]], fill: luma(238)),
+                nb(align(center)[#text(size: 9pt)[Zona de \ tanque]], fill: luma(238)),
+              ),
+              align(center)[↓],
+              nb(align(center)[
+                *Pesos de ataque (pre-combate)* \
+                #text(size: 9pt)[(ajustados al iniciar el combate)]
+              ]),
+              align(center)[↓],
+              nb(align(center)[
+                *Behaviour Tree del jefe* \
+                #text(size: 9pt)[(selección ponderada de ataques)]
+              ], fill: luma(190)),
+              grid(columns: (1fr, 1fr), column-gutter: 4pt,
+                db(align(center)[#text(size: 9pt)[↑ Éxito por tipo de ataque \ #emph[(cada 15 ataques)]]]),
+                db(align(center)[#text(size: 9pt)[↑ Curación del jugador \ #emph[(monitoreo continuo)]]]),
+              ),
+            )
+          )
+        )
+      },
+      caption: [Flujo del sistema de adaptación. Los bloques discontinuos (abajo) representan ajustes en tiempo real durante el combate.],
+    ) <fig:flujo-adaptacion>
+
     == Diseño experimental: condición adaptativa y de control
 
     Para poder evaluar si la adaptación realmente cambia la experiencia del jugador, el
@@ -1124,13 +1185,6 @@
       caption: [Regla de adaptación reactiva por proximidad al rango habitual de curación.],
     ) <tbl:regla-curacion>
 
-    == Cierre
-
-    El mecanismo concreto detrás de cada una de estas reglas, las variables exactas, los
-    umbrales numéricos y la forma en que los pesos se almacenan y se actualizan, se
-    documenta en el capítulo 5. Los datos recolectados durante el estudio, junto con la
-    comparación entre la condición adaptativa y la de control, se analizan en el
-    capítulo 6.
 ]
 
 // ==========================================
@@ -1641,7 +1695,7 @@ interrumpirse la animación, se restablece el movimiento del jugador.
   image("imagenes/cap5/player-taking-potion.png", width: 80%),
   caption: [Jugador bebiendo una poción de vida.],
 ) <fig:pocion-vida>
-== Fijado de objetivo (Target Lock)
+== Fijado de objetivo
 
 El sistema de fijado de objetivo (_Target Lock_) permite al jugador centrar la cámara sobre
 un enemigo y mantenerla orientada hacia él durante el combate, facilitando el seguimiento del
@@ -2260,7 +2314,7 @@ justo en el instante del impacto.
   caption: [Secuencia del ataque de avance del esqueleto caballero.],
 ) <fig:knight-dash>
 
-== Jefe (BP_Slime)
+== Jefe
 
 === Modelo y animaciones <sec:modelo-animaciones-jefe>
 
@@ -2375,14 +2429,7 @@ Dentro de cada secuencia, un nodo `Task_SelectDistance` confirma que la distanci
 actual cumple el rango correspondiente y, a continuación, un nodo
 `BTComposite_RandomSelector`, descrito en la siguiente sección, con una instancia por
 cada secuencia, reparte mediante selección aleatoria ponderada entre un subconjunto de
-los nueve ataques del jefe:
-
-+ Secuencia lejana: Charco (`BA_Poddle`), Persecución (`BA_BossChase`), proyectil en
-  línea recta (`BA_ProjectilAttack`) y proyectil homing (`BA_HomingAttack`).
-+ Secuencia media: Básico (`BA_BasicAttack`), salto (`BA_HeavyAttack`) y giro
-  (`BA_WhipAttack`).
-+ Secuencia cercana: Básico (`BA_BasicAttack`), espinas (`BA_AOEAttack`) y muro
-  (`BA_WallAttack`).
+los nueve ataques del jefe (ver @tbl:ataques-jefe en el capítulo 3).
 
 #figure(
   image("imagenes/cap5/BT_Jefe.png", width: 100%),
@@ -2662,6 +2709,56 @@ jugador, implementada principalmente en dos clases de C++: `SlimeGameInstance`, 
 de recolectar las métricas y persistirlas, y `PlayerMetricsComponent`, anclado al jefe,
 encargado de registrar la efectividad de sus ataques y de traducir las métricas recolectadas
 en ajustes sobre su comportamiento.
+
+#figure(
+  {
+    let nb(cnt, fill: luma(218)) = rect(
+      fill: fill, stroke: 0.8pt, radius: 4pt, inset: 7pt, width: 100%, cnt
+    )
+    let db(cnt) = rect(
+      fill: luma(248),
+      stroke: (dash: "dashed", paint: luma(130), thickness: 0.8pt),
+      radius: 4pt, inset: 7pt, width: 100%, cnt
+    )
+    let arr = align(center + horizon, text(size: 16pt, fill: luma(100))[→])
+
+    align(center, block(width: 150mm,
+      stack(dir: ttb, spacing: 6pt,
+        grid(
+          columns: (1fr, auto, 1fr, auto, 1fr, auto, 1fr),
+          column-gutter: 3pt,
+          align: horizon,
+          nb(align(center)[
+            #text(size: 8.5pt, weight: "bold")[Nivel previo] \
+            #text(size: 8pt)[`SlimeGameInstance` \ registra distancia, \ ataques, esquivas \ y curaciones]
+          ]),
+          arr,
+          nb(align(center)[
+            #text(size: 8.5pt, weight: "bold")[Inicio del combate] \
+            #text(size: 8pt)[`PlayerMetrics` \ `Component` traduce \ métricas en pesos \ de ataque]
+          ]),
+          arr,
+          nb(align(center)[
+            #text(size: 8.5pt, weight: "bold")[Blackboard] \
+            #text(size: 8pt)[pesos de cada \ ataque almacenados \ en `AttackWeightsJSON`]
+          ], fill: luma(205)),
+          arr,
+          nb(align(center)[
+            #text(size: 8.5pt, weight: "bold")[Behaviour Tree] \
+            #text(size: 8pt)[selección aleatoria \ ponderada del \ siguiente ataque]
+          ], fill: luma(192)),
+        ),
+        db(align(center)[
+          #text(size: 8.5pt)[
+            Durante el combate los pesos se recalculan: según la tasa de acierto de cada ataque (cada 15 golpes)
+            y la actividad de curación del jugador
+          ]
+        ]),
+      )
+    ))
+  },
+  caption: [Flujo de datos del sistema de métricas. El bloque discontinuo representa la retroalimentación en tiempo real durante el combate.],
+) <fig:flujo-metricas>
 
 === Variables de `SlimeGameInstance`
 
@@ -3377,8 +3474,8 @@ sesión cuando quiera.
 // y de sesiones descartadas.
 En total se reclutó a X participantes. Durante las primeras sesiones se
 detectaron ajustes pendientes en algunas de las métricas registradas, lo
-que invalidó los datos de Y de esas sesiones; descartando esos casos, la
-muestra final utilizada para el análisis quedó compuesta por X-Y
+que invalidó los datos de 3 de esas sesiones; descartando esos casos, la
+muestra final utilizada para el análisis quedó compuesta por X-3
 participantes.
 
 == Equipo de prueba

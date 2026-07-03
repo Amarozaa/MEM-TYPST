@@ -5,19 +5,19 @@
 
 #let example-metadata = (
   // El título de la memoria o tesis, en mayúsculas
-  titulo: "TÍTULO DE LA MEMORIA/TESIS",
-  
+  titulo: "DISEÑO E IMPLEMENTACIÓN DE ENEMIGOS ADAPTATIVOS EN VIDEOJUEGOS",
+
   // El diccionario con nombre y pronombre de la persona que escribe el documento
   autoria: (
-    nombre: "NOMBRE NOMBRE APELLIDO APELLIDO",
-    pronombre: pronombre.elle,
+    nombre: "AMARO ANDRES ZURITA ALVARADO",
+    pronombre: pronombre.el,
   ),
 
   // LISTA de profesores guías, en que cada elemento es un diccionario con nombre y pronombre.
   // recordar que una lista de un solo elemento debe tener una coma al final
   profesores: (
     (
-      nombre: "NOMBRE APELLIDO APELLIDO",
+      nombre: "Francisco J. Gutiérrez",
       pronombre: pronombre.el,
     ), // esta coma es importante para que sea una lista
   ),
@@ -25,8 +25,8 @@
   // LISTA de co-guías, en que cada elemento es un diccionario con nombre y pronombre.
   coguias: (
     (
-      nombre: "NOMBRE APELLIDO APELLIDO",
-      pronombre: pronombre.ella
+      nombre: "Elías Zelada",
+      pronombre: pronombre.el
     ), // esta coma es importante para que sea una lista
   ),
 
@@ -69,9 +69,7 @@
     grado-magister: "COMPUTACIÓN",
 
     comision: (
-      "NOMBRE COMPLETO UNO",
-      "NOMBRE COMPLETO DOS",
-      "NOMBRE COMPLETO TRES",
+      "Valentin Muñoz Apablaza",
     ),
   ),
 )
