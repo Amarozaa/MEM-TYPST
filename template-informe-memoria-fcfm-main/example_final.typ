@@ -687,10 +687,25 @@
     presionarlo varias veces seguidas encadena los golpes en un combo. Recién cuando el
     jugador logra bajarle la vida al maniquí se abre la puerta de salida.
 
+    #figure(
+      image("imagenes/cap3/priemerasalatutoria.png", width: 90%),
+      caption: [La primera sala del tutorial, con el maniquí y la puerta de salida.],
+    ) <fig:primera-sala-tutorial>
+
     La segunda sala es notablemente más larga que la primera. En su recorrido se enseña a
     correr y, ya cerca del primer esqueleto normal que el jugador encuentra, a esquivar,
     aclarando que la esquiva otorga invulnerabilidad. Derrotar a este enemigo abre la
     puerta hacia la tercera sala.
+
+    #figure(
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 8pt,
+        image("imagenes/cap3/pasillo-2nd-room.png", width: 100%),
+        image("imagenes/cap3/exitwithenemy-2nd-room.png", width: 100%),
+      ),
+      caption: [La segunda sala del tutorial: el pasillo principal (izquierda) y el esqueleto junto a la puerta de salida (derecha).],
+    ) <fig:segunda-sala-tutorial>
 
     La tercera sala está dividida por un abismo con espinas en el fondo, cruzado por un
     puente que comienza levantado, con un maniquí ubicado al otro lado. Al entrar, se
@@ -699,10 +714,25 @@
     que el puente permanece levantado y el abismo impide cruzar de otra forma. Al
     lograrlo, el puente baja y habilita el paso.
 
+    #figure(
+      image("imagenes/cap3/espinas-y-puente.png", width: 90%),
+      caption: [El abismo con espinas y el puente levantado en la tercera sala del tutorial.],
+    ) <fig:espinas-puente>
+
     Al otro lado, unas flechas señalan un agujero en el suelo por el que el jugador debe
     dejarse caer para continuar. Tras la caída, el jugador aterriza sobre un campo de
     espinas en la sala siguiente, donde se enseña a alternar entre el hechizo de fuego y
     la poción de vida, pidiéndole específicamente cambiar a la poción y curarse.
+
+    #figure(
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 8pt,
+        image("imagenes/cap3/espinas de la cuarta sala.png", width: 100%),
+        image("imagenes/cap3/salida del tutorial.png", width: 100%),
+      ),
+      caption: [La cuarta sala del tutorial: el campo de espinas (izquierda) y el pasillo final (derecha).],
+    ) <fig:cuarta-sala-tutorial>
 
     El nivel termina poco después, en un pasillo final sin más obstáculos.
 
@@ -718,43 +748,6 @@
     El nivel se organiza en torno a una sala amplia central, desde la cual se accede a dos
     zonas dedicadas, una por cada uno de los arquetipos especializados, antes de poder
     llegar a la puerta del jefe.
-
-    El jugador comienza en una sala vacía y, al avanzar por un primer tramo de pasillos, se
-    encuentra de inmediato con el primer esqueleto normal, que patrulla la zona. Al final de
-    estos pasillos se abre la sala amplia mencionada, donde patrullan dos esqueletos
-    normales adicionales.
-
-    Al frente de esta sala, en el extremo opuesto a la entrada, se encuentra la puerta de
-    acceso al jefe, bloqueada por dos puertas metálicas dispuestas una tras otra. Abrir
-    ambas es la condición para avanzar, y cada una se desbloquea completando una de las dos
-    zonas laterales que se describen a continuación. Además de la entrada por los pasillos y
-    de esta puerta bloqueada, la sala amplia tiene otras dos salidas, una hacia cada zona,
-    junto con dos puertas metálicas adicionales que funcionan únicamente como atajos de
-    regreso.
-
-    La salida izquierda lleva, mediante una escalera, a un segundo piso que corresponde a la
-    zona de enemigos tanque, es decir, a los esqueletos caballero. Tras avanzar un poco se
-    encuentra el primer caballero y, más adelante en la misma sala, el segundo. Al final de
-    la zona, una palanca abre a la vez una de las dos puertas metálicas que bloquean el
-    acceso al jefe y una puerta de atajo, por la que el jugador puede bajar una escalera y
-    volver directamente a la sala amplia sin repetir el recorrido.
-
-    La salida derecha conduce a la zona de rango. Tras cambiar de sala, el jugador encuentra
-    al primer esqueleto mago; pasado este, una escalera sube a un segundo piso de la misma
-    zona, donde esperan tres esqueletos mago dispuestos sobre plataformas, cada una con una
-    rampa en su parte posterior que permite subir y atacarlos cuerpo a cuerpo, sin perjuicio
-    de poder seguir atacándolos a distancia con la bola de fuego. Al final de esta sala, otra
-    palanca abre la segunda puerta metálica de acceso al jefe junto con su propia puerta de
-    atajo, que de igual forma permite bajar y regresar a la sala amplia.
-
-    Una vez abiertas ambas puertas metálicas, una desde cada zona, el jugador puede
-    finalmente acceder a la sala del jefe.
-
-    Todo lo que el jugador hace en este nivel, cómo enfrenta a cada arquetipo, cómo
-    esquiva, etc., queda registrado y se utiliza más adelante para ajustar el
-    comportamiento del jefe; el mecanismo concreto de ese ajuste se explica en el
-    capítulo 4. Por ahora basta con entender este nivel como el último punto de referencia
-    sobre el jugador antes de que comience el combate final.
 
     #figure(
       grid(
@@ -780,6 +773,98 @@
       )),
       caption: [Simbología utilizada en los minimapas del nivel previo al jefe.],
     ) <tbl:simbologia-dungeon>
+
+    El jugador comienza en una sala vacía y, al avanzar por un primer tramo de pasillos, se
+    encuentra de inmediato con el primer esqueleto normal, que patrulla la zona. Al final de
+    estos pasillos se abre la sala amplia mencionada, donde patrullan dos esqueletos
+    normales adicionales.
+
+    #figure(
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 8pt,
+        image("imagenes/cap3/sala-inicio-nivelprevio.png", width: 100%),
+        image("imagenes/cap3/sala-central-nivelprevio.png", width: 100%),
+      ),
+      caption: [La sala inicial del nivel previo al jefe (izquierda) y la sala amplia central (derecha).],
+    ) <fig:salas-inicio-central>
+
+    Al frente de esta sala, en el extremo opuesto a la entrada, se encuentra la puerta de
+    acceso al jefe, bloqueada por dos puertas metálicas dispuestas una tras otra. Abrir
+    ambas es la condición para avanzar, y cada una se desbloquea completando una de las dos
+    zonas laterales que se describen a continuación. Además de la entrada por los pasillos y
+    de esta puerta bloqueada, la sala amplia tiene otras dos salidas, una hacia cada zona,
+    junto con dos puertas metálicas adicionales que funcionan únicamente como atajos de
+    regreso.
+
+    #figure(
+      image("imagenes/cap3/gates-zona-principal.png", width: 80%),
+      caption: [Las dos puertas metálicas que bloquean el acceso al jefe.],
+    ) <fig:gates-principal>
+
+    #figure(
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 8pt,
+        image("imagenes/cap3/salida-izq-hacia-zonatanquel-nivelprevio.png", width: 100%),
+        image("imagenes/cap3/salida-der-hacia-zonaenemigosrango-nivelprevio.png", width: 100%),
+      ),
+      caption: [Salida izquierda hacia la zona tanque (izquierda) y salida derecha hacia la zona de rango (derecha).],
+    ) <fig:salidas-zonas>
+
+    La salida izquierda lleva, mediante una escalera, a un segundo piso que corresponde a la
+    zona de enemigos tanque, es decir, a los esqueletos caballero. Tras avanzar un poco se
+    encuentra el primer caballero y, más adelante en la misma sala, el segundo. Al final de
+    la zona, una palanca abre a la vez una de las dos puertas metálicas que bloquean el
+    acceso al jefe y una puerta de atajo, por la que el jugador puede bajar una escalera y
+    volver directamente a la sala amplia sin repetir el recorrido.
+
+    #figure(
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 8pt,
+        image("imagenes/cap3/primer-enemigo-zonatanque.png", width: 100%),
+        image("imagenes/cap3/segundo-enemigo-zonatanque.png", width: 100%),
+      ),
+      caption: [El primer y segundo esqueleto caballero en la zona tanque.],
+    ) <fig:caballeros-zonatanque>
+
+    #figure(
+      image("imagenes/cap3/palanca-zona-tanque.png", width: 70%),
+      caption: [La palanca al final de la zona tanque.],
+    ) <fig:palanca-zonatanque>
+
+    La salida derecha conduce a la zona de rango. Tras cambiar de sala, el jugador encuentra
+    al primer esqueleto mago; pasado este, una escalera sube a un segundo piso de la misma
+    zona, donde esperan tres esqueletos mago dispuestos sobre plataformas, cada una con una
+    rampa en su parte posterior que permite subir y atacarlos cuerpo a cuerpo, sin perjuicio
+    de poder seguir atacándolos a distancia con la bola de fuego. Al final de esta sala, otra
+    palanca abre la segunda puerta metálica de acceso al jefe junto con su propia puerta de
+    atajo, que de igual forma permite bajar y regresar a la sala amplia.
+
+    #figure(
+      grid(
+        columns: (1fr, 1fr),
+        column-gutter: 8pt,
+        image("imagenes/cap3/primer-enemigo-zonarango.png", width: 100%),
+        image("imagenes/cap3/sala-con-3magos-zonarango.png", width: 100%),
+      ),
+      caption: [El primer esqueleto mago (izquierda) y los tres magos del segundo piso de la zona de rango (derecha).],
+    ) <fig:magos-zonarango>
+
+    #figure(
+      image("imagenes/cap3/palanca-zona-rango.png", width: 80%),
+      caption: [La palanca al final de la zona de rango.],
+    ) <fig:palanca-zonarango>
+
+    Una vez abiertas ambas puertas metálicas, una desde cada zona, el jugador puede
+    finalmente acceder a la sala del jefe.
+
+    Todo lo que el jugador hace en este nivel, cómo enfrenta a cada arquetipo, cómo
+    esquiva, etc., queda registrado y se utiliza más adelante para ajustar el
+    comportamiento del jefe; el mecanismo concreto de ese ajuste se explica en el
+    capítulo 4. Por ahora basta con entender este nivel como el último punto de referencia
+    sobre el jugador antes de que comience el combate final.
 
     === Arena del jefe
 
@@ -2012,7 +2097,7 @@ _Blackboard key_ `distanceToPlayer`:
   directamente `CloseMage`, su ataque cuerpo a cuerpo, descrito más abajo.
 
 La decisión entre ambas secuencias se evalúa mediante la tarea `Task_MageDist`, la cual
-finaliza (`FinishExecute`) con éxito si la distancia actual al jugador (_Blackboard key_
+finaliza con éxito si la distancia actual al jugador (_Blackboard key_
 `distanceToPlayer`) es menor estricta que `max_dist` y, a la vez, mayor o igual que
 `min_dist`, es decir, si cae dentro del rango `[min_dist, max_dist)` propio de la
 secuencia evaluada, y con fracaso en caso contrario.
@@ -2025,8 +2110,8 @@ secuencia evaluada, y con fracaso en caso contrario.
 ==== Ataque a distancia (`MagicAttack`)
 
 Al activarse esta tarea, se marca la variable `onRotate` como `true` y se reproduce el
-montage `MO_MagicAttack`. Mientras `onRotate` es `true` (evaluado en cada fotograma, en
-`ReceiveTickAI`), el mago interpola su rotación hacia la posición del jugador, de forma
+montage `MO_MagicAttack`. Mientras `onRotate` es `true`, en cada fotograma el mago interpola su rotación hacia la
+posición del jugador, de forma
 idéntica al sistema de orientación visto en el ataque del esqueleto normal. En el instante
 indicado por un _Animation Notify_ del montage, `onRotate` se marca como `false`, deteniendo
 la rotación, y se instancia un proyectil (`BP_SkeletonBall`) desde una posición desplazada
@@ -2144,7 +2229,7 @@ ciclo, en lugar de elegir entre ellos al azar.
 
 ===== Tareas `KnightAttack1` y `KnightAttack2`
 
-Ambas tareas comparten una misma estructura. Al activarse (`ReceiveExecuteAI`), se marca
+Ambas tareas comparten una misma estructura. Al activarse, se marca
 `onRotate` como `true` y se guarda una referencia casteada al propio caballero
 (`SkelePawn`), utilizada luego en el cálculo del _trace_ de daño. A continuación se
 reproduce un _Animation Montage_: `MO_AvanceV3` con velocidad de reproducción 1.0 en
@@ -2396,7 +2481,7 @@ posteriormente), la posición inicial del jefe y la posición del jugador en ese
 momento. El jefe pasa a modo de movimiento `Flying` y deja de colisionar con Pawns,
 y reproduce el montage `MO_JumpAttackV3`. Transcurridos 0.9 segundos desde el inicio
 del montage, se marca la variable `bMove` como `true`; mientras esta sea `true`, en
-cada fotograma (`ReceiveTickAI`) el jefe se desplaza hacia la posición guardada del
+cada fotograma el jefe se desplaza hacia la posición guardada del
 jugador y rota hacia ella. En el instante señalado por el _Animation Notify_, se
 invoca la función `Hitbox&KnockBack`. Esta función ejecuta un _Sphere Trace_ de
 radio 450 centrado en la posición del jefe; de detectarse una colisión válida, se
@@ -2477,7 +2562,7 @@ en su forma de charco.
 
 Al dispararse `StartDetecting` (4 segundos después de iniciada la tarea), se marca
 `bIsDetectingPlayer` como `true`. A partir de ese momento, en cada fotograma
-(`ReceiveTickAI`) se comprueba, mientras `bIsDetectingPlayer` sea `true`, si el
+se comprueba, mientras `bIsDetectingPlayer` sea `true`, si el
 jugador se encuentra a menos de 250 unidades del jefe; de ser así, se marca
 `bIsDetectingPlayer` nuevamente como `false`, se cancela el temporizador de
 `TimeoutdeAtaque` y se invoca dicho evento manualmente, adelantando el fin del
@@ -2611,6 +2696,8 @@ comportamiento del jefe, son el registro de aciertos por tipo de ataque
 calculada en la fase pre-combate, para ajustar la presión de ataque cuando el jugador entra
 en su rango habitual de curación.
 
+#[
+#set par(justify: false)
 *Distancia*
 + `DistanceAccum`, `DistanceSamples`: acumulador y contador de muestras de distancia
   (pre-combate).
@@ -2658,6 +2745,7 @@ en su rango habitual de curación.
 + `bMetricsEnabled`: habilita o no la recolección durante el nivel.
 + `SessionId`: identificador de sesión, generado a partir de fecha y hora.
 + `AttemptNumber`: número de intento actual contra el jefe.
+]
 
 === Funciones de registro (`SlimeGameInstance`)
 
@@ -2665,6 +2753,8 @@ Sobre las variables anteriores operan las siguientes funciones, todas siguiendo 
 patrón: bifurcan su comportamiento según `isInCombat`, actualizando el conjunto de variables
 de la fase correspondiente.
 
+#[
+#set par(justify: false)
 + `RegisterDistance(Distance)`: acumula `Distance` en `DistanceAccum` (o su equivalente de
   combate), incrementa el contador de muestras, y recalcula el promedio dividiendo el
   acumulador entre el número de muestras.
@@ -2690,6 +2780,7 @@ de la fase correspondiente.
   además `DodgesFromDelayAttack_TankZone` en ambos casos.
 + `RegisterDamageTakenInTankZone()`: incrementa `DamageTakenInTankZone`. No bifurca por
   `isInCombat`, solo depende de `bMetricsEnabled`.
+]
 
 === Registro de ataques del jefe (`PlayerMetricsComponent`)
 
@@ -2771,6 +2862,8 @@ tipo de ataque (o -1 si no se encuentra).
 
 Los datos se persisten en archivos JSON dentro de `Saved/StudyLogs`:
 
+#[
+#set par(justify: false)
 + `DumpMetricsToFile` (`SlimeGameInstance`): vuelca las variables de la fase pre-combate
   (`AverageDistance`, `DistanceSamples`, `MeleeAttacks`, `RangedAttacks`,
   `MeleeAttacksInRangedZone`, `RangedAttacksInRangedZone`, `TotalDodges`,
@@ -2783,6 +2876,7 @@ Los datos se persisten en archivos JSON dentro de `Saved/StudyLogs`:
   o `_retry_{AttemptNumber}.json`, según corresponda.
 + `DumpFinalTreeToFile` (`PlayerMetricsComponent`): vuelca únicamente `AttackWeightsJSON` a
   `session_{SessionId}_{condición}_tree.json`.
+]
 
 En todos los casos, `SessionId` (generado a partir de fecha y hora) y la condición
 experimental (`adaptive` o `control`, según `bAdaptiveEnabled`) identifican tanto el
@@ -2824,15 +2918,14 @@ Sus variables son las siguientes:
 + `bSingleOpenDoor` (Boolean): bandera que evita que la lógica de derrota, y con
   ella el delegado asociado, se ejecute más de una vez.
 
-Al comenzar a jugar (`ReceiveBeginPlay`), obtiene el widget de su barra de
+Al comenzar a jugar, obtiene el widget de su barra de
 vida (`Health Bar Widget`), lo castea a `WB_NormalHealth_C` y fija la barra al 100 %
 (`SetPercent`, `InPercent` = 1.0).
 
-Al recibir daño (`ReceiveAnyDamage`), se vuelve a castear el widget y se resta el
+Al recibir daño, se vuelve a castear el widget y se resta el
 daño recibido a la variable `health`, actualizando la barra según la proporción
 `health` / `maxhealth`. En todo golpe, independientemente de si la vida llega a 0 o
-no, se reinicia y reproduce una Timeline que, en cada fotograma, rota el maniquí
-(`K2_SetRelativeRotation`) en función de su valor multiplicado por 10, dando el
+no, se reinicia y reproduce una Timeline que, en cada fotograma, rota el maniquí en función de su valor multiplicado por 10, dando el
 efecto visual de que el maniquí se tambalea al recibir el impacto.
 
 Adicionalmente, si `health` cae a 0 o menos, se comprueba la variable
@@ -2846,14 +2939,15 @@ se inicia un temporizador en bucle de 0.03 segundos que dispara el evento
 El evento `CustomEvent`, disparado en bucle mientras el temporizador está activo,
 regenera la vida del maniquí en 3 puntos por cada ejecución, actualizando la barra
 de vida en cada iteración. Al alcanzar nuevamente 100 de vida, se invalida el
-temporizador (`K2_ClearAndInvalidateTimerHandle`), deteniendo la regeneración. De
+temporizador, deteniendo la regeneración. De
 esta forma, el maniquí no se destruye al ser derrotado, sino que se regenera
 progresivamente, quedando disponible para que el jugador practique sobre él más de
 una vez.
 
-Finalmente, en cada fotograma (`ReceiveTick`), la barra de vida del maniquí rota
-para orientarse hacia la cámara del jugador (`FindLookAtRotation` entre la posición
-del widget y la del jugador), igual que en el resto de los enemigos del juego.
+Finalmente, en cada fotograma, la barra de vida del maniquí rota
+para orientarse hacia la cámara del jugador, igual que en el resto de los enemigos del juego.
+
+
 
 ==== Puerta
 
@@ -2867,12 +2961,14 @@ son las siguientes:
 
 Su lógica se reduce a la función `OpenDoor`, invocada externamente, como se vio en
 la sección de `Lvl_Tutorial`, al derrotar al enemigo o maniquí correspondiente. Al
-activarse, guarda la posición actual de la puerta en `InitPos`
-(`K2_GetActorLocation`) y calcula `EndPos` desplazándola 300 unidades hacia arriba
-en el eje Z. A continuación reproduce una Timeline que, en cada fotograma,
-interpola la posición relativa de la puerta (`K2_SetRelativeLocation`) entre
-`InitPos` y `EndPos` mediante `VLerp`, según el valor de la Timeline, generando el
-efecto de que la puerta se desliza hacia arriba al abrirse.
+activarse, registra la posición actual de la puerta en `InitPos` y calcula `EndPos`
+desplazándola 300 unidades hacia arriba en el eje Z. A continuación reproduce una
+Timeline que, en cada fotograma, interpola la posición de la puerta entre `InitPos`
+y `EndPos`, generando el efecto de que se desliza hacia arriba al abrirse. Si bien en el nivel
+de tutorial la malla estática corresponde a una puerta de madera, en el nivel previo
+al jefe se reutiliza el mismo Blueprint con una malla distinta: un portón metálico,
+más acorde con la ambientación de mazmorra.
+
 
 ==== Espinas
 
@@ -2889,7 +2985,7 @@ se reposiciona al jugador al caer sobre ellas.
 Al superponerse el jugador con el componente `Box` (`ComponentBoundEvent`), se
 castea el actor superpuesto a `BP_ThirdPersonCharacter_C`; si el cast tiene éxito,
 se le aplica un daño fijo de 30 (`ApplyDamage`) y se lo reposiciona instantáneamente
-en la ubicación de `RespawnPoint` (`K2_SetActorLocation`). De esta forma, luego de
+en la ubicación de `RespawnPoint`. De esta forma, luego de
 hacerle daño al jugador, lo hace aparecer en un lugar seguro.
 
 ==== Puente
@@ -2911,12 +3007,10 @@ Sus variables, ambas públicas y editables, son las siguientes:
 
 Su lógica se reduce a la función `RotateBridge`, invocada externamente, como se vio
 en la sección de `Lvl_Tutorial`, al derrotar al maniquí del otro lado del abismo.
-Al activarse, guarda la rotación actual del componente `Scene` en `iniRot`
-(`K2_GetComponentRotation`) y calcula `EndRot` componiéndola con un giro adicional
-de -90°. A continuación reproduce una Timeline que, en cada fotograma, interpola la
-rotación relativa del puente (`K2_SetRelativeRotation`) entre `iniRot` y `EndRot`
-mediante `RLerp`, según el valor de la Timeline, generando el efecto de que el
-puente baja hasta quedar habilitado para cruzarlo.
+Al activarse, guarda la rotación actual del componente `Scene` en `iniRot` y calcula
+`EndRot` componiéndola con un giro adicional de -90°. A continuación reproduce una
+Timeline que, en cada fotograma, interpola la rotación del puente entre `iniRot` y
+`EndRot`, generando el efecto de que baja hasta quedar habilitado para cruzarlo.
 
 ==== Palanca
 
@@ -3009,8 +3103,8 @@ cámara que acompañan la apertura de cada puerta.
 
 ==== Vinculación de delegados
 
-Al comenzar a jugar (`ReceiveBeginPlay`), el Level Blueprint reproduce la música de
-fondo del nivel (`MUSIC_TUT`) a un volumen reducido, y se suscribe, mediante la
+Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel
+(`MUSIC_TUT`) a un volumen reducido, y se suscribe, mediante la
 función `BindEvent`, a los delegados de derrota de tres actores específicos del
 nivel, cada uno asociado a un evento local propio:
 
@@ -3051,8 +3145,8 @@ caballero). La distribución de salas se describe en la sección
 @sec:diseno-niveles; aquí se documenta únicamente la lógica propia de su Level
 Blueprint.
 
-Al comenzar a jugar (`ReceiveBeginPlay`), el Level Blueprint reproduce la música
-de fondo del nivel (`MUSIC_PRELEVEL`) a un volumen reducido, habilita las métricas
+Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel
+(`MUSIC_PRELEVEL`) a un volumen reducido, habilita las métricas
 del jugador (`bMetricsEnabled` en `SlimeGameInstance`), y se suscribe, mediante
 `BindEvent`, al delegado `OnLeverActivated`, descrito en la sección de la
 Palanca, de las dos palancas del nivel:
@@ -3133,8 +3227,8 @@ La secuencia, una vez disparada, es la siguiente:
 + `ActivatingBoss` rehabilita el input del jugador (`EnableInput`) e invoca
   `ActivateBossController` sobre el AI Controller del jefe (`BossRef.GetController()`,
   casteado a `BP_BaseAI_Boss_C`), descrita en la sección @sec:activacion-jefe.
-  Finalmente, el propio actor `BP_ZonaEntradaJefe` se destruye
-  (`K2_DestroyActor`), ya que su propósito se cumple una sola vez.
+  Finalmente, el propio actor `BP_ZonaEntradaJefe` se destruye a sí mismo,
+  ya que su propósito se cumple una sola vez.
 
 == Widgets generales (MainMenu, WinnerScreen...)
 
