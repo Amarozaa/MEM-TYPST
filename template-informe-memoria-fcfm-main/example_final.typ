@@ -1810,9 +1810,10 @@ cada 0.45 segundos, pudiendo así encadenar rolls consecutivos para evadir múlt
   caption: [Secuencia de la animación de esquiva del jugador.],
 ) <fig:roll-adelante>
 
-// acá debería ir el diagrama que resume los dos flujos de esquiva:
-// Flujo 1 (Dash): isEnemyDashing → Roll en zona tanque → RegisterDashDodge(lateral/atrás)
-// Flujo 2 (DelayWindow): ANS_DelayWindow activa isInCorrectDodgeWindow → Roll → RegisterDodgeFromDelayAttack
+#figure(
+  image("imagenes/cap5/flujo-esquiva.svg", width: 90%),
+  caption: [Flujos de registro de esquiva: ataque de avance (Flujo 1) y ventana de delay (Flujo 2).],
+) <fig:flujo-esquiva>
 
 == Correr
 
