@@ -1,0 +1,59 @@
+== Resultados
+
+=== Verificación técnica del sistema adaptativo
+
+Antes de analizar la experiencia reportada por los participantes, se verificó que el
+mecanismo de adaptación descrito en @sec:pesos-ataque efectivamente se comportó según lo
+documentado. Para ello se comparó, en cada una de las 15 sesiones del grupo adaptativo, el
+ajuste de pesos predicho por las reglas de #c("ApplyPreCombatMeleeVsRanged"),
+#c("ApplyPreCombatDodges") y #c("ApplyPreCombatTankZone") --aplicadas manualmente sobre
+las métricas de exploración de cada participante-- contra el estado real registrado en
+el archivo de pesos previo al combate. Las predicciones coincidieron exactamente con el
+registro real en las 15 sesiones, confirmando que el mecanismo de adaptación pre-combate
+opera tal como fue diseñado.
+
+Adicionalmente, se comparó ese mismo estado pre-combate contra los pesos finales
+registrados al término de cada partida, para aislar el efecto del ajuste ocurrido
+durante el combate mismo (evaluación de aciertos por tipo de ataque y de proximidad de
+curación, descritas en @sec:pesos-ataque). En 14 de las 15 sesiones se observó un cambio
+neto de pesos atribuible al combate, con magnitudes que oscilaron entre -135 y +60
+puntos (suma de las desviaciones respecto al valor previo al combate), lo que indica que
+ambos mecanismos de ajuste -- pre-combate y durante el combate -- estuvieron activos en
+la gran mayoría de las sesiones evaluadas.
+
+// TODO: agregar tabla con columnas: codigo, magnitud_precombate_real, magnitud_final_real,
+// magnitud_atribuible_a_combate (ver adaptacion_por_participante.csv)
+
+=== Usabilidad (SUS)
+
+Se aplicó el System Usability Scale (SUS) adaptado a contexto de videojuegos al cierre
+de cada sesión, sobre el total de la muestra válida (N=30; 15 en condición control, 15
+en condición adaptativa). El puntaje promedio general fue de 77.9 (mediana 77.5,
+DE=7.80), sobre el punto de referencia habitual de la industria (68), y cercano al
+umbral considerado "Excelente" (80.3). De los 30 participantes, 11 calificaron su
+experiencia como Excelente, 14 como Buena y 5 como Aceptable, sin registrarse
+evaluaciones en la categoría Pobre.
+
+Al desagregar por condición, el grupo control obtuvo un promedio de 77.83 (mediana
+80.00, DE=8.44) y el grupo adaptativo un promedio de 78.00 (mediana 77.50, DE=7.39),
+sin diferencias apreciables en la distribución de bandas de calificación entre ambos
+grupos (control: 6 Excelente, 6 Bueno, 3 Aceptable; adaptativo: 5 Excelente, 8 Bueno, 2
+Aceptable).
+
+Se evaluó el supuesto de normalidad mediante la prueba de Shapiro-Wilk de forma
+independiente para cada condición, no encontrándose evidencia de desviación respecto a
+la normalidad (control: W=0.951, p=.538; adaptativo: W=0.935, p=.322). No obstante, y
+por consistencia con el resto de las variables analizadas en este capítulo
+// TODO: cuando se defina donde queda la tabla general de Shapiro-Wilk (todas las
+// variables), agregar aqui la referencia cruzada correspondiente, ej: "ver @sec:XXX"
+--varias de las cuales sí mostraron desviaciones significativas de la normalidad--, se
+optó por aplicar de igual forma la prueba no paramétrica U de Mann-Whitney sobre la
+diferencia de medianas. El resultado no mostró diferencias
+significativas entre condiciones (U=112.0, p=1.000, efecto rank-biserial=0.00), lo que
+indica que la usabilidad percibida del prototipo no se vio afectada por la presencia del
+sistema de adaptación. Este resultado es consistente con lo esperado: el mecanismo
+adaptativo modifica el comportamiento del jefe, no la interfaz ni los controles del
+juego, por lo que no debería impactar la usabilidad general.
+
+// TODO: insertar aqui panel_geq_sus.png (o solo el panel de SUS) como figura,
+// y la tabla resumen_sus_geq.png si se quiere en formato imagen

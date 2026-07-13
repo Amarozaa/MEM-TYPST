@@ -5,7 +5,7 @@
 
 #let example-metadata = (
   // El título de la memoria o tesis, en mayúsculas
-  titulo: "DISEÑO E IMPLEMENTACIÓN DE ENEMIGOS ADAPTATIVOS EN VIDEOJUEGOS",
+  titulo: "DISEÑO E IMPLEMENTACIÓN DE ENEMIGOS ADAPTATIVOS EN VIDEOJUEGOS DE ACCIÓN Y ROL",
 
   // El diccionario con nombre y pronombre de la persona que escribe el documento
   autoria: (

@@ -479,7 +479,18 @@
     responder a los resultados de esas pruebas. El detalle de cómo se llega a esa
     progresión a lo largo de los niveles del juego se aborda en la siguiente sección.
 
-    El primer arquetipo, el esqueleto normal, corresponde al enemigo más básico del
+    El primer arquetipo, el esqueleto normal#footnote[
+      Modelo 3D "Skeleton Character PSX" por vinrax, licenciado bajo
+      #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0]. Se modificó el
+      modelo original agregando rig y animaciones mediante Mixamo. Este mismo modelo se
+      utilizó también para el esqueleto mago, diferenciándose únicamente en el arma
+      equipada: la espada proviene del pack "Dungeon Environment / 135+ Assets" de
+      PackDev citado en la sección @sec:diseno-niveles, mientras que el báculo del mago
+      corresponde al modelo 3D "Khajiiti Moon Staff" por Shriker1, licenciado bajo
+      #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0]
+      (#link("https://sketchfab.com/3d-models/khajiiti-moon-staff-87cca6fa0b94448b97a3b354843393e1")[disponible en sitio web]).
+      #link("https://sketchfab.com/3d-models/skeleton-character-psx-ece576bbed4b4364911c7596d828a558")[Disponible en sitio web].
+    ], corresponde al enemigo más básico del
     juego: un enemigo cuerpo a cuerpo que persigue al jugador y cuyo único ataque es un
     golpe directo de espada, sin variaciones ni segundas intenciones. Su rol es introducir
     el ciclo de combate fundamental: acercarse, esquivar y golpear, sin agregar elementos
@@ -511,7 +522,14 @@
     - *Ataque cuerpo a cuerpo*: golpea con su báculo cuando el jugador se encuentra a
       corta distancia, recurriendo a él solo en ese caso.
 
-    El tercer arquetipo, el esqueleto caballero, se diseñó con un propósito distinto a los
+    El tercer arquetipo, el esqueleto caballero#footnote[
+      Modelo 3D "Skeleton Lord" por DJMaesen (bumstrum), licenciado bajo
+      #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0]. Se modificó el
+      modelo original agregando rig y animaciones mediante Mixamo. El arma equipada
+      proviene del pack "Dungeon Environment / 135+ Assets" de PackDev citado en la
+      sección @sec:diseno-niveles.
+      #link("https://sketchfab.com/3d-models/skeleton-lord-a3f7b44275cf4c489ad62c535268ac16")[Disponible en sitio web].
+    ], se diseñó con un propósito distinto a los
     dos anteriores: a diferencia del esqueleto normal y del mago, cuyos ataques se
     resuelven con relativamente poca preparación visible, los dos ataques del caballero
     están marcadamente telegrafiados, es decir, tienen una preparación larga y claramente
@@ -646,7 +664,11 @@
     un entorno de bajo riesgo, luego se le enfrenta a los tres arquetipos regulares en
     conjunto, y finalmente se le lleva al combate contra el jefe. La ambientación de
     mazmorra que comparten los tres niveles responde a una decisión de producción,
-    aprovechar assets disponibles de Fab (Unreal Engine Marketplace), y no condiciona las
+    aprovechar assets disponibles de Fab (Unreal Engine Marketplace)#footnote[
+      Asset "Dungeon Environment / 135+ Assets" por PackDev, obtenido de Fab bajo la Fab
+      Standard License.
+      #link("https://www.fab.com/listings/bb39bae4-7f7a-4127-b07e-151cf52db0f6")[Disponible en sitio web].
+    ], y no condiciona las
     decisiones de diseño que se describen a continuación.
 
     === Nivel de tutorial
@@ -830,7 +852,8 @@
     ) <fig:salidas-zonas>
 
     La salida izquierda lleva, mediante una escalera, a un segundo piso que corresponde a la
-    zona de enemigos tanque, es decir, a los esqueletos caballero. Tras avanzar un poco se
+    zona de enemigos de tipo tanque (enemigos lentos pero de gran resistencia y daño elevado),
+    es decir, a los esqueletos caballero. Tras avanzar un poco se
     encuentra el primer caballero y, más adelante en la misma sala, el segundo. Al final de
     la zona, una palanca abre a la vez una de las dos puertas metálicas que bloquean el
     acceso al jefe y una puerta de atajo, por la que el jugador puede bajar una escalera y
@@ -1001,6 +1024,12 @@
     el jugador. A diferencia de las cuatro dimensiones anteriores, esta observación no se
     usa para ajustar los pesos antes del combate, sino durante este, como se describe más
     adelante en la sección "Ajuste durante el combate".
+
+    Cabe señalar que los valores numéricos concretos que aparecen en las reglas de este
+    capítulo (tanto los umbrales de activación como las magnitudes de los ajustes de peso)
+    no se derivaron analíticamente, sino que se fijaron de forma iterativa mediante pruebas
+    de juego durante el desarrollo, buscando que los cambios en el comportamiento del jefe
+    resultaran perceptibles sin volverse abruptos.
 
     === Distancia
 
@@ -1211,7 +1240,7 @@ directamente a la programación del juego.
 La plantilla _Third Person_ proporciona una estructura de proyecto preconfigurada que
 incluye varios componentes clave. El elemento principal es el `BP_ThirdPersonCharacter`,
 un Blueprint que representa al personaje jugable y contiene toda la lógica de movimiento,
-entrada de usuario y comportamiento básico. Sus componentes principales son la cápsula de
+sistema de input y comportamiento básico. Sus componentes principales son la cápsula de
 colisión, la malla del personaje (_Skeletal Mesh_), el componente de movimiento
 (_Character Movement Component_) y la cámara con su brazo de resorte (_Spring Arm_). La
 _Skeletal Mesh_ se reemplazo por un modelo 3D de elaboración propia, originalmente un
@@ -1237,7 +1266,7 @@ Por ejemplo, se tuvieron que cambiar las animaciones de movimiento del personaje
 algunas que soportaran _Strafe Movement_. El _Strafe Movement_ (o simplemente _strafing_)
 consiste en moverse lateralmente sin perder la orientación hacia un objetivo específico.
 En lugar de girar todo el cuerpo para caminar hacia la izquierda o la derecha, el
-personaje desliza su movimiento lateral mientras mantiene la mirada fija hacia adelante o
+personaje realiza un movimiento lateral mientras mantiene la mirada fija hacia adelante o
 hacia un blanco. Este tipo de movimiento es común en juegos de acción y combate, ya que
 permite al jugador mantener contacto visual con enemigos mientras se desplaza en cualquier
 dirección.
@@ -1308,40 +1337,18 @@ ya activado mediante el _Input Mapping Context_ descrito anteriormente.
 == Estadísticas del jugador
 
 Como se mencionó anteriormente, las estadísticas del jugador se implementaron en el
-componente `BPC_Stats` anclado al jugador. Este componente posee múltiples variables,
-entre las cuales están:
+componente `BPC_Stats` anclado al jugador. Este maneja tres estadísticas: vida (`health`),
+stamina (`stamina`) y maná (`mana`), cada una con su valor máximo, y guarda referencias a
+las barras de la interfaz que las muestran.
 
-+ `health`: Tipo _Float_. Representa la vida actual del jugador.
-+ `Progress Bar Ref`: Tipo _Progress Bar_. Es la referencia a la barra de progreso que
-  muestra la vida.
-+ `maxHealth`: Tipo _Float_. Representa el valor máximo de vida del jugador.
-+ `stamina`: Tipo _Float_. Representa la stamina actual del jugador.
-+ `maxStamina`: Tipo _Float_. Representa la stamina máxima del jugador.
-+ `Stam Bar Ref`: Tipo _WB Player Stamina_. Es la referencia al widget que muestra la
-  barra de stamina.
-+ `canRecoverStamina`: Tipo _Boolean_. Indica si el jugador puede recuperar stamina.
-+ `maxMana`: Tipo _Float_. Representa el valor máximo de maná del jugador.
-+ `mana`: Tipo _Float_. Representa el maná actual del jugador.
-+ `Mana Bar Ref`: Tipo _Progress Bar_. Es la referencia a la barra que muestra el maná.
+Su función principal es `IncreaseVal`, que recibe la estadística a modificar y el valor del
+cambio (positivo o negativo), actualiza la estadística acotándola entre cero y su máximo
+mediante `Clamp`, y refresca la barra correspondiente en la interfaz. Si la vida llega a
+cero, invoca el evento `Die`, que da inicio a la secuencia de muerte del jugador.
 
-La funcionalidad principal de este componente es una función llamada `IncreaseVal`, la
-cual recibe como parámetros un enum que indica la estadística que se quiere modificar,
-junto con el valor del cambio (positivo para incrementar, negativo para disminuir). Según
-el valor del enum, se actualiza la estadística correspondiente sumándole el valor recibido,
-acotando siempre el resultado entre cero y su valor máximo (`maxHealth`, `maxMana` o
-`maxStamina`, según corresponda) mediante la función `Clamp`, de modo que ninguna
-estadística pueda exceder su máximo ni quedar en negativo.
-
-Si la estadística modificada es la vida (`health`), tras actualizarla se comprueba si el
-valor resultante es menor o igual a cero; de ser así, se invoca el evento `Die`, que da
-inicio a la secuencia de muerte del jugador. Luego de esa comprobación, se calcula el porcentaje de vida
-actual (`health`/`maxHealth`) y se llama al método `Set Percent` sobre la referencia a la
-barra (`Progress Bar Ref`), actualizando su valor visual. En caso de recibir el enum
-perteneciente a la estadística de maná, el proceso de actualización visual es análogo.
-
-Para la estadística de stamina también es similar, con la diferencia de que el widget de
-la stamina no se muestra siempre, solo cuando se está gastando o recuperando stamina,
-similar a como lo implementan juegos como _The Legend of Zelda: Breath of the Wild_
+A diferencia de las barras de vida y maná, la de stamina solo se muestra mientras se está
+gastando o recuperando, de forma similar a como lo implementan juegos como
+_The Legend of Zelda: Breath of the Wild_
 #footnote[
   The Legend of Zelda: Breath of the Wild es un videojuego de acción y aventuras en mundo
   abierto desarrollado y publicado por Nintendo en 2017. El juego introduce mecánicas
@@ -1350,20 +1357,9 @@ similar a como lo implementan juegos como _The Legend of Zelda: Breath of the Wi
   #link("https://www.zelda.com/breath-of-the-wild/")[Disponible en sitio web].
 ].
 
-Así, al recibirse el enum de stamina, se debe revisar si existe un widget creado en
-pantalla. Si se posee, simplemente se le indica al widget que cambie su porcentaje y al
-final se revisa si el jugador posee toda la stamina. En caso contrario, significa que el
-widget no ha sido creado, por lo que se crea y se añade a la pantalla.
-
-Finalmente, se revisa si la stamina es mayor o igual al máximo (100%). En caso de ser
-verdadero, significa que el jugador ya posee toda la stamina, por lo que se procede a
-remover el widget de la pantalla.
-
-Al iniciarse el componente este activa dos timers que se ejecutan cada 0.01 segundos y
-llaman a los eventos `RegainStamina` y `RegainMana`. Estos eventos pasan por una rama que
-verifica si corresponde regenerar la estadística respectiva; si la condición es verdadera,
-se usa el nodo `IncreaseVal` para aumentar la stamina o el maná en pequeñas cantidades,
-creando así un sistema de regeneración continua controlada por condiciones. 
+Finalmente, al iniciarse el componente activa dos timers que regeneran de forma continua la
+stamina y el maná (eventos `RegainStamina` y `RegainMana`) mientras se cumplan las
+condiciones correspondientes.
 
 == Recepción de daño y muerte
 
@@ -1378,13 +1374,10 @@ sobre `BPC_Stats` con el valor invertido, restaurando la vida del jugador según
 en la sección anterior.
 
 Si el valor es positivo (o cero), se interpreta como daño recibido y se ejecuta una
-secuencia más elaborada. En primer lugar, se intenta castear al causante del daño
-como el jefe (`BP_Slime`); de tener éxito, se consulta su Blackboard para obtener
-cuál fue su último ataque (`LastAttack`) y se registra en el
-`PlayerMetricsComponent` mediante `RegisterBossAttackHit`, asociando así cada golpe
-recibido con el tipo de ataque que lo causó. Tanto si el cast tiene éxito como si
-falla, a continuación se castea el _Game Instance_ a `SlimeGameInstance` y se
-distingue si el jugador se encontraba esquivando en el momento del impacto
+secuencia más elaborada. Si el causante del daño es el jefe, se registra el golpe en el
+`PlayerMetricsComponent` (componente del jefe descrito en @sec:metricas) mediante
+`RegisterBossAttackHit`, asociando cada golpe recibido con el tipo de ataque que lo causó.
+Luego se distingue si el jugador se encontraba esquivando en el momento del impacto
 (`isDodging`):
 
 - Si estaba esquivando, se registra un dodge exitoso (`RegisterDodgeResult`, con
@@ -1413,61 +1406,23 @@ estudio de usuario.
 ) <fig:pantalla-muerte>
 == Componente de combate
 
-// TODO: Ver bien lo de los índices de hechizos
-
 Como se mencionó anteriormente, se creó un _Actor Component_ llamado `BPC_Combat` que se
 ancla al jugador y centraliza toda la lógica relacionada con el combate.
 
-Este componente posee múltiples variables, entre las cuales están:
+Este componente concentra las variables de estado del combate del jugador, que pueden
+agruparse según su propósito:
 
-+ `TargetLock`: Tipo _Actor_. Es la referencia al objetivo que se tiene fijado por la
-  cámara.
-+ `Player BP`: Tipo _Object Reference_ a _BP Third Person Character_. Referencia al
-  jugador.
-+ `TargetLockWidget`: Tipo _Object Reference_ a _BP Target Lock Widget_. Es la referencia
-  al widget del símbolo que se crea cuando se fija un objetivo.
-+ `isAttacking`: Tipo _Boolean_. Es una bandera que se levanta cuando el jugador está
-  atacando.
-+ `isCombo`: Tipo _Boolean_. Bandera que se levanta cuando el jugador tiene la intención de
-  continuar el ataque.
-+ `isDodging`: Tipo _Boolean_. Bandera que se levanta cuando el jugador está realizando una
-  esquiva.
-+ `StamWidget`: _Object Reference_ a _WB Player Stamina_. Es la referencia al widget de la
-  stamina que se muestra cuando se gasta o recupera stamina.
-+ `StaminaRollUse`: Tipo _Float_. Define la cantidad de stamina que consume la acción de
-  rodar.
-+ `isRunning`: Tipo _Boolean_. Bandera que se levanta cuando el jugador está corriendo.
-+ `StaminaRunUse`: Tipo _Float_. Define la cantidad de stamina que gasta el jugador al
-  correr.
-+ `runSpeed`: Tipo _Float_. Define la velocidad del jugador al correr.
-+ `CurrentSpellIndex`: Tipo _Float_. Índice que indica el hechizo que tiene equipado el
-  jugador actualmente.
-+ `SpellImageObject`: Tipo _Image_. Referencia a la imagen que indica el hechizo equipado
-  actualmente en la interfaz.
-+ `magicManaUse`: Tipo _Float_. Define la cantidad de maná que consume el proyectil mágico
-  del jugador.
-+ `healingManaUse`: Tipo _Float_. Define la cantidad de maná que consume el hechizo de
-  curación.
-+ `SwordDamage`: Tipo _Float_. Define el daño base que inflige la espada del jugador.
-+ `currentLever`: Tipo _Object Reference_ a _BP Lever_. Referencia a la palanca con la que
-  el jugador está interactuando actualmente.
-+ `isEnemyDashing`: Tipo _Boolean_. Bandera que indica si el enemigo está realizando una
-  embestida o desplazamiento rápido.
-+ `isInCorrectDodgeWindow`: Tipo _Boolean_. Bandera que indica si el jugador se encuentra
-  dentro de la ventana temporal adecuada para ejecutar una esquiva efectiva.
-+ `isRollingSideWays`: Tipo _Boolean_. Bandera que indica si la esquiva actual se está
-  realizando lateralmente.
-+ `MovInput`: Tipo _Vector2D_. Almacena la dirección de movimiento introducida por el
-  jugador.
-+ `FireBallImage`: Tipo _Image_. Referencia a la imagen utilizada en la interfaz para
-  representar el hechizo de bola de fuego.
-+ `PotionImage`: Tipo _Image_. Referencia a la imagen utilizada en la interfaz para
-  representar las pociones del jugador.
-+ `PotiCount`: Tipo _Integer_. Indica la cantidad actual de pociones disponibles.
-+ `Potion Count Text Var`: Tipo _Text_. Referencia al elemento de texto de la interfaz que
-  muestra la cantidad de pociones disponibles.
-+ `healingPotion`: Tipo _Static Mesh_. Referencia al modelo 3D de la poción de curación utilizada por el jugador.
-+ `tmpTarget`: Tipo _Vector_. Almacena una ubicación temporal utilizada por el sistema de _Target Lock_ como punto de referencia durante el fijado de objetivo.
+- *Banderas de acción*: `isAttacking`, `isCombo`, `isDodging`, `isRunning` y
+  `isRollingSideWays`, que indican qué está haciendo el jugador en cada momento.
+- *Parámetros de consumo y daño*: `StaminaRollUse`, `StaminaRunUse`, `runSpeed`,
+  `magicManaUse`, `healingManaUse` y `SwordDamage`.
+- *Fijado de objetivo*: `TargetLock`, `TargetLockWidget` y `tmpTarget`.
+- *Hechizos y objetos*: `CurrentSpellIndex` (opción equipada, hechizo de fuego o poción) y
+  `PotiCount` (pociones disponibles).
+- *Esquiva y telemetría*: `isEnemyDashing`, `isInCorrectDodgeWindow` y `MovInput`.
+
+Estas variables se irán referenciando a lo largo de las secciones siguientes a medida que
+se describe cada sistema.
 
 == Ataque melee del jugador
 
@@ -1542,8 +1497,6 @@ El proyectil base posee múltiples componentes, entre los cuales están:
   principal del proyectil.
 + `Arrow`: Componente _Arrow_. Sirve como referencia visual y direccional para indicar hacia
   dónde se moverá u orientará el proyectil.
-+ `StaticMesh`: Componente _Static Mesh_. Representa la malla estática visible del
-  proyectil, en caso de necesitarse.
 + `ProjectileMovement`: Componente _Projectile Movement_. Controla el movimiento del
   proyectil, incluyendo velocidad, gravedad y comportamiento de persecución (_homing_).
 
@@ -1695,14 +1648,14 @@ interrumpirse la animación, se restablece el movimiento del jugador.
   image("imagenes/cap5/player-taking-potion.png", width: 80%),
   caption: [Jugador bebiendo una poción de vida.],
 ) <fig:pocion-vida>
-== Fijado de objetivo
+== Fijado de objetivo <sec:target-lock>
 
 El sistema de fijado de objetivo (_Target Lock_) permite al jugador centrar la cámara sobre
 un enemigo y mantenerla orientada hacia él durante el combate, facilitando el seguimiento del
 objetivo mientras se ataca o esquiva. Está implementado en el componente `BPC_Combat` y se
 reparte entre dos partes: la activación/desactivación del fijado, gestionada por el
 `Input Action` `IA_Lock`, y el mantenimiento de la orientación de la cámara, ejecutado en
-cada fotograma dentro del evento `Tick`.
+cada tick.
 
 Al recibirse el `Input Action` `IA_Lock`, el sistema actúa según si ya existe un objetivo
 fijado, almacenado en la variable `Target Lock`. Si ya hay un objetivo, se interpreta como
@@ -1715,7 +1668,7 @@ parámetros de rotación para que el personaje se oriente hacia el objetivo, y s
 widget (`BP_TargetLockWidget`) que se ancla al enemigo como indicador visual del fijado.
 
 Una vez fijado el objetivo, su seguimiento se realiza en el evento `Tick`. Mientras exista
-un objetivo, cada fotograma se calcula la rotación necesaria para que la cámara apunte hacia
+un objetivo, en cada tick se calcula la rotación necesaria para que la cámara apunte hacia
 él y se aplica a la rotación del controlador del jugador. Para obtener el punto exacto al que
 mirar, el sistema comprueba si el objetivo implementa la interfaz `BPI_Lockable`: si la
 implementa, solicita a través de ella un punto de fijado personalizado, lo que permite que
@@ -1753,12 +1706,9 @@ Vector_ y el _Right Vector_ del personaje mediante productos punto, y compara la
 de ambas proyecciones: si la componente hacia adelante/atrás es mayor o igual que la lateral,
 el roll se considera frontal; en caso contrario, lateral.
 
-Una vez determinado el eje dominante, el signo del producto punto correspondiente define el
-sentido exacto y, con ello, el _Animation Montage_ que se retorna: hacia adelante
-(`Dodge_F_MontageDAIKO`) o hacia atrás (`Dodge_B_MontageDAIKO`) en el caso frontal, y hacia
-la derecha (`Dodge_R_MontageDAIKO`) o hacia la izquierda (`Dodge_L_MontageDAIKO`) en el caso
-lateral. Cuando el roll es lateral, además se marca la variable `isRollingSideWays` como
-`true`.
+Una vez determinado el eje dominante, el signo del producto punto define el sentido exacto
+y, con ello, cuál de las cuatro animaciones de roll se ejecuta; en los rolls laterales se
+marca además la variable `isRollingSideWays`.
 
 Adicionalmente, esta función realiza un registro de telemetría específico para las esquivas
 realizadas frente a una embestida del jefe: si en el momento del roll el jefe se encuentra
@@ -1811,7 +1761,88 @@ cada 0.45 segundos, pudiendo así encadenar rolls consecutivos para evadir múlt
 ) <fig:roll-adelante>
 
 #figure(
-  image("imagenes/cap5/flujo-esquiva.svg", width: 90%),
+  {
+    set par(justify: false)
+    let start-end(cnt, w, fill: rgb("#D5E8D4"), stroke-color: rgb("#82B366")) = ellipse(
+      width: w, fill: fill, stroke: 1.1pt + stroke-color, inset: 5pt,
+      align(center + horizon)[#text(size: 6.3pt)[#cnt]],
+    )
+    let action(cnt, w) = rect(
+      width: w, fill: luma(245), stroke: 0.7pt, radius: 3pt, inset: 5pt,
+      align(center + horizon)[#text(size: 6.3pt)[#cnt]],
+    )
+    let decision(cnt, w, note: none) = {
+      let side = w * 0.8
+      let items = (
+        box(width: w, height: side * 0.85)[
+          #place(center + horizon, rotate(45deg, rect(width: side * 0.56, height: side * 0.56, fill: rgb("#FFF2CC"), stroke: 1pt + rgb("#D6B656"))))
+          #place(center + horizon, box(width: w * 0.62, align(center)[#text(size: 5.3pt, weight: "bold")[#cnt]]))
+        ],
+      )
+      if note != none {
+        items.push(align(center)[#text(size: 5.3pt, style: "italic")[#note]])
+      }
+      stack(dir: ttb, spacing: 3pt, ..items)
+    }
+    let outcome(header, effect, w, fill: luma(245)) = rect(
+      width: w, fill: fill, stroke: 0.7pt, radius: 3pt, inset: 4pt,
+      stack(dir: ttb, spacing: 2pt,
+        align(center)[#text(size: 5.8pt, weight: "bold")[#header]],
+        align(center)[#text(size: 5.5pt)[#effect]],
+      ),
+    )
+    let arrow = align(center + horizon)[#text(size: 11pt)[→]]
+    let panel-title(cnt) = align(center)[#text(size: 10pt, weight: "bold")[#cnt]]
+
+    align(center, block(width: 100%,
+      stack(dir: ttb, spacing: 16pt,
+        stack(dir: ttb, spacing: 6pt,
+          panel-title[Flujo 1 — Registro de esquivas ante ataque de avance],
+          grid(columns: (20mm, auto, 18mm, auto, 22mm, auto, 22mm, auto, 26mm, auto, 24mm), column-gutter: 2pt, align: horizon,
+            start-end([Inicia ataque de avance], 20mm),
+            arrow,
+            action([Marca avance activo], 18mm),
+            arrow,
+            decision([¿Zona tanque?], 22mm, note: [No: fin sin registro]),
+            arrow,
+            decision([¿Dirección?], 22mm),
+            arrow,
+            stack(dir: ttb, spacing: 3pt,
+              outcome([Lateral], [Registra esquiva lateral], 26mm, fill: rgb("#D5E8D4")),
+              outcome([Atrás], [Registra esquiva atrás], 26mm, fill: rgb("#D5E8D4")),
+              outcome([Adelante], [No se registra], 26mm),
+            ),
+            arrow,
+            stack(dir: ttb, spacing: 3pt,
+              start-end([Termina el avance], 24mm, fill: rgb("#F8CECC"), stroke-color: rgb("#B85450")),
+              action([Limpia estado de avance], 24mm),
+            ),
+          ),
+        ),
+        line(length: 100%, stroke: 0.5pt + luma(200)),
+        stack(dir: ttb, spacing: 6pt,
+          panel-title[Flujo 2 — Registro de esquivas ante ataque con ventana de tiempo],
+          align(center)[#text(size: 8pt, style: "italic")[Aplicable a: Tanque, Esqueleto]],
+          grid(columns: (20mm, auto, 18mm, auto, 22mm, auto, 22mm, auto, 26mm, auto, 22mm), column-gutter: 2pt, align: horizon,
+            start-end([Se habilita ventana de esquiva], 20mm),
+            arrow,
+            action([Puede esquivar correctamente], 18mm),
+            arrow,
+            decision([¿En ventana?], 22mm, note: [No: sin registro]),
+            arrow,
+            decision([¿Zona tanque?], 22mm),
+            arrow,
+            stack(dir: ttb, spacing: 3pt,
+              outcome([Sí], [Registra esquiva con delay (global) + zona tanque (pre‑combate)], 26mm, fill: rgb("#D5E8D4")),
+              outcome([No], [Registra esquiva con delay (global)], 26mm, fill: rgb("#D5E8D4")),
+            ),
+            arrow,
+            start-end([La ventana se cierra], 22mm, fill: rgb("#F8CECC"), stroke-color: rgb("#B85450")),
+          ),
+        ),
+      ),
+    ))
+  },
   caption: [Flujos de registro de esquiva: ataque de avance (Flujo 1) y ventana de delay (Flujo 2).],
 ) <fig:flujo-esquiva>
 
@@ -1877,29 +1908,14 @@ es mínimo y se limitan a su composición visual.
   caption: [HUD del jugador en juego.],
 ) <fig:player-hud>
 
-El widget principal es el HUD del jugador (`WB_PlayerHUD`), que actúa como contenedor de los
-elementos que se muestran de forma persistente durante el juego. Está compuesto por un
-_Canvas Panel_ que agrupa la barra de vida (`WB_PlayerHealth`), la barra de maná
-(`WB_PlayerMana`) y el widget de equipamiento (`WB_Equips`). Este widget no posee lógica en
-su grafo de eventos, ya que su única función es disponer espacialmente en pantalla a los
-sub-widgets que contiene.
-
-Los widgets de barra de vida (`WB_PlayerHealth`) y de maná (`WB_PlayerMana`) son
-estructuralmente simples: cada uno se compone de un _Canvas Panel_ que contiene un borde
-decorativo y una barra de progreso (_Progress Bar_). No poseen lógica en su grafo de
-eventos, ya que su valor se actualiza directamente desde la función `IncreaseVal` de
-`BPC_Stats`, la cual modifica el porcentaje de la barra cada vez que cambia la estadística
-correspondiente, tal como se describió en la sección de estadísticas del jugador.
-
-El widget de equipamiento (`WB_Equips`) muestra los consumibles y hechizos disponibles del
-jugador. Se compone de una caja horizontal con la imagen del hechizo de fuego
-(`Fireball_IMG`) y, superpuestos, la imagen de la poción (`Potion_IMG`) junto con un texto
-que indica la cantidad de pociones restantes (`PotionCountText`). Tampoco posee lógica en su
-grafo, pues tanto el ícono activo como el contador se actualizan desde `BPC_Combat`.
-
-Finalmente, el widget de fijado de objetivo (`WB_TargetLock`) consiste únicamente en una
-imagen (un ícono) que se ancla sobre el enemigo fijado, según lo descrito en la sección de
-_Target Lock_.
+El widget principal es el HUD del jugador (`WB_PlayerHUD`, @fig:player-hud), un contenedor
+que dispone en pantalla la barra de vida (`WB_PlayerHealth`), la barra de maná
+(`WB_PlayerMana`) y el widget de equipamiento (`WB_Equips`). Las barras de vida y maná no
+tienen lógica propia: su valor se actualiza directamente desde la función `IncreaseVal` de
+`BPC_Stats`. El widget de equipamiento muestra el hechizo de fuego y la poción junto con la
+cantidad de pociones restantes, actualizados desde `BPC_Combat`. Por último, el widget de
+fijado de objetivo (`WB_TargetLock`) es un ícono que se ancla sobre el enemigo fijado
+(@sec:target-lock).
 
 === Barra de stamina (`WB_PlayerStamina`)
 
@@ -1974,10 +1990,6 @@ sobre la cual se construyen los demás enemigos. Sus componentes son:
 
 ==== Comportamiento general
 
-En cada fotograma dentro del evento `Tick`, la barra de vida rota para orientarse hacia la
-cámara del jugador, de modo que siempre se muestre de frente independientemente de la
-posición del enemigo.
-
 Al iniciarse, el esqueleto inicializa su barra de vida al 100% y
 almacena su posición de aparición en la _Blackboard key_ `spawnPoint`, la cual utiliza
 posteriormente para regresar a su punto de origen.
@@ -2020,24 +2032,15 @@ fijado como objetivo y finalmente destruye el componente del widget.
 
 ==== Ataque
 
-Al igual que en el ataque del jugador, el inicio y fin de la ventana de detección de
-impacto están delimitados por un _Anim Notify State_ anclado al montage de ataque, el
-cual invoca los eventos `BeginSwordTrace` y `EndSwordTrace` al comenzar y terminar
-dicha ventana respectivamente.
-
 El ataque del esqueleto utiliza el mismo patrón de detección por temporizador que el ataque
-del jugador. Al iniciar el ataque
-(`BeginSwordTrace`), se inicia un temporizador en bucle cada 0.01 segundos que ejecuta el evento `Damage Trace`. Este evento realiza un
-_Sphere Trace_ de radio 30 entre los componentes `StartOfTrace` y `EndOfTrace`; si detecta
-una colisión válida, aplica el daño definido en la variable `skeleton_damage` sobre el actor
-impactado y detiene inmediatamente el temporizador, deteniendo la detección tras el primer impacto
-exitoso. Al finalizar la animación de ataque (`EndSwordTrace`), se invalida el temporizador
-si aún se encontraba activo, como medida de seguridad en caso de que el ataque no haya
-conectado con el jugador.
+del jugador: la ventana de impacto está delimitada por un _Anim Notify State_ que dispara
+`BeginSwordTrace` y `EndSwordTrace`, y durante ella un _Sphere Trace_ periódico detecta la
+colisión y se detiene tras el primer impacto. El daño aplicado se define en la variable
+`skeleton_damage`.
 
 ==== Behaviour Tree
 
-El Behaviour Tree (árbol de comportamiento) es el sistema de Unreal Engine utilizado para
+El Behaviour Tree es el sistema de Unreal Engine utilizado para
 modelar el comportamiento de un agente de IA mediante una estructura jerárquica de nodos. Se
 compone de nodos compuestos, como _Selectors_ y _Sequences_, que determinan el orden y las
 condiciones bajo las cuales se ejecutan sus nodos hijos; de tareas (_Tasks_), que representan
@@ -2096,7 +2099,7 @@ El Blackboard asociado (`BBD_AI`) contiene las siguientes _keys_:
   y reproduce el montage de ataque (`MO_Attack`) sobre el esqueleto; en el instante en que
   la animación lo indica (_Animation Notify_), `onRotate` se marca nuevamente como `false`.
   Por otro lado, mientras la tarea está activa, si `onRotate` es `true`,
-  el esqueleto rota suavemente hacia la posición del jugador en cada fotograma, interpolando
+  el esqueleto rota suavemente hacia la posición del jugador en cada tick, interpolando
   su rotación actual hacia la calculada. De esta forma, el esqueleto se orienta hacia el
   jugador mientras se prepara para golpear, pero deja de hacerlo justo en el instante del
   impacto, evitando que el golpe se desvíe por una rotación a mitad de la animación. Al
@@ -2141,7 +2144,7 @@ normal (`BTTask_RoamAround` + espera de 2 segundos) cuando no ha detectado al ju
 vez detectado, en lugar de una única secuencia de persecución y ataque, el mago evalúa un
 segundo Selector que distingue dos comportamientos según la distancia al jugador, mantenida
 actualizada mediante un servicio (`BTS_MageUpdt`) que corre en paralelo a ambas secuencias y
-que, en cada fotograma, calcula la distancia entre el mago y el jugador y la almacena en la
+que, en cada tick, calcula la distancia entre el mago y el jugador y la almacena en la
 _Blackboard key_ `distanceToPlayer`:
 
 - *Secuencia "FarSeq"* (distancia mayor a 280 unidades): el mago se acerca al jugador
@@ -2167,7 +2170,7 @@ secuencia evaluada, y con fracaso en caso contrario.
 ==== Ataque a distancia (`MagicAttack`)
 
 Al activarse esta tarea, se marca la variable `onRotate` como `true` y se reproduce el
-montage `MO_MagicAttack`. Mientras `onRotate` es `true`, en cada fotograma el mago interpola su rotación hacia la
+montage `MO_MagicAttack`. Mientras `onRotate` es `true`, en cada tick el mago interpola su rotación hacia la
 posición del jugador, de forma
 idéntica al sistema de orientación visto en el ataque del esqueleto normal. En el instante
 indicado por un _Animation Notify_ del montage, `onRotate` se marca como `false`, deteniendo
@@ -2226,35 +2229,20 @@ métrica de distancia previa al combate contra el jefe.
 
 ==== Detección y registro de distancia
 
-Al igual que el esqueleto normal, la barra de vida rota en cada fotograma
-para orientarse hacia la cámara del jugador.
-
-La detección del jugador mediante el evento `On See Pawn` de `PawnSensing` invoca
-`hasseen`, igual que en los demás esqueletos, e inicia el mismo temporizador en bucle de 0.5 segundos que invoca `RegisterDistance`,
-descrito en la sección del esqueleto normal. La única diferencia es que, naturalmente,
-la distancia que se calcula y registra corresponde a la posición del esqueleto caballero
-respecto al jugador, en lugar de la del esqueleto normal.
+La detección del jugador y el registro de distancia funcionan igual que en el esqueleto
+normal; la única diferencia es que la distancia registrada corresponde a la posición del
+propio caballero respecto al jugador.
 
 ==== Recepción de daño y muerte
 
-El procesamiento de daño sigue el mismo patrón general que el esqueleto normal (`hasseen`
-sobre el causante, resta a `health`, actualización de la barra de vida y destrucción al
-llegar a cero, con la consecuente llamada a `RemoveWidget` sobre el jugador). A diferencia
-del esqueleto normal, el caballero no reproduce ningún sonido de muerte, igual que el
-esqueleto mago.
+El procesamiento de daño y muerte es idéntico al del esqueleto normal, salvo que el
+caballero no reproduce sonido de muerte (igual que el esqueleto mago).
 
-==== Ataque cuerpo a cuerpo (trace por temporizador)
+==== Ataque cuerpo a cuerpo
 
-Como en los demás enemigos melee, la ventana de detección está delimitada por un
-_Anim Notify State_ en cada montage de ataque, que dispara `BeginSwordTrace` y
-`EndSwordTrace`.
-
-El esqueleto caballero también posee, heredado del mismo patrón del esqueleto normal, un
-ataque cuerpo a cuerpo basado en _trace_ por temporizador (`BeginSwordTrace`,
-`Damage Trace`, `EndSwordTrace`), idéntico en su funcionamiento: temporizador en bucle de
-0.01 segundos, _Sphere Trace_ de radio 30 entre `StartTrace` y `EndTrace`, y detención
-inmediata del temporizador tras el primer impacto exitoso. La única diferencia es el
-nombre de la variable de daño utilizada, `KnightDamage`, en lugar de `skeleton_damage`.
+El ataque cuerpo a cuerpo es idéntico al del esqueleto normal (_trace_ por temporizador
+delimitado por un _Anim Notify State_ en cada montage); la única diferencia es la variable
+de daño empleada, `KnightDamage`.
 
 ==== Behaviour Tree
 
@@ -2323,9 +2311,8 @@ justo en el instante del impacto.
 
 === Modelo y animaciones <sec:modelo-animaciones-jefe>
 
-El modelo y las animaciones del jefe fueron creados desde cero en Blender, en lugar de
-recurrir a assets externos como en el resto de los enemigos. La motivación principal fue
-contar con un control total sobre el resultado, de modo que el modelo y sus animaciones
+El modelo y las animaciones del jefe fueron creados desde cero en Blender. La motivación
+principal fue contar con un control total sobre el resultado, de modo que el modelo y sus animaciones
 pudieran ajustarse específicamente a los requerimientos de _gameplay_ del jefe, en
 particular a los _Anim Notify States_ que delimitan las ventanas de ataque y a las
 distintas formas que necesita adoptar durante el combate.
@@ -2352,11 +2339,8 @@ La jerarquía de componentes de `BP_Slime` es la siguiente:
 + `CharMoveComp`: componente de movimiento de personaje.
 
 Adicionalmente, `BP_Slime` implementa la interfaz `BPI_Lockable`, consultada por el
-sistema de fijado de objetivo del jugador (_Target Lock_, descrito en la sección
-correspondiente) para obtener el punto exacto al que debe apuntar la cámara mientras
-el jefe está fijado. Esto permite compensar el desplazamiento visual que sufre el
-jefe durante su animación de ataque de charco, donde se hunde visualmente sin que
-ese desplazamiento se traduzca en un movimiento real del actor. Su función
+sistema de fijado de objetivo del jugador (@sec:target-lock) para obtener el punto exacto
+al que debe apuntar la cámara mientras el jefe está fijado. Su función
 `Get Lock On Target` retorna una posición desplazada hacia abajo respecto a la
 ubicación del actor: 300 unidades en el eje Z si `bIsCharco` es `true`, o 100
 unidades si es `false`.
@@ -2436,6 +2420,13 @@ actual cumple el rango correspondiente y, a continuación, un nodo
 cada secuencia, reparte mediante selección aleatoria ponderada entre un subconjunto de
 los nueve ataques del jefe (ver @tbl:ataques-jefe en el capítulo 3).
 
+// TODO FIGURAS BT JEFE: el profe guía pide reemplazar la imagen única (queda muy chica)
+// por varias capturas separadas por secciones. Tomar estas fotos del editor y reemplazar:
+//   TODO Figura BT-1: nodo raíz + Selector principal (según PlayerDistance)
+//   TODO Figura BT-2: Secuencia lejana (Task_SelectDistance + RandomSelector)
+//   TODO Figura BT-3: Secuencia media
+//   TODO Figura BT-4: Secuencia cercana
+// Mientras tanto se deja la imagen completa actual.
 #figure(
   image("imagenes/cap5/BT_Jefe.png", width: 100%),
   caption: [Behaviour Tree del jefe (`BT_BaseSlimeBoss`).],
@@ -2463,7 +2454,7 @@ anterior, se incrementa `LastAttackCount`; en caso contrario, `LastAttack` se ac
 al nuevo ataque y `LastAttackCount` se reinicia a 1.
 
 En la raíz del Behaviour Tree corre un service (`BTS_UPDTPlayerDistance`), análogo
-al `BTS_MageUpdt` del esqueleto mago, que en cada fotograma calcula la distancia
+al `BTS_MageUpdt` del esqueleto mago, que en cada tick calcula la distancia
 entre el jefe y el jugador y la almacena en la _Blackboard key_ `PlayerDistance`.
 
 ==== Tareas de ataque <sec:tareas-ataque-jefe>
@@ -2525,7 +2516,7 @@ posteriormente), la posición inicial del jefe y la posición del jugador en ese
 momento. El jefe pasa a modo de movimiento `Flying` y deja de colisionar con Pawns,
 y reproduce el montage `MO_JumpAttackV3`. Transcurridos 0.9 segundos desde el inicio
 del montage, se marca la variable `bMove` como `true`; mientras esta sea `true`, en
-cada fotograma el jefe se desplaza hacia la posición guardada del
+cada tick el jefe se desplaza hacia la posición guardada del
 jugador y rota hacia ella. En el instante señalado por el _Animation Notify_, se
 invoca la función `Hitbox&KnockBack`. Esta función ejecuta un _Sphere Trace_ de
 radio 450 centrado en la posición del jefe; de detectarse una colisión válida, se
@@ -2604,7 +2595,7 @@ radio de aceptación), y se programan dos temporizadores: uno a 4 segundos
 en su forma de charco.
 
 Al dispararse `StartDetecting` (4 segundos después de iniciada la tarea), se marca
-`bIsDetectingPlayer` como `true`. A partir de ese momento, en cada fotograma
+`bIsDetectingPlayer` como `true`. A partir de ese momento, en cada tick
 se comprueba, mientras `bIsDetectingPlayer` sea `true`, si el
 jugador se encuentra a menos de 250 unidades del jefe; de ser así, se marca
 `bIsDetectingPlayer` nuevamente como `false`, se cancela el temporizador de
@@ -2680,7 +2671,7 @@ el jugador, y se ejecuta un único _Box Trace_ entre la posición del jefe y un 
 520 unidades hacia adelante, con una caja de 100×100×100 unidades orientada según su
 rotación; de detectarse una colisión válida, se aplica un daño fijo de 10. Al
 completarse el montage, la tarea finaliza con éxito. Mientras la tarea está activa y
-`canRotate` sea `true`, el jefe rota hacia el jugador en cada fotograma con una
+`canRotate` sea `true`, el jefe rota hacia el jugador en cada tick con una
 velocidad de interpolación de 1.0.
 
 #figure(
@@ -2767,8 +2758,7 @@ en ajustes sobre su comportamiento.
 
 === Variables de `SlimeGameInstance`
 
-Como se mencionó, `SlimeGameInstance` recolecta sus datos en dos fases paralelas,
-controladas mediante la variable `isInCombat`: una fase previa al combate (en `Lvl_PreBoss`),
+Como se mencionó, `SlimeGameInstance` recolecta sus datos en dos fases paralelas, controladas mediante la variable `isInCombat`: una fase previa al combate (en `Lvl_PreBoss`),
 condicionada además a que `bMetricsEnabled` esté activo, y una fase durante el combate
 contra el jefe, cuyas variables llevan el prefijo `Combat`. A continuación se detallan las
 variables principales, agrupadas por categoría.
@@ -2790,90 +2780,55 @@ calculada en la fase pre-combate, para ajustar la presión de ataque cuando el j
 en su rango habitual de curación.
 
 #[
-#set par(justify: false)
+#set par(justify: true)
+#let c(x) = emph(x)
 *Distancia*
-+ `DistanceAccum`, `DistanceSamples`: acumulador y contador de muestras de distancia
-  (pre-combate).
-+ `AverageDistance`: promedio de distancia, recalculado en cada muestra (pre-combate).
-+ `CombatDistanceAccum`, `CombatDistanceSamples`, `CombatAverageDistance`: equivalentes
-  durante el combate.
++ #c[DistanceAccum], #c[DistanceSamples], #c[AverageDistance]: acumulador, contador de
+  muestras y promedio de la distancia del jugador al enemigo.
 
 *Ataques*
-+ `MeleeAttacks`, `RangedAttacks`: conteo de ataques melee y a distancia (pre-combate).
-+ `CombatMeleeAttacks`, `CombatRangedAttacks`: equivalentes durante el combate.
-+ `MeleeAttacksInRangedZone`, `RangedAttacksInRangedZone`: conteo de cada tipo de ataque
++ #c[MeleeAttacks], #c[RangedAttacks]: conteo de ataques cuerpo a cuerpo y a distancia.
++ #c[MeleeAttacksInRangedZone], #c[RangedAttacksInRangedZone]: conteo de cada tipo de ataque
   realizado dentro de una zona de rango.
 
 *Curación*
-+ `HealsAtHighHP`, `HealsAtMidHP`, `HealsAtLowHP`: conteo de curaciones según el rango de
-  vida del jugador al curarse (pre-combate).
-+ `HealingHPAccum`, `HealingCount`: acumulador y contador para el promedio de vida al
-  curarse.
-+ `AverageHealingHP`: promedio del porcentaje de vida del jugador al momento de curarse.
-+ `CombatHealsAtHighHP`, `CombatHealsAtMidHP`, `CombatHealsAtLowHP`,
-  `CombatHealingHPAccum`, `CombatHealingCount`, `CombatAverageHealingHP`: equivalentes
-  durante el combate.
++ #c[HealsAtHighHP], #c[HealsAtMidHP], #c[HealsAtLowHP]: conteo de curaciones según el rango de
+  vida del jugador al curarse.
++ #c[HealingHPAccum], #c[HealingCount], #c[AverageHealingHP]: acumulador, contador y promedio
+  del porcentaje de vida al que el jugador se cura.
 
 *Esquivas y daño*
-+ `TotalDodges`, `TotalDodgesTankZone`: conteo total de esquivas, y de aquellas realizadas
-  en la zona de tanque (pre-combate).
-+ `SuccessfulDodges`: conteo de esquivas marcadas explícitamente como exitosas.
-+ `DamageTaken`, `TotalDamageReceived`: conteo de impactos recibidos y daño total acumulado
-  (pre-combate).
-+ `CombatTotalDodges`, `CombatSuccessfulDodges`: equivalentes durante el combate.
-+ `CombatDamageTaken`, `CombatTotalDamageReceived`: equivalentes durante el combate.
-+ `LateralDodgesFromDash`, `BackwardDodgesFromDash`: esquivas laterales o hacia atrás frente
-  al ataque de embestida del esqueleto caballero.
-+ `DodgesFromDelayAttack`, `DodgesFromDelayAttack_TankZone`: esquivas frente a un ataque con
-  retardo, en general y en zona de tanque.
-+ `CombatDodgesFromDelayAttack`: equivalente durante el combate.
++ #c[TotalDodges], #c[SuccessfulDodges]: conteo total de esquivas y de las marcadas como
+  exitosas.
++ #c[TotalDodgesTankZone], #c[DodgesFromDelayAttack], #c[DodgesFromDelayAttack_TankZone]:
+  esquivas en la zona de tanque y esquivas frente a ataques telegrafiados.
++ #c[LateralDodgesFromDash], #c[BackwardDodgesFromDash]: esquivas laterales o hacia atrás
+  frente al ataque de embestida del esqueleto caballero.
++ #c[DamageTaken], #c[TotalDamageReceived]: impactos recibidos y daño total acumulado.
 
 *Zona de tanque*
-+ `isInTankZone`: flag de si el jugador se encuentra actualmente en la zona de tanque.
-+ `DamageTakenInTankZone`: conteo de daño recibido en dicha zona.
++ #c[isInTankZone]: indica si el jugador se encuentra en la zona de tanque.
++ #c[DamageTakenInTankZone]: daño recibido en dicha zona.
 
 *Estudio*
-+ `bAdaptiveEnabled`: condición experimental del jugador (`true` = adaptativo, `false` =
-  control).
-+ `bMetricsEnabled`: habilita o no la recolección durante el nivel.
-+ `SessionId`: identificador de sesión, generado a partir de fecha y hora.
-+ `AttemptNumber`: número de intento actual contra el jefe.
++ #c[bAdaptiveEnabled]: condición experimental (#c[true] = adaptativo, #c[false] = control).
++ #c[bMetricsEnabled]: habilita la recolección durante el nivel.
++ #c[SessionId], #c[AttemptNumber]: identificador de sesión y número de intento contra el jefe.
+
+Como se explicó arriba, cada una de estas variables de la fase pre-combate tiene una
+contraparte con prefijo `Combat` que se registra en paralelo durante el combate pero que,
+salvo las excepciones señaladas, no se utiliza.
 ]
 
 === Funciones de registro (`SlimeGameInstance`)
 
-Sobre las variables anteriores operan las siguientes funciones, todas siguiendo el mismo
-patrón: bifurcan su comportamiento según `isInCombat`, actualizando el conjunto de variables
-de la fase correspondiente.
-
-#[
-#set par(justify: false)
-+ `RegisterDistance(Distance)`: acumula `Distance` en `DistanceAccum` (o su equivalente de
-  combate), incrementa el contador de muestras, y recalcula el promedio dividiendo el
-  acumulador entre el número de muestras.
-+ `RegisterMeleeAttack()` y `RegisterRangeAttack()`: incrementan `MeleeAttacks` o
-  `RangedAttacks` respectivamente (o sus equivalentes de combate); adicionalmente, si
-  `isInRangedZone` es verdadero, incrementan también `MeleeAttacksInRangedZone` o
-  `RangedAttacksInRangedZone` según corresponda.
-+ `RegisterHealingMoment(PlayerHealth, PlayerMaxHealth)`: calcula
-  `(PlayerHealth / PlayerMaxHealth) * 100`, incrementa `HealingCount` y acumula el porcentaje
-  en `HealingHPAccum` para recalcular `AverageHealingHP`; según el porcentaje resultante,
-  incrementa `HealsAtHighHP` (> 70%), `HealsAtMidHP` (> 30%) o `HealsAtLowHP` (<= 30%).
-+ `RegisterTotalDodge()`: incrementa `TotalDodges`; si `isInTankZone` es verdadero, incrementa
-  además `TotalDodgesTankZone`.
-+ `RegisterDodgeResult(bWasSuccessful)`: si `bWasSuccessful` es verdadero, incrementa
-  `SuccessfulDodges`. Si es falso, la función no realiza ninguna acción.
-+ `RegisterDamageTaken(Damage)`: incrementa `DamageTaken` y acumula `Damage` en
-  `TotalDamageReceived`.
-+ `RegisterDashDodge(bWasLateral)`: incrementa `LateralDodgesFromDash` o
-  `BackwardDodgesFromDash` según `bWasLateral`. A diferencia de las anteriores, no bifurca
-  por `isInCombat`; solo depende de `bMetricsEnabled`.
-+ `RegisterDodgeFromDelayAttack()`: incrementa `DodgesFromDelayAttack` (o
-  `CombatDodgesFromDelayAttack` en combate); si `isInTankZone` es verdadero, incrementa
-  además `DodgesFromDelayAttack_TankZone` en ambos casos.
-+ `RegisterDamageTakenInTankZone()`: incrementa `DamageTakenInTankZone`. No bifurca por
-  `isInCombat`, solo depende de `bMetricsEnabled`.
-]
+Sobre estas variables opera una familia de funciones `Register*` (por ejemplo
+`RegisterDistance`, `RegisterMeleeAttack`, `RegisterHealingMoment`, `RegisterTotalDodge` o
+`RegisterDodgeResult`), cada una invocada desde el evento de juego correspondiente para
+actualizar la variable asociada. Casi todas siguen el mismo patrón: bifurcan según
+`isInCombat` para actualizar la variable de la fase que corresponda. Las excepciones son
+`RegisterDashDodge` y `RegisterDamageTakenInTankZone`, que no dependen de `isInCombat` sino
+únicamente de `bMetricsEnabled`.
 
 === Registro de ataques del jefe (`PlayerMetricsComponent`)
 
@@ -2898,38 +2853,197 @@ funciones `ApplyPreCombatDistance`, `ApplyPreCombatMeleeVsRanged`, `ApplyPreComb
 solo se ejecuta si `IsAdaptiveEnabled` retorna verdadero, lo cual depende de
 `bAdaptiveEnabled`.
 
-*Distancia* (`ApplyPreCombatDistance`): requiere `DistanceSamples` >= 20. Si
-`AverageDistance` < 330, reduce en 50 la variable de Blackboard `CloseRange`. Si
-`AverageDistance` > 480, reduce en 75 `FarRange` e incrementa en 2 segundos `BossChaseDur`.
-Entre ambos umbrales, no hay ajuste.
+*Distancia* (`ApplyPreCombatDistance`): según la distancia promedio que el jugador mantuvo
+en el nivel previo, acorta el rango cercano o el lejano del jefe y ajusta la duración de su
+persecución. La @fig:bloque-distancia detalla los umbrales concretos.
 
-*Melee versus a distancia* (`ApplyPreCombatMeleeVsRanged`): requiere
-`MeleeAttacks` + `RangedAttacks` >= 5. Calcula `RangedRatio = RangedAttacks / Total`. Si
-`RangedRatio` > 0.5, incrementa en 15 los pesos de `BA_Poddle`, `BA_BossChase` y
-`BA_HeavyAttack`. Si `RangedRatio` < 0.35, incrementa en 15 los pesos de `BA_AOEAttack` y
-`BA_WhipAttack`. Adicionalmente, si `MeleeAttacksInRangedZone` + `RangedAttacksInRangedZone`
->= 3, incrementa en 10 el peso de `BA_AOEAttack` si predominó el melee en zona de rango, o
-el de `BA_Poddle` si predominó el ataque a distancia.
+#figure(
+  {
+    set par(justify: false)
+    let guard(cnt) = rect(
+      fill: luma(230), stroke: 0.8pt, radius: 4pt, inset: 8pt, width: 100%,
+      align(center)[#text(size: 9pt)[#cnt]],
+    )
+    let branch(header, effect, fill: luma(245)) = rect(
+      fill: fill, stroke: 0.8pt, radius: 4pt, inset: 7pt, width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        align(center)[#text(size: 8.5pt, weight: "bold")[#header]],
+        align(center)[#text(size: 8pt)[#effect]],
+      ),
+    )
+    let decision(cnt, w: 30mm) = {
+      let side = w * 0.8
+      align(center, box(width: w, height: side * 0.85)[
+        #place(center + horizon, rotate(45deg, rect(width: side * 0.56, height: side * 0.56, fill: rgb("#FFF2CC"), stroke: 1pt + rgb("#D6B656"))))
+        #place(center + horizon, box(width: w * 0.62, align(center)[#text(size: 8pt, weight: "bold")[#cnt]]))
+      ])
+    }
+    align(center, block(width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        guard[Requisito: `DistanceSamples` >= 20],
+        align(center)[↓],
+        decision[`AverageDistance`],
+        align(center)[↓],
+        grid(columns: (1fr, 1fr, 1fr), column-gutter: 6pt, row-gutter: 0pt,
+          branch([< 330], [Reduce 50 en `CloseRange` (Blackboard)], fill: rgb("#F8CECC")),
+          branch([330 – 480], [Sin ajuste]),
+          branch([> 480], [Reduce 75 en `FarRange` e incrementa 2s `BossChaseDur`], fill: rgb("#FFE6CC")),
+        ),
+      ),
+    ))
+  },
+  caption: [Regla de adaptación pre-combate por distancia.],
+) <fig:bloque-distancia>
 
-*Esquiva* (`ApplyPreCombatDodges`): requiere `TotalDodges` >= 5. Calcula
-`DodgeRatio = DodgesFromDelayAttack / TotalDodges`, es decir, la proporción de esquivas
-totales realizadas dentro de la ventana de delay de un ataque telegrafiado (compartida
-por el esqueleto normal, el caballero y el jefe melee mediante `ANS_DelayWindow`). Si `DodgeRatio` > 0.6, incrementa en 15 el peso de
-`BA_BasicAttack`. Si `DodgeRatio` < 0.4, incrementa en 15 los pesos de `BA_AOEAttack`,
-`BA_WallAttack` y `BA_HeavyAttack`. Entre ambos umbrales, no hay ajuste.
+*Melee versus a distancia* (`ApplyPreCombatMeleeVsRanged`): según si el jugador prefirió
+atacar de cerca o a distancia en el nivel previo, refuerza los ataques del jefe más
+adecuados para presionar cada estilo. La @fig:bloque-melee-distancia detalla los umbrales y
+los ataques afectados.
 
-//Por aca pondre una foto de la ventana de delaywindow para que se entienda
+#figure(
+  {
+    set par(justify: false)
+    let guard(cnt) = rect(
+      fill: luma(230), stroke: 0.8pt, radius: 4pt, inset: 8pt, width: 100%,
+      align(center)[#text(size: 9pt)[#cnt]],
+    )
+    let branch(header, effect, fill: luma(245)) = rect(
+      fill: fill, stroke: 0.8pt, radius: 4pt, inset: 7pt, width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        align(center)[#text(size: 8.5pt, weight: "bold")[#header]],
+        align(center)[#text(size: 8pt)[#effect]],
+      ),
+    )
+    let note(cnt) = rect(
+      fill: luma(248),
+      stroke: (dash: "dashed", paint: luma(120), thickness: 0.8pt),
+      radius: 4pt, inset: 7pt, width: 100%,
+      align(center)[#text(size: 8pt)[#cnt]],
+    )
+    let decision(cnt, w: 30mm) = {
+      let side = w * 0.8
+      align(center, box(width: w, height: side * 0.85)[
+        #place(center + horizon, rotate(45deg, rect(width: side * 0.56, height: side * 0.56, fill: rgb("#FFF2CC"), stroke: 1pt + rgb("#D6B656"))))
+        #place(center + horizon, box(width: w * 0.62, align(center)[#text(size: 8pt, weight: "bold")[#cnt]]))
+      ])
+    }
+    align(center, block(width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        guard[Requisito: `MeleeAttacks` + `RangedAttacks` >= 5],
+        align(center)[↓],
+        decision[`RangedRatio`],
+        align(center)[↓],
+        grid(columns: (1fr, 1fr, 1fr), column-gutter: 6pt,
+          branch([> 0.5], [+15 a `BA_Poddle`, `BA_BossChase`, `BA_HeavyAttack`], fill: rgb("#D5E8D4")),
+          branch([0.35 – 0.5], [Sin ajuste]),
+          branch([< 0.35], [+15 a `BA_AOEAttack`, `BA_WhipAttack`], fill: rgb("#D5E8D4")),
+        ),
+        note[Independiente (no bloquea lo anterior): si `MeleeAttacksInRangedZone` + `RangedAttacksInRangedZone` >= 3 → +10 a `BA_AOEAttack` si predominó el melee en zona de rango, o a `BA_Poddle` si predominó el ataque a distancia],
+      ),
+    ))
+  },
+  caption: [Regla de adaptación pre-combate por proporción de ataques melee versus a distancia.],
+) <fig:bloque-melee-distancia>
 
-*Zona de tanque* (`ApplyPreCombatTankZone`): evalúa dos aspectos. Si
-`LateralDodgesFromDash` + `BackwardDodgesFromDash` >= 2, incrementa en 10 el peso de
-`BA_WhipAttack` (si predominaron las laterales) o de `BA_HeavyAttack` (si predominaron las
-de retroceso). Si `TotalDodgesTankZone` >= 3, compara si
-`DodgesFromDelayAttack_TankZone * 2` >= `TotalDodgesTankZone`, es decir, si la proporción
-de esquivas realizadas dentro de la ventana de delay en la zona de tanque alcanza o supera el
-50%: de ser así, incrementa en 10 el peso de `BA_BasicAttack`; en caso contrario,
-incrementa en 10 los pesos de `BA_HeavyAttack` y `BA_WhipAttack`.
+*Esquiva* (`ApplyPreCombatDodges`): según qué proporción de las esquivas del jugador se
+realizaron dentro de la ventana de aviso de un ataque telegrafiado, refuerza los ataques
+difíciles de leer o los de preparación larga, según corresponda. La @fig:bloque-esquiva
+detalla los umbrales.
+
+#figure(
+  {
+    set par(justify: false)
+    let guard(cnt) = rect(
+      fill: luma(230), stroke: 0.8pt, radius: 4pt, inset: 8pt, width: 100%,
+      align(center)[#text(size: 9pt)[#cnt]],
+    )
+    let branch(header, effect, fill: luma(245)) = rect(
+      fill: fill, stroke: 0.8pt, radius: 4pt, inset: 7pt, width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        align(center)[#text(size: 8.5pt, weight: "bold")[#header]],
+        align(center)[#text(size: 8pt)[#effect]],
+      ),
+    )
+    let decision(cnt, w: 30mm) = {
+      let side = w * 0.8
+      align(center, box(width: w, height: side * 0.85)[
+        #place(center + horizon, rotate(45deg, rect(width: side * 0.56, height: side * 0.56, fill: rgb("#FFF2CC"), stroke: 1pt + rgb("#D6B656"))))
+        #place(center + horizon, box(width: w * 0.62, align(center)[#text(size: 8pt, weight: "bold")[#cnt]]))
+      ])
+    }
+    align(center, block(width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        guard[Requisito: `TotalDodges` >= 5],
+        align(center)[↓],
+        decision[`DodgeRatio`],
+        align(center)[↓],
+        grid(columns: (1fr, 1fr, 1fr), column-gutter: 6pt,
+          branch([> 0.6], [+15 a `BA_BasicAttack`], fill: rgb("#D5E8D4")),
+          branch([0.4 – 0.6], [Sin ajuste]),
+          branch([< 0.4], [+15 a `BA_AOEAttack`, `BA_WallAttack`, `BA_HeavyAttack`], fill: rgb("#D5E8D4")),
+        ),
+      ),
+    ))
+  },
+  caption: [Regla de adaptación pre-combate por momento de esquiva respecto a la ventana de aviso. `DodgeRatio` corresponde a `DodgesFromDelayAttack` / `TotalDodges`.],
+) <fig:bloque-esquiva>
+
+*Zona de tanque* (`ApplyPreCombatTankZone`): evalúa cómo esquivó el jugador las embestidas
+del jefe (hacia los lados o hacia atrás) y con qué precisión lo hizo, reforzando los
+ataques correspondientes. La @fig:bloque-zonatanque detalla las dos sub-reglas.
+
+#figure(
+  {
+    set par(justify: false)
+    let guard(cnt) = rect(
+      fill: luma(230), stroke: 0.8pt, radius: 4pt, inset: 8pt, width: 100%,
+      align(center)[#text(size: 9pt)[#cnt]],
+    )
+    let branch(header, effect, fill: luma(245)) = rect(
+      fill: fill, stroke: 0.8pt, radius: 4pt, inset: 7pt, width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        align(center)[#text(size: 8.5pt, weight: "bold")[#header]],
+        align(center)[#text(size: 8pt)[#effect]],
+      ),
+    )
+    let decision(cnt, w: 24mm) = {
+      let side = w * 0.8
+      align(center, box(width: w, height: side * 0.85)[
+        #place(center + horizon, rotate(45deg, rect(width: side * 0.56, height: side * 0.56, fill: rgb("#FFF2CC"), stroke: 1pt + rgb("#D6B656"))))
+        #place(center + horizon, box(width: w * 0.68, align(center)[#text(size: 6.5pt, weight: "bold")[#cnt]]))
+      ])
+    }
+    let subregla(titulo, pregunta, ..bloques) = block(width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        align(center)[#text(size: 8.5pt, style: "italic")[#titulo]],
+        align(center)[↓],
+        decision(pregunta),
+        align(center)[↓],
+        grid(columns: (1fr, 1fr), column-gutter: 6pt, ..bloques),
+      ),
+    )
+    align(center, block(width: 100%,
+      grid(columns: (1fr, 1fr), column-gutter: 14pt,
+        subregla(
+          [Sub-regla A: `LateralDodgesFromDash` + `BackwardDodgesFromDash` >= 2],
+          [¿Lateral o atrás?],
+          branch([Predominó lateral], [+10 a `BA_WhipAttack`], fill: rgb("#D5E8D4")),
+          branch([Predominó atrás], [+10 a `BA_HeavyAttack`], fill: rgb("#D5E8D4")),
+        ),
+        subregla(
+          [Sub-regla B: `TotalDodgesTankZone` >= 3],
+          [¿≥ 50%?],
+          branch([Sí], [+10 a `BA_BasicAttack`], fill: rgb("#D5E8D4")),
+          branch([No], [+10 a `BA_HeavyAttack` y `BA_WhipAttack`], fill: rgb("#FFE6CC")),
+        ),
+      ),
+    ))
+  },
+  caption: [Reglas de adaptación pre-combate por zona de tanque (dos sub-reglas independientes).],
+) <fig:bloque-zonatanque>
 
 === Adaptación durante el combate
+
 
 `ApplyInCombatSuccessfulHits`, disparada cada 15 ataques del jefe, evalúa cada tipo de ataque
 con `TotalAttemptsPerType` >= 3, calculando `Ratio = SuccessfulHits / TotalAttemptsPerType`.
@@ -2942,6 +3056,74 @@ entrar en dicho margen (controlado por la variable interna `bIsInHealingRange`, 
 reaplicar el ajuste en cada frame), incrementa en 15 los pesos de `BA_BasicAttack`,
 `BA_HeavyAttack`, `BA_HomingAttack` y `BA_Poddle`. Al salir del margen, revierte los mismos
 ajustes en -15.
+
+#figure(
+  {
+    set par(justify: false)
+    let guard(cnt) = rect(
+      fill: luma(230), stroke: 0.8pt, radius: 4pt, inset: 8pt, width: 100%,
+      align(center)[#text(size: 9pt)[#cnt]],
+    )
+    let branch(header, effect, fill: luma(245)) = rect(
+      fill: fill, stroke: 0.8pt, radius: 4pt, inset: 7pt, width: 100%,
+      stack(dir: ttb, spacing: 5pt,
+        align(center)[#text(size: 8.5pt, weight: "bold")[#header]],
+        align(center)[#text(size: 8pt)[#effect]],
+      ),
+    )
+    let decision(cnt, w: 30mm) = {
+      let side = w * 0.8
+      align(center, box(width: w, height: side * 0.85)[
+        #place(center + horizon, rotate(45deg, rect(width: side * 0.56, height: side * 0.56, fill: rgb("#FFF2CC"), stroke: 1pt + rgb("#D6B656"))))
+        #place(center + horizon, box(width: w * 0.62, align(center)[#text(size: 8pt, weight: "bold")[#cnt]]))
+      ])
+    }
+    let panel-title(cnt) = align(center)[#text(size: 10pt, weight: "bold")[#cnt]]
+
+    align(center, block(width: 100%,
+      stack(dir: ttb, spacing: 14pt,
+        stack(dir: ttb, spacing: 5pt,
+          panel-title[Panel A — Efectividad por tipo de ataque],
+          guard[Trigger: cada 15 ataques del jefe (`TotalAttacksPerformed % 15 == 0`) — evalúa cada tipo de ataque con `TotalAttemptsPerType` >= 3],
+          align(center)[↓],
+          decision[`Ratio`],
+          align(center)[↓],
+          grid(columns: (1fr, 1fr, 1fr), column-gutter: 6pt,
+            branch([> 0.6], [Incrementa en 15 el peso de ese ataque], fill: rgb("#D5E8D4")),
+            branch([0.3 – 0.6], [Sin ajuste]),
+            branch([< 0.3], [Reduce en 15 el peso de ese ataque], fill: rgb("#F8CECC")),
+          ),
+        ),
+        line(length: 100%, stroke: 0.5pt + luma(200)),
+        stack(dir: ttb, spacing: 6pt,
+          panel-title[Panel B — Curación del jugador (máquina de estados)],
+          guard[Requisito: `HealingCount` >= 2 — se compara `PlayerHealthPercent` contra `AverageHealingHP` con un margen de ±10 puntos porcentuales (variable interna `bIsInHealingRange`)],
+          grid(columns: (1fr, auto, 1fr), column-gutter: 8pt, align: horizon,
+            rect(fill: rgb("#F8CECC"), stroke: 1.2pt + rgb("#B85450"), radius: 12pt, inset: 12pt, width: 100%,
+              stack(dir: ttb, spacing: 4pt,
+                align(center)[#text(size: 8.5pt, weight: "bold")[Fuera del rango habitual de curación]],
+                align(center)[#text(size: 8pt)[Pesos base (sin bonus de presión)]],
+              )),
+            stack(dir: ttb, spacing: 1pt,
+              align(center)[#text(size: 17pt)[→]],
+              align(center)[#text(size: 6.5pt, style: "italic")[entra al margen]],
+              v(6pt),
+              align(center)[#text(size: 17pt)[←]],
+              align(center)[#text(size: 6.5pt, style: "italic")[sale del margen]],
+            ),
+            rect(fill: rgb("#D5E8D4"), stroke: 1.2pt + rgb("#82B366"), radius: 12pt, inset: 12pt, width: 100%,
+              stack(dir: ttb, spacing: 4pt,
+                align(center)[#text(size: 8.5pt, weight: "bold")[Dentro del rango habitual de curación]],
+                align(center)[#text(size: 8pt)[+15 a `BA_BasicAttack`, `BA_HeavyAttack`, `BA_HomingAttack`, `BA_Poddle`]],
+              )),
+          ),
+        ),
+      ),
+    ))
+  },
+  caption: [Ajustes de adaptación durante el combate: efectividad por tipo de ataque (Panel A) y máquina de estados de curación del jugador (Panel B).],
+) <fig:estado-adaptacion-combate>
+
 
 === Mecanismo de pesos de ataque <sec:pesos-ataque>
 
@@ -2958,19 +3140,20 @@ tipo de ataque (o -1 si no se encuentra).
 Los datos se persisten en archivos JSON dentro de `Saved/StudyLogs`:
 
 #[
-#set par(justify: false)
-+ `DumpMetricsToFile` (`SlimeGameInstance`): vuelca las variables de la fase pre-combate
-  (`AverageDistance`, `DistanceSamples`, `MeleeAttacks`, `RangedAttacks`,
-  `MeleeAttacksInRangedZone`, `RangedAttacksInRangedZone`, `TotalDodges`,
-  `SuccessfulDodges`, `AverageHealingHP`, `HealingCount`, `LateralDodgesFromDash`,
-  `BackwardDodgesFromDash`, `DodgesFromDelayAttack`, `DamageTakenInTankZone`,
-  `TotalDodgesTankZone`, `DodgesFromDelayAttack_TankZone`) a
-  `session_{SessionId}_{condición}_metrics.json`.
-+ `DumpCombatResultToFile(bPlayerWon)` (`PlayerMetricsComponent`): vuelca `bPlayerWon`,
-  `AttemptNumber` y el contenido de `AttackWeightsJSON` a `session_{SessionId}_{condición}_win.json`
-  o `_retry_{AttemptNumber}.json`, según corresponda.
-+ `DumpFinalTreeToFile` (`PlayerMetricsComponent`): vuelca únicamente `AttackWeightsJSON` a
-  `session_{SessionId}_{condición}_tree.json`.
+#set par(justify: true)
+#let c(x) = emph(x)
++ *DumpMetricsToFile* (#c("SlimeGameInstance")): vuelca las variables de la fase pre-combate
+  (#c("AverageDistance"), #c("DistanceSamples"), #c("MeleeAttacks"), #c("RangedAttacks"),
+  #c("MeleeAttacksInRangedZone"), #c("RangedAttacksInRangedZone"), #c("TotalDodges"),
+  #c("SuccessfulDodges"), #c("AverageHealingHP"), #c("HealingCount"), #c("LateralDodgesFromDash"),
+  #c("BackwardDodgesFromDash"), #c("DodgesFromDelayAttack"), #c("DamageTakenInTankZone"),
+  #c("TotalDodgesTankZone"), #c("DodgesFromDelayAttack_TankZone")) a
+  #c("session_{SessionId}_{condición}_metrics.json").
++ *DumpCombatResultToFile(bPlayerWon)* (#c("PlayerMetricsComponent")): vuelca #c("bPlayerWon"),
+  #c("AttemptNumber") y el contenido de #c("AttackWeightsJSON") a #c("session_{SessionId}_{condición}_win.json")
+  o #c("_retry_{AttemptNumber}.json"), según corresponda.
++ *DumpFinalTreeToFile* (#c("PlayerMetricsComponent")): vuelca únicamente #c("AttackWeightsJSON") a
+  #c("session_{SessionId}_{condición}_tree.json").
 ]
 
 En todos los casos, `SessionId` (generado a partir de fecha y hora) y la condición
@@ -2991,299 +3174,111 @@ la implementación particular de cada nivel.
 
 === Elementos de nivel <sec:elementos-nivel>
 
-Además de los elementos descritos a continuación, los niveles utilizan escaleras
-como elemento puramente visual y de navegación: corresponden únicamente a un
-_Static Mesh_, sin lógica de Blueprint asociada.
+Los niveles se construyen a partir de un conjunto de elementos reutilizables, cada uno
+implementado como un Blueprint propio. Además de los descritos a continuación, se emplean
+escaleras como elemento puramente visual y de navegación (un _Static Mesh_ sin lógica
+asociada).
 
 ==== Maniquí
 
-El maniquí es un enemigo funcional usado como objetivo de práctica, con un Blueprint
-propio. Su jerarquía de componentes es la siguiente:
-
-+ `Scene`: componente de escena, raíz del actor.
-  + `Health Bar Widget`: widget de la barra de vida.
-  + `StaticMesh`: malla estática del maniquí.
-
-Sus variables son las siguientes:
-
-+ `health` (Float): vida actual del maniquí.
-+ `maxHealth` (Float): vida máxima del maniquí.
-+ `timerHandle` (Timer Handle): referencia al temporizador de regeneración, utilizada
-  para poder invalidarlo una vez la vida se restablece por completo.
-+ `bSingleOpenDoor` (Boolean): bandera que evita que la lógica de derrota, y con
-  ella el delegado asociado, se ejecute más de una vez.
-
-Al comenzar a jugar, obtiene el widget de su barra de
-vida (`Health Bar Widget`), lo castea a `WB_NormalHealth_C` y fija la barra al 100 %
-(`SetPercent`, `InPercent` = 1.0).
-
-Al recibir daño, se vuelve a castear el widget y se resta el
-daño recibido a la variable `health`, actualizando la barra según la proporción
-`health` / `maxhealth`. En todo golpe, independientemente de si la vida llega a 0 o
-no, se reinicia y reproduce una Timeline que, en cada fotograma, rota el maniquí en función de su valor multiplicado por 10, dando el
-efecto visual de que el maniquí se tambalea al recibir el impacto.
-
-Adicionalmente, si `health` cae a 0 o menos, se comprueba la variable
-`bSingleOpenDoor`: si todavía no se ha activado, se marca como `true`, evitando que
-esta lógica se repita en golpes posteriores, se invoca el delegado `OnDummyDied`,
-escuchado por el Level Blueprint del nivel de tutorial para disparar la apertura
-de la puerta correspondiente según se detalla en la sección de `Lvl_Tutorial`, y
-se inicia un temporizador en bucle de 0.03 segundos que dispara el evento
-`CustomEvent`.
-
-El evento `CustomEvent`, disparado en bucle mientras el temporizador está activo,
-regenera la vida del maniquí en 3 puntos por cada ejecución, actualizando la barra
-de vida en cada iteración. Al alcanzar nuevamente 100 de vida, se invalida el
-temporizador, deteniendo la regeneración. De
-esta forma, el maniquí no se destruye al ser derrotado, sino que se regenera
-progresivamente, quedando disponible para que el jugador practique sobre él más de
-una vez.
-
-Finalmente, en cada fotograma, la barra de vida del maniquí rota
-para orientarse hacia la cámara del jugador, igual que en el resto de los enemigos del juego.
+El maniquí#footnote[
+  Modelo 3D "Medieval Combat Dummy" por CaptainHC, obtenido de Fab, licenciado bajo
+  #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
+  #link("https://www.fab.com/listings/d9d89431-ff36-454a-8c73-de5b5f8b03df")[Disponible en sitio web].
+] es un enemigo funcional usado como objetivo de práctica: al recibir daño se tambalea y,
+al llegar a cero de vida, dispara el delegado `OnDummyDied` (que abre la puerta
+correspondiente) y luego regenera su vida progresivamente para poder practicar sobre él de
+nuevo.
 
 #figure(
-  image("imagenes/cap5/bp-manequinn.png", width: 80%),
+  image("imagenes/cap5/bp-manequinn.png", width: 55%),
   caption: [Blueprint del maniquí.],
 ) <fig:bp-manequinn>
 
 ==== Puerta
 
-La puerta corresponde al Blueprint `BP_Door`, que hereda directamente de `Actor`.
-Su estructura de componentes consiste únicamente en un `StaticMesh`. Sus variables
-son las siguientes:
-
-+ `InitPos` (Vector): posición inicial de la puerta, registrada al momento de
-  abrirse.
-+ `EndPos` (Vector): posición final de la puerta una vez abierta.
-
-Su lógica se reduce a la función `OpenDoor`, invocada externamente, como se vio en
-la sección de `Lvl_Tutorial`, al derrotar al enemigo o maniquí correspondiente. Al
-activarse, registra la posición actual de la puerta en `InitPos` y calcula `EndPos`
-desplazándola 300 unidades hacia arriba en el eje Z. A continuación reproduce una
-Timeline que, en cada fotograma, interpola la posición de la puerta entre `InitPos`
-y `EndPos`, generando el efecto de que se desliza hacia arriba al abrirse. Si bien en el nivel
-de tutorial la malla estática corresponde a una puerta de madera, en el nivel previo
-al jefe se reutiliza el mismo Blueprint con una malla distinta: un portón metálico,
-más acorde con la ambientación de mazmorra.
+La puerta#footnote[
+  Modelo 3D "SM Door" por DenisFernandes, licenciado bajo
+  #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
+  #link("https://sketchfab.com/3d-models/sm-door-634fa1602d8f44e7a8e3868fb02c6d39")[Disponible en sitio web].
+] (`BP_Door`) expone la función `OpenDoor`, invocada externamente, que la desliza hacia
+arriba mediante una Timeline. El mismo Blueprint se reutiliza en el nivel previo al jefe
+con una malla de portón metálico, acorde con la ambientación de mazmorra.
 
 #figure(
-  image("imagenes/cap5/bp_door.png", width: 80%),
+  image("imagenes/cap5/bp_door.png", width: 55%),
   caption: [Blueprint de la puerta.],
 ) <fig:bp-door>
 
 ==== Espinas
 
-Las espinas corresponden al Blueprint `BP_Spykes`, que hereda directamente de
-`Actor`. Su estructura de componentes es la siguiente:
-
-+ `DefaultSceneRoot`: componente de escena, raíz del actor.
-  + `Box`: componente de colisión, utilizado para detectar el contacto del jugador.
-  + `SpykesMesh`: malla estática de las espinas.
-
-Su única variable es `RespawnPoint` (Target Point), que referencia el punto al que
-se reposiciona al jugador al caer sobre ellas.
-
-Al superponerse el jugador con el componente `Box`, se
-castea el actor superpuesto a `BP_ThirdPersonCharacter_C`; si el cast tiene éxito,
-se le aplica un daño fijo de 30 y se lo reposiciona instantáneamente
-en la ubicación de `RespawnPoint`. De esta forma, luego de
-hacerle daño al jugador, lo hace aparecer en un lugar seguro.
+Las espinas#footnote[
+  Modelo 3D "Spike Trap 01" por Nichgon, obtenido de Sketchfab bajo licencia Standard.
+  #link("https://sketchfab.com/3d-models/spike-trap-01-4022678cac214fd2963894aa152fc6f2")[Disponible en sitio web].
+] (`BP_Spykes`) aplican un daño fijo al jugador que las toca y lo reposicionan de inmediato
+en un punto seguro (`RespawnPoint`).
 
 #figure(
-  image("imagenes/cap5/bp-spykes.png", width: 80%),
+  image("imagenes/cap5/bp-spykes.png", width: 55%),
   caption: [Blueprint de las espinas.],
 ) <fig:bp-spykes>
 
 ==== Puente
 
-El puente corresponde al Blueprint `BP_Bridge`, que hereda directamente de `Actor`.
-Su estructura de componentes es la siguiente:
-
-+ `Scene`: componente de escena, raíz del actor.
-  + `StaticMesh`: contenedor de las mallas del puente.
-    + `Floor`: caja de colisión correspondiente al suelo del puente.
-    + `Left`: caja de colisión correspondiente a una de las barandillas.
-    + `Left1`: caja de colisión correspondiente a la otra barandilla.
-
-Sus variables, ambas públicas y editables, son las siguientes:
-
-+ `iniRot` (Rotator): rotación inicial del puente, registrada al momento de
-  activarse.
-+ `EndRot` (Rotator): rotación final del puente una vez bajado.
-
-Su lógica se reduce a la función `RotateBridge`, invocada externamente, como se vio
-en la sección de `Lvl_Tutorial`, al derrotar al maniquí del otro lado del abismo.
-Al activarse, guarda la rotación actual del componente `Scene` en `iniRot` y calcula
-`EndRot` componiéndola con un giro adicional de -90°. A continuación reproduce una
-Timeline que, en cada fotograma, interpola la rotación del puente entre `iniRot` y
-`EndRot`, generando el efecto de que baja hasta quedar habilitado para cruzarlo.
+El puente#footnote[
+  Modelo 3D "Bridge" por TAK0YT0, obtenido de Fab, licenciado bajo
+  #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
+  #link("https://www.fab.com/listings/71b99663-eed6-40e0-9674-96b218efc974")[Disponible en sitio web].
+] (`BP_Bridge`) expone la función `RotateBridge`, invocada externamente, que lo baja
+mediante una Timeline hasta habilitar el paso sobre el abismo.
 
 #figure(
-  image("imagenes/cap5/bp-bridge.png", width: 80%),
+  image("imagenes/cap5/bp-bridge.png", width: 55%),
   caption: [Blueprint del puente.],
 ) <fig:bp-bridge>
 
 ==== Palanca
 
-La palanca corresponde al Blueprint `BP_Lever`, que hereda directamente de `Actor`.
-Su estructura de componentes es la siguiente:
-
-+ `InteractZone`: componente de colisión, utilizado para detectar la presencia del
-  jugador dentro del rango de interacción.
-+ `PALANCA`: componente esquelético de la palanca física, sobre el que se reproduce
-  su animación de activación.
-
-Sus variables, ambas públicas y editables, son las siguientes:
-
-+ `bPlayerInRange` (Boolean): indica si el jugador se encuentra actualmente dentro
-  del rango de interacción.
-+ `bAlreadyUsed` (Boolean): indica si la palanca ya fue activada, evitando que
-  pueda volver a usarse.
-
-Al superponerse el jugador con `InteractZone`, se castea el actor superpuesto a
-`BP_ThirdPersonCharacter_C` y se comprueba que el componente específico que originó
-la superposición sea su `CapsuleComponent`, filtrando así otras superposiciones no
-relevantes. De cumplirse, se marca `bPlayerInRange` como `true` y se asigna la
-referencia a la palanca a la variable `currentLever` del jugador,
-descrita en la sección de interacción del capítulo 5. Al salir de la zona, se
-revierte el mismo par de operaciones: `bPlayerInRange` vuelve a `false` y
-`currentLever` se limpia.
-
-Cuando el jugador interactúa con la palanca (`IA_MyInteract`, ver sección de
-interacción) se invoca la función `PlayLever`, que reproduce la animación
-`AS_LevelerAnim` sobre el componente `PALANCA`, invoca el delegado
-`OnLeverActivated` y marca `bAlreadyUsed` como `true`. Este delegado es escuchado
-por el Level Blueprint de `Lvl_PreBoss`, que es quien efectivamente abre la puerta
-y el atajo correspondientes a cada palanca, según se detalla en la sección de ese
-nivel.
+La palanca#footnote[
+  Modelo 3D "Lever With Animation" por LeeMoorhead, licenciado bajo
+  #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
+  #link("https://sketchfab.com/3d-models/lever-with-animation-de90d94208e44741a754e57307ec68ec")[Disponible en sitio web].
+] (`BP_Lever`) detecta al jugador dentro de su zona de interacción y, al activarse
+(`IA_MyInteract`), reproduce su animación e invoca el delegado `OnLeverActivated`,
+escuchado por el Level Blueprint de `Lvl_PreBoss` para abrir la puerta y el atajo
+correspondientes.
 
 #figure(
-  image("imagenes/cap5/bp-lever.png", width: 80%),
+  image("imagenes/cap5/bp-lever.png", width: 55%),
   caption: [Blueprint de la palanca.],
 ) <fig:bp-lever>
 
-==== Zona de popup (`BP_ZonaPopChico`)
+==== Zonas de popup
 
-Estas zonas se distribuyen principalmente por `Lvl_Tutorial`, mostrando los textos
-de control del juego. También aparecen, en menor cantidad, en `Lvl_PreBoss`, junto
-a las palancas del nivel, indicando al jugador que puede presionar E para
-interactuar.
-
-Este Blueprint hereda directamente de `Actor` y su estructura de componentes
-consiste únicamente en `WidgetZone`, el volumen de colisión que activa la
-interfaz.
-
-Sus variables son las siguientes:
-
-+ `MensajePopUp` (Array de String, pública/editable): líneas de texto mostradas
-  por esta zona en particular, lo que permite que cada instancia de
-  `BP_ZonaPopChico` colocada en el nivel defina su propio contenido.
-+ `WB_Ref` (WB Pop Chico, privada): referencia a la instancia del widget creada al
-  entrar a la zona.
-
-Al superponerse el jugador con `WidgetZone`, se castea el actor superpuesto a
-`BP_ThirdPersonCharacter_C` y se crea una instancia del widget `WB_PopChico_C`, guardada en `WB_Ref` y añadida al _viewport_.
-A continuación, se invoca sobre ella la función `Calling_Array`, pasándole el
-contenido de `MensajePopUp` como parámetro. Al salir de la zona, se obtiene la
-referencia almacenada en `WB_Ref` y se la remueve de la pantalla
-(`RemoveFromParent`). De esta forma, cada zona muestra y oculta su propio popup de
-forma independiente, con el texto que le corresponda.
-
-==== Widget `WB_PopChico`
-
-La estructura visual del widget es la siguiente:
-
-+ `Canvas Panel`: panel contenedor principal.
-  + `Size Box`: caja de tamaño definido.
-    + `Border`: borde visual.
-      + `VerticalBox_71`: contenedor vertical donde se ubica el texto.
-
-Su único evento con lógica es la función `Calling_Array`, invocada externamente,
-como se describió en la sección anterior, al entrar a una zona de popup. Al
-activarse, limpia los hijos actuales de `VerticalBox_71` y, para cada elemento del
-arreglo recibido como parámetro, crea un `TextBlock`, le asigna como texto ese
-elemento, lo agrega como hijo del `VerticalBox` y centra su alineación horizontal. De esta forma, el widget muestra una línea
-de texto centrada por cada elemento del arreglo recibido, reemplazando por
-completo el contenido anterior cada vez que se activa.
+Las zonas de popup (`BP_ZonaPopChico`) muestran textos de ayuda al entrar el jugador en
+ellas: principalmente los controles del juego en `Lvl_Tutorial` y el aviso de interacción
+junto a las palancas en `Lvl_PreBoss`. Cada instancia define su propio texto (`MensajePopUp`),
+que se renderiza en el widget `WB_PopChico` mientras el jugador permanece en la zona.
 
 === Lvl_Tutorial
 
-El nivel de tutorial combina los elementos Maniquí, Puerta, Espinas y Puente
-descritos arriba. La distribución de salas y la secuencia de aprendizaje se
-describen en la sección @sec:diseno-niveles; aquí se documenta únicamente la
-lógica propia de su Level Blueprint, organizada en torno a las transiciones de
-cámara que acompañan la apertura de cada puerta.
-
-==== Vinculación de delegados
-
-Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel a un volumen reducido, y se suscribe a los delegados de derrota de tres actores específicos del
-nivel, cada uno asociado a un evento local propio:
-
-+ El maniquí de la primera sala (`BP_Dummy`) dispara `OnDummyDied`, el mismo
-  delegado descrito en la sección del Maniquí, vinculado al evento local
-  `Camera Dummy`.
-+ El esqueleto normal de la segunda sala (`BP_Skeleton1`) dispara `OnEnemyDied`,
-  vinculado al evento local `CameraLvl1`.
-+ El maniquí ubicado al otro lado del abismo, en la tercera sala (`BP_DummyBridge`),
-  también dispara `OnDummyDied`, pero en este caso vinculado al evento local
-  `BridgeCamera`.
-
-==== Función `CameraChange`
-
-Cada uno de los tres eventos locales invoca la misma función, `CameraChange`,
-pasándole una cámara y una puerta como parámetros: `Camera Dummy` con
-`BP_DoorDummy`, `CameraLvl1` con `BP_Door`, y `BridgeCamera` con `BP_Bridge`. La
-función hace un blend de cámara hacia el actor recibido como cámara y, a
-continuación, intenta castear el actor recibido como puerta a `BP_Door_C`; si el
-cast tiene éxito, abre la puerta (`OpenDoor`). En cualquier caso, tanto si el cast
-tiene éxito como si falla, se programa un temporizador a 2 segundos que dispara el
-evento `ReturnToPlayer`, devolviendo el control de la cámara al jugador.
-
-El evento `BridgeCamera` aprovecha precisamente la rama de cast fallido: como
-`BP_Bridge` no corresponde a un `BP_Door_C`, el cast falla y `OpenDoor` nunca se
-invoca desde la función. En su lugar, es el propio evento `BridgeCamera` quien,
-además de llamar a `CameraChange`, invoca directamente `RotateBridge` sobre el
-puente (`BP_Bridge_C`) para bajarlo y habilitar el paso una vez el jugador derrota
-al maniquí del otro lado del abismo.
+El nivel de tutorial combina los elementos Maniquí, Puerta, Espinas y Puente descritos
+arriba; su distribución de salas y secuencia de aprendizaje se detallan en
+@sec:diseno-niveles. La lógica propia de su Level Blueprint se organiza en torno a las
+transiciones de cámara que acompañan la apertura de cada puerta: al derrotar al maniquí de
+la primera sala, al esqueleto de la segunda y al maniquí al otro lado del abismo, el nivel
+enfoca brevemente la cámara hacia la puerta (o el puente) correspondiente, la abre mediante
+`OpenDoor` (o `RotateBridge` en el caso del puente) y luego devuelve el control al jugador.
 
 === Lvl_PreBoss
 
-El nivel previo al jefe combina los elementos Palanca, Puerta y Escalera
-descritos arriba, junto con los tres tipos de enemigo esqueleto (normal, mago y
-caballero). La distribución de salas se describe en la sección
-@sec:diseno-niveles; aquí se documenta únicamente la lógica propia de su Level
-Blueprint.
-
-Al comenzar a jugar, el Level Blueprint reproduce la música de fondo del nivel a un volumen reducido, habilita las métricas
-del jugador (`bMetricsEnabled` en `SlimeGameInstance`), y se suscribe al delegado `OnLeverActivated`, descrito en la sección de la
-Palanca, de las dos palancas del nivel:
-
-+ `BP_Lever`, la palanca de la zona de enemigos tanque, vinculada al evento local
-  `CAM1`.
-+ `BP_Lever2`, la palanca de la zona de rango, vinculada al evento local `GATE 1`.
-
-Cada uno de estos eventos locales invoca, tras un breve `Delay` en el caso de
-`CAM1`, una función `FocusOnCamera`, pasándole una cámara, una puerta, una cámara
-de atajo y una puerta de atajo como parámetros: `CAM1` con (`GatesCamera`,
-`BP_Door`, `ShortcutCameraRight`, `BP_DoorShorcutRight`), y `GATE 1` con
-(`GatesCamera`, `BP_Door2`, `ShortcutCameraLeft`, `BP_DoorShortcutLeft`). Es decir,
-ambas palancas enfocan la misma cámara general de las puertas, pero cada una abre
-su propia puerta principal y su propio atajo de regreso.
-
-La función `FocusOnCamera` hace un blend de cámara de 0.5 segundos hacia la cámara
-recibida como parámetro y, a continuación, intenta castear la puerta recibida a
-`BP_Door_C`; si el cast tiene éxito, abre la puerta (`OpenDoor`) y guarda la cámara
-y la puerta de atajo recibidas en las variables propias del nivel `CameraShortcut`
-y `DoorShortcut`. Tanto si el cast tiene éxito como si falla, se programa a
-continuación un temporizador a 3 segundos que dispara el evento `ShortCutOpen`.
-
-El evento `ShortCutOpen` castea la puerta guardada en `DoorShortcut` a `BP_Door_C`
-y, de tener éxito, invoca su función `OpenDoor`, descrita en la sección de la
-Puerta. Tanto si el cast tiene éxito como si falla, se hace un blend de cámara de
-1.5 segundos hacia la cámara guardada en `CameraShortcut`, y se programa un
-temporizador a 3 segundos que dispara el evento `PlayerReturn`, el cual devuelve
-el control de la cámara al jugador.
+El nivel previo al jefe combina los elementos Palanca, Puerta y Escalera descritos arriba,
+junto con los tres tipos de esqueleto (normal, mago y caballero); su distribución de salas
+se detalla en @sec:diseno-niveles. Al comenzar, su Level Blueprint reproduce la música de
+fondo y habilita la recolección de métricas del jugador (`bMetricsEnabled` en
+`SlimeGameInstance`). Cada una de las dos palancas del nivel enfoca la cámara hacia las
+puertas, abre su puerta principal y, tras una breve pausa, abre además un atajo de regreso,
+devolviendo luego el control al jugador.
 
 === Lvl_ThirdPerson
 
@@ -3293,46 +3288,12 @@ zona que activa el jefe al entrar a la sala.
 
 ==== Zona de entrada al jefe (`BP_ZonaEntradaJefe`) <sec:entrada-jefe>
 
-Este Blueprint hereda directamente de `Actor` y su estructura de componentes es la
-siguiente:
-
-+ `Box`: caja de colisión principal, que cubre la zona de activación.
-  + `BoxLeft1`: caja de colisión adicional, cubriendo el costado izquierdo de la
-    entrada.
-  + `BoxRight`: caja de colisión adicional, cubriendo el costado derecho.
-
-Sus variables, todas públicas y editables, son las siguientes:
-
-+ `CameraBoss` (Actor): cámara hacia la que se hace un blend para mostrar al jefe.
-+ `CameraDoor` (Actor): cámara hacia la que se hace un blend para mostrar la puerta
-  de entrada.
-+ `BossRef` (Character): referencia al personaje del jefe, usada para acceder a su
-  AI Controller.
-+ `Door` (Actor): referencia a la puerta de entrada a la arena.
-
-Las tres cajas de colisión están vinculadas a la misma secuencia de activación: al superponerse el jugador con cualquiera de ellas,
-se castea el actor superpuesto a `BP_ThirdPersonCharacter_C` y se ingresa a un nodo
-`DoOnce`, que garantiza que la secuencia completa solo se ejecute una vez,
-independientemente de por cuál de las tres cajas haya entrado el jugador.
-
-La secuencia, una vez disparada, es la siguiente:
-
-+ Se deshabilita el input del jugador, se reproduce la música del
-  jefe a un volumen reducido, y se hace un blend de cámara de 1.5
-  segundos hacia `CameraBoss`, mostrando al jefe. Transcurridos 3 segundos, se
-  dispara el evento `FocusingDoorGate`.
-+ `FocusingDoorGate` hace un blend de 1 segundo hacia `CameraDoor` y, sobre la
-  puerta referenciada en `Door` (casteada a `BP_Door_C`), invoca su función
-  `OpenDoor`, descrita en la sección de la Puerta, lo que en este punto bloquea el
-  paso detrás del jugador en lugar de habilitarlo, dependiendo de la posición
-  inicial con la que esta instancia de la puerta esté ubicada en el nivel.
-  Transcurridos 2 segundos, se dispara el evento `GoingBackToPlayer`.
-+ `GoingBackToPlayer` hace un blend de 1 segundo de vuelta hacia el jugador.
-  Transcurrido 1 segundo, se dispara el evento `ActivatingBoss`.
-+ `ActivatingBoss` rehabilita el input del jugador e invoca `ActivateBossController`
-  sobre el AI Controller del jefe, descrita en la sección @sec:activacion-jefe.
-  Finalmente, el propio actor `BP_ZonaEntradaJefe` se destruye a sí mismo,
-  ya que su propósito se cumple una sola vez.
+Al entrar el jugador a la sala del jefe, esta zona dispara, una sola vez, una secuencia
+cinemática de activación: deshabilita el input del jugador, reproduce la música del jefe,
+enfoca la cámara hacia el jefe y luego hacia la puerta de entrada, que se cierra tras el
+jugador (`OpenDoor`). Al terminar, devuelve la cámara al jugador, rehabilita su input y
+activa al jefe mediante `ActivateBossController` (@sec:activacion-jefe), tras lo cual la
+zona se destruye a sí misma.
 
 == Widgets generales (MainMenu, WinnerScreen...)
 
@@ -3477,12 +3438,10 @@ empezar, firma un consentimiento informado que detalla el propósito del
 estudio, la confidencialidad de sus datos y su derecho a abandonar la
 sesión cuando quiera.
 
-// TODO: reemplazar X e Y por las cifras reales de participantes reclutados
-// y de sesiones descartadas.
-En total se reclutó a X participantes. Durante las primeras sesiones se
+En total se reclutó exitosamente a 33 participantes. Durante las primeras sesiones se
 detectaron ajustes pendientes en algunas de las métricas registradas, lo
 que invalidó los datos de 3 de esas sesiones; descartando esos casos, la
-muestra final utilizada para el análisis quedó compuesta por X-3
+muestra final utilizada para el análisis quedó compuesta por 30
 participantes.
 
 == Equipo de prueba
@@ -3502,11 +3461,19 @@ tutorial de controles, una fase de exploración del nivel previo al jefe,
 donde el sistema ya empieza a registrar comportamiento, y finalmente el
 combate contra el jefe. El investigador deja jugar libremente, e interviene
 solo si la persona se traba en algo relacionado con los controles, no con
-el combate en sí. Cada sesión dura entre 25 y 40 minutos. Para mantener el
+el combate en sí. La única indicación de juego que se dio por igual a todos los
+participantes se entregaba al iniciar el nivel previo al jefe: que, durante su
+exploración, enfrentaran y eliminaran a cada enemigo que encontraran antes de
+seguir avanzando, en lugar de esquivarlos o arrastrarlos consigo mientras
+recorrían el nivel. Esta instrucción común busca que el comportamiento registrado frente a
+cada arquetipo provenga de enfrentamientos efectivos y comparables entre
+participantes, y no de estrategias de evasión que dejarían al sistema sin
+información suficiente para construir el perfil de juego. Cada sesión dura entre
+25 y 40 minutos. Para mantener el
 anonimato de los datos sin perder la trazabilidad, a cada participante se le
 asigna un código al comienzo, que es lo único que conecta su cuestionario
 inicial, sus métricas de juego y su cuestionario de salida. En ninguna de
-las sesiones se observaron caídas de fps ni tirones perceptibles, por lo
+las sesiones se observaron caídas de fps ni _stuttering_ perceptible, por lo
 que el rendimiento del juego no constituyó una variable de confusión en
 los resultados obtenidos.
 
@@ -3542,6 +3509,560 @@ experiencia reportada en el GEQ y en las preguntas abiertas, en comparación
 con la condición de control. En particular interesa ver si esas diferencias,
 de existir, van en la dirección que cabría esperar dado cómo se ajustó
 efectivamente el jefe en cada partida.
+
+== Resultados
+
+=== Verificación técnica del sistema adaptativo
+
+Antes de analizar la experiencia reportada por los participantes, se verificó
+que el mecanismo de adaptación descrito en @sec:pesos-ataque efectivamente se
+comportó según lo documentado. Para ello se comparó, en cada una de las 15
+sesiones del grupo adaptativo, el ajuste de pesos predicho por las reglas de adaptación pre-combate,
+aplicadas manualmente sobre las métricas de exploración de cada participante,
+contra el estado real registrado en el archivo de pesos previo al combate. Las
+predicciones coincidieron exactamente con el registro real en las 15 sesiones,
+lo que confirma que el mecanismo de adaptación pre-combate opera tal como fue
+diseñado.
+
+Adicionalmente, se comparó ese mismo estado pre-combate contra los pesos finales
+registrados al término de cada partida, con el fin de aislar el efecto del ajuste
+ocurrido durante el combate mismo (evaluación de aciertos por tipo de ataque y de
+proximidad de curación, descritas en @sec:pesos-ataque). En 14 de las 15 sesiones
+se observó un cambio neto de pesos atribuible al combate, con magnitudes que
+oscilaron entre −135 y +60 puntos (suma de las desviaciones respecto al valor
+previo al combate). Esto indica que ambos mecanismos de ajuste, tanto el
+pre-combate como el ocurrido durante el combate, estuvieron activos en la gran
+mayoría de las sesiones evaluadas.
+
+La @tbl:adaptacion-participante detalla, para cada participante del grupo
+adaptativo, la magnitud del ajuste alcanzado al inicio del combate (suma de las
+desviaciones de todos los pesos respecto a su valor base de 50), la magnitud
+final tras la partida, y la diferencia entre ambas, que corresponde al ajuste
+neto atribuible al combate. Un valor negativo en esta última columna indica que,
+durante la pelea, el sistema redujo pesos de ataques que fallaron de forma
+reiterada contra ese jugador, según la regla de ajuste por aciertos descrita en
+@sec:pesos-ataque.
+
+#figure(
+  align(center, table(
+    columns: 4,
+    align: (left, right, right, right),
+    table.header(
+      [*Participante*],
+      [*Ajuste pre-combate*],
+      [*Ajuste final*],
+      [*Atribuible al combate*],
+    ),
+    [P11], [75], [15], [−60],
+    [P12], [55], [−35], [−90],
+    [P16], [80], [50], [−30],
+    [P18], [70], [25], [−45],
+    [P19], [75], [−30], [−105],
+    [P21], [75], [45], [−30],
+    [P23], [10], [−5], [−15],
+    [P24], [35], [−25], [−60],
+    [P26-2], [35], [−10], [−45],
+    [P28], [60], [30], [−30],
+    [P30], [70], [−65], [−135],
+    [P34], [85], [145], [+60],
+    [P35], [75], [75], [+0],
+    [P38], [45], [90], [+45],
+    [P41], [45], [−15], [−60],
+  )),
+  caption: [Magnitud del ajuste de pesos por participante del grupo adaptativo:
+    estado al inicio del combate, estado final y diferencia atribuible al combate.
+    Los valores corresponden a la suma de las desviaciones de todos los pesos
+    respecto a su valor base (50).],
+) <tbl:adaptacion-participante>
+
+=== Usabilidad (SUS)
+
+Se aplicó el System Usability Scale (SUS) adaptado a contexto de videojuegos al
+cierre de cada sesión, sobre el total de la muestra válida (N = 30; 15 en
+condición control y 15 en condición adaptativa). El puntaje promedio general fue
+de 77.9 (mediana 77.5, DE = 7.80), por encima del punto de referencia habitual
+de la industria (68) y cercano al umbral considerado «Excelente» (80.3). De los
+30 participantes, 11 calificaron su experiencia como Excelente, 14 como Buena y 5
+como Aceptable, sin registrarse evaluaciones en la categoría Pobre.
+
+Al desagregar por condición, el grupo control obtuvo un promedio de 77.83
+(mediana 80.00, DE = 8.44) y el grupo adaptativo un promedio de 78.00 (mediana
+77.50, DE = 7.39), sin diferencias apreciables en la distribución de bandas de
+calificación entre ambos grupos (control: 6 Excelente, 6 Bueno, 3 Aceptable;
+adaptativo: 5 Excelente, 8 Bueno, 2 Aceptable). La @tbl:sus-resumen resume los
+estadísticos descriptivos del puntaje SUS por condición y para el total de la
+muestra.
+
+#figure(
+  align(center, table(
+    columns: 5,
+    align: (left, center, right, right, right),
+    table.header(
+      [*Grupo*],
+      [*N*],
+      [*Promedio*],
+      [*Mediana*],
+      [*DE*],
+    ),
+    [Control], [15], [77.83], [80.00], [8.44],
+    [Adaptativo], [15], [78.00], [77.50], [7.39],
+    [General], [30], [77.92], [77.50], [7.80],
+  )),
+  caption: [Estadísticos descriptivos del puntaje SUS (0–100) por condición y
+    para el total de la muestra.],
+) <tbl:sus-resumen>
+
+Se evaluó el supuesto de normalidad mediante la prueba de Shapiro-Wilk de forma
+independiente para cada condición, sin encontrarse evidencia de desviación
+respecto a la normalidad (control: $W = 0.951$, $p = .538$; adaptativo:
+$W = 0.935$, $p = .322$). No obstante, y por consistencia con el resto de las
+variables analizadas en este capítulo, varias de las cuales sí mostraron
+desviaciones significativas de la normalidad, se optó por aplicar de igual forma
+la prueba no paramétrica U de Mann-Whitney sobre la diferencia de medianas. El
+resultado no mostró diferencias significativas entre condiciones ($U = 112.0$,
+$p = 1.000$, tamaño de efecto rank-biserial $= 0.00$), lo que indica que la
+usabilidad percibida del prototipo no se vio afectada por la presencia del
+sistema de adaptación. Este resultado es coherente con lo esperado: el mecanismo
+adaptativo modifica el comportamiento del jefe, no la interfaz ni los controles
+del juego, por lo que no debería impactar la usabilidad general.
+
+=== Experiencia de juego (GEQ)
+
+Se analizaron las cinco dimensiones del Game Experience Questionnaire (GEQ)
+consideradas en este estudio: afecto positivo, afecto negativo, desafío, tensión
+e inmersión, cada una calculada como el promedio de sus cuatro ítems en escala de
+1 a 5. Al evaluar el supuesto de normalidad mediante la prueba de Shapiro-Wilk, se
+encontró que tres de las cinco dimensiones (afecto positivo, afecto negativo y
+tensión) presentaron desviaciones significativas de la normalidad ($p < .01$) en
+ambos grupos, lo que motivó el uso de la prueba no paramétrica U de Mann-Whitney
+de manera uniforme para todas las dimensiones.
+
+La @tbl:geq-mannwhitney presenta la comparación entre condiciones. Ninguna de las
+cinco dimensiones mostró diferencias estadísticamente significativas entre el
+grupo control y el adaptativo (todos los valores de $p > .05$). Los tamaños de
+efecto fueron pequeños en todos los casos. Las dos dimensiones más relevantes para
+la hipótesis del estudio, desafío y tensión, mostraron efectos en la dirección
+esperada (mediana de desafío levemente mayor en el grupo adaptativo, 2.50 frente a
+2.25), pero de magnitud insuficiente para distinguirse del azar con el tamaño de
+muestra disponible.
+
+#figure(
+  align(center, table(
+    columns: 6,
+    align: (left, center, center, right, right, right),
+    table.header(
+      [*Dimensión*],
+      [*Md. Control*],
+      [*Md. Adapt.*],
+      [*U*],
+      [*p*],
+      [*Efecto*],
+    ),
+    [Afecto positivo], [4.75], [4.50], [125.0], [.602], [−0.11],
+    [Afecto negativo], [1.25], [1.25], [137.0], [.301], [−0.22],
+    [Desafío], [2.25], [2.50], [96.5], [.517], [+0.14],
+    [Tensión], [1.25], [1.00], [125.0], [.592], [−0.11],
+    [Inmersión], [3.25], [3.50], [106.0], [.802], [+0.06],
+  )),
+  caption: [Comparación de las dimensiones GEQ entre condiciones mediante la prueba
+    U de Mann-Whitney. Md. corresponde a la mediana; el efecto se reporta como
+    correlación rango-biserial. Un efecto positivo indica valores mayores en el
+    grupo adaptativo.],
+) <tbl:geq-mannwhitney>
+
+Al igual que en el SUS, la falta de diferencias significativas en las dimensiones
+GEQ indica que, comparando ambos grupos completos, no se puede atribuir al sistema
+adaptativo un cambio en la experiencia de juego que reportó el conjunto de los
+participantes.
+
+No obstante, más allá de la comparación de medianas, resulta interesante observar
+de forma descriptiva la dispersión de las respuestas en cada condición,
+representada en la @fig:boxplot-geq. En la dimensión de desafío, si bien las
+medianas de ambos grupos son similares, el rango intercuartílico del grupo
+adaptativo (0.50) es visiblemente más compacto que el del grupo control (0.88); es
+decir, el 50% central de las respuestas se concentra en un intervalo más estrecho.
+Esta observación sugiere que el sistema adaptativo pudo haber regulado la
+experiencia de desafío hacia un rango más consistente entre jugadores, en lugar de
+simplemente elevar su nivel promedio.
+
+#figure(
+  grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 4pt,
+    row-gutter: 4pt,
+    image("imagenes/cap6/boxplot_geq_afecto_positivo.png", width: 100%),
+    image("imagenes/cap6/boxplot_geq_afecto_negativo.png", width: 100%),
+    image("imagenes/cap6/boxplot_geq_desafio.png", width: 100%),
+    grid.cell(colspan: 3, align(center,
+      box(width: 66.6%, grid(
+        columns: (1fr, 1fr),
+        column-gutter: 4pt,
+        image("imagenes/cap6/boxplot_geq_tension.png", width: 100%),
+        image("imagenes/cap6/boxplot_geq_inmersion.png", width: 100%),
+      ))
+    )),
+  ),
+  caption: [Distribución de las cinco dimensiones GEQ por condición. Cada punto
+    representa a un participante; la línea central de cada caja corresponde a la
+    mediana y los bordes de la caja al primer y tercer cuartil.],
+) <fig:boxplot-geq>
+
+=== Comportamiento en la fase de exploración
+
+Las métricas de comportamiento del jugador (distancia mantenida respecto a los
+enemigos, proporción de ataques cuerpo a cuerpo, esquivas) se registran durante la
+fase de exploración previa al combate, tal como se describe en
+@sec:metricas. Es importante notar que, en esta fase, ambas condiciones juegan un
+nivel idéntico: el sistema de adaptación solo actúa sobre el jefe, que aún no ha
+aparecido. Por lo tanto, estas métricas no son un resultado de la adaptación, sino
+que sirven para dos cosas. Por un lado, son la información que el sistema lee para
+ajustar los pesos del jefe (ver @sec:pesos-ataque). Por otro, compararlas entre
+grupos permite comprobar que ambos partieron de un estilo de juego parecido, antes
+de que el jefe empezara a comportarse distinto en cada condición.
+
+La @tbl:metricas-exploracion presenta esta comparación. Ninguna de las cuatro
+métricas mostró diferencias estadísticamente significativas entre condiciones
+(todos los valores de $p > .05$), lo que indica que ambos grupos exhibieron un
+comportamiento de exploración comparable. Se observa una leve tendencia del grupo
+adaptativo a jugar algo más lejos (menor proporción de ataques cuerpo a cuerpo,
+efecto −0.32, $p = .135$). Esta diferencia no es significativa, y en todo caso
+refleja una pequeña diferencia de partida entre los grupos, no un efecto de la
+adaptación, ya que ocurre antes de que el jefe se comporte distinto en cada
+condición.
+
+#figure(
+  align(center, table(
+    columns: 6,
+    align: (left, center, center, right, right, right),
+    table.header(
+      [*Métrica de exploración*],
+      [*Md. Control*],
+      [*Md. Adapt.*],
+      [*U*],
+      [*p*],
+      [*Efecto*],
+    ),
+    [Distancia a los enemigos], [323.44], [300.65], [133.0], [.407], [−0.18],
+    [Ratio de ataques melee], [0.72], [0.62], [149.0], [.135], [−0.32],
+    [Esquivas totales], [38.00], [32.00], [144.0], [.198], [−0.28],
+    [Esquivas exitosas], [3.00], [2.00], [132.0], [.422], [−0.17],
+  )),
+  caption: [Comparación del comportamiento durante la fase de exploración entre
+    condiciones, mediante la prueba U de Mann-Whitney. Estas métricas corresponden
+    al nivel previo al jefe, idéntico para ambos grupos, y sirven como verificación
+    de balance de línea base. Md. corresponde a la mediana; el efecto se reporta
+    como correlación rango-biserial.],
+) <tbl:metricas-exploracion>
+
+=== Duración del combate
+
+A diferencia de las métricas anteriores, la duración del combate contra el jefe sí
+corresponde a la fase en la que actúa la adaptación. Se calculó como el tiempo
+transcurrido entre el inicio del combate (momento en que se guardan las métricas de
+exploración) y la derrota del jefe. La mediana fue de 173 segundos en el grupo
+control y de 224 segundos en el adaptativo. La diferencia no resultó
+estadísticamente significativa (U de Mann-Whitney; $U = 86.0$, $p = .281$, efecto
+rango-biserial $= +0.24$). Aun así, la tendencia va en la dirección esperada: los
+combates contra el jefe adaptativo tendieron a durar más, lo que es coherente con una
+experiencia algo más demandante, aunque este resultado se limita a la muestra
+analizada y no puede generalizarse.
+
+=== Adaptación percibida según el perfil de juego
+
+Las secciones anteriores comparan al grupo adaptativo como un todo. Sin embargo, al
+observar a los participantes jugar durante las sesiones, surgió la hipótesis de que el
+efecto del sistema no afecta a todos por igual. La razón tiene que ver con el diseño
+del jefe: este presiona más a los jugadores que se mantienen a distancia, acercándose
+para obligarlos a moverse, mientras que a los que ya pelean de cerca la adaptación
+casi no los toca.
+
+Para revisar esta idea, se dividió al grupo adaptativo en dos perfiles según la
+distancia que mantuvieron durante la exploración, usando la mediana (300.65) como
+corte: un perfil de _rango_ ($n = 8$) y uno de _cuerpo a cuerpo_ ($n = 7$). Conviene
+notar que esta distancia se mide antes del combate, y es justamente la señal que el
+sistema usa para adaptar al jefe. Es decir, se está agrupando a los jugadores según
+algo que ocurre antes de la experiencia que luego reportan.
+
+Al comparar la tensión reportada entre ambos perfiles, se observa una diferencia
+apreciable: los jugadores de perfil de rango reportaron una tensión media de 1.69,
+frente a 1.07 en los de perfil cuerpo a cuerpo. Esta diferencia alcanzó el nivel de
+significancia habitual ($U = 43.5$, $p = .050$), con un tamaño de efecto grande
+(rango-biserial $= 0.55$), a pesar de lo pequeños que son los subgrupos. La dimensión
+de desafío mostró una diferencia en la misma dirección pero menor y no significativa
+(medias de 2.69 frente a 2.39; $p = .555$).
+
+Lo más importante es que esta diferencia aparece únicamente en el grupo adaptativo.
+Al dividir de la misma forma al grupo control, ambos perfiles reportan una tensión
+equivalente (medianas de 1.25 y 1.12 para cuerpo a cuerpo y rango, respectivamente). Esto es lo que cabría esperar: aunque el jefe control también elige
+sus ataques según la distancia momentánea del jugador (igual que el adaptativo), no
+ajusta sus pesos al estilo de juego de cada persona, por lo que no presiona de forma
+especial a quienes se mantienen a distancia. La @fig:distancia-tension ilustra este
+contraste: la diferencia entre perfiles aparece únicamente en la condición
+adaptativa. La misma conclusión se obtiene al analizar la relación de forma continua,
+mediante la correlación entre la distancia de exploración y la tensión: esta resulta
+positiva y significativa en el grupo adaptativo (Spearman $rho = 0.517$, $p = .048$),
+pero prácticamente nula en el grupo control ($rho = -0.075$, $p = .790$). El hecho de
+que la asociación aparezca solo cuando el jefe se adapta constituye la evidencia más
+directa de este estudio a favor de que el sistema logró generar una experiencia
+diferenciada en el perfil de jugador que fue diseñado para presionar.
+
+#figure(
+  image("imagenes/cap6/tension_por_perfil.png", width: 90%),
+  caption: [Tensión reportada según el perfil de juego (cuerpo a cuerpo o rango,
+    definido por la mediana de distancia de exploración de cada grupo), separada por
+    condición. El área de cada violín representa cómo se distribuyen las respuestas y
+    la línea horizontal marca la mediana; cada punto es un participante. En la
+    condición adaptativa los jugadores de perfil de rango reportan una tensión mayor
+    (el perfil cuerpo a cuerpo se concentra en el valor mínimo), mientras que en la
+    condición control ambos perfiles son equivalentes.],
+) <fig:distancia-tension>
+
+Ahora bien, este resultado debe interpretarse considerando una posible variable de
+confusión, motivada por una observación recurrente durante las sesiones: los
+jugadores que adoptaban un estilo más cercano y agresivo tendían a ser también los
+más familiarizados con este tipo de juegos. De ser así, la menor tensión observada
+en el perfil cuerpo a cuerpo podría deberse no al estilo de juego en sí, sino a una
+mayor habilidad general que hiciera al sistema menos capaz de presionarlos. Para
+evaluar esta posibilidad, se calculó la correlación entre la distancia de exploración
+y el puntaje de experiencia dentro del grupo adaptativo, que resultó débil
+($rho = -0.313$); asimismo, la diferencia de experiencia media entre ambos perfiles
+fue pequeña (6.25 en el perfil de rango frente a 6.71 en el de cuerpo a cuerpo). Más
+aún, al calcular la correlación parcial entre distancia y tensión controlando por el
+puntaje de experiencia, el valor no solo se mantuvo sino que se reforzó levemente
+($rho = 0.537$), lo que sugiere que la asociación observada no se explica meramente
+por diferencias de habilidad.
+
+En la misma línea, al examinar la relación entre el puntaje de experiencia y las
+dimensiones del GEQ sobre el total de la muestra, no se encontró ninguna correlación
+significativa (por ejemplo, experiencia frente a desafío: $rho = -0.221$,
+$p = .240$; frente a tensión: $rho = -0.010$, $p = .959$). Es decir, en estos datos
+los jugadores más experimentados no reportaron sistemáticamente una experiencia
+menos desafiante o tensa.
+
+Estos análisis, sin embargo, tienen una limitación de fondo: medir la experiencia
+real de un jugador es difícil de por sí. El puntaje se construye a partir de la
+frecuencia de juego, los años que lleva jugando y la cantidad de títulos similares
+jugados, datos que reflejan cuánto ha jugado, pero no necesariamente qué tan hábil es
+ni qué tan familiarizado está con este tipo de combate en particular. Se observaron
+casos en que un participante con un puntaje alto mostraba, tanto en su desempeño como
+en la conversación durante la sesión, una soltura menor a la que su puntaje sugería.
+Esto, sumado a lo pequeña que es la muestra, implica que no se puede descartar del
+todo esta posible confusión, y que el vínculo entre experiencia y estilo de juego
+debe tomarse como algo tentativo y no como una relación comprobada.
+
+=== Análisis de las preguntas abiertas
+
+Al cierre de la sesión, cada participante respondió cuatro preguntas abiertas sobre
+la predictibilidad del jefe, los aspectos más interesantes o frustrantes del combate,
+si percibió que el jefe aprendía o cambiaba según sus acciones, y qué tan justo le
+pareció su comportamiento. Las respuestas se codificaron temáticamente, asignando cada
+una a una categoría mediante lectura manual del texto completo.
+
+La pregunta sobre percepción de aprendizaje es la más directamente ligada a la
+hipótesis del estudio. Como resume la @tbl:aprendizaje, 10 de los 15 participantes del
+grupo adaptativo (67%) reportaron percibir que el jefe aprendía o cambiaba según sus
+acciones, frente a 7 de 15 (47%) en el grupo control. Si bien la dirección es la
+esperada, la diferencia no alcanza significancia estadística (prueba exacta de Fisher,
+$p = .462$), lo que se explica en parte por el tamaño de la muestra y, como se discute
+a continuación, por la notable proporción de respuestas afirmativas también en la
+condición control.
+
+#figure(
+  align(center, table(
+    columns: 3,
+    align: (left, center, center),
+    table.header(
+      [*Condición*],
+      [*Sí*],
+      [*No*],
+    ),
+    [Adaptativo], [10], [5],
+    [Control], [7], [8],
+  )),
+  caption: [Percepción de aprendizaje o adaptación del jefe según condición, a partir
+    de la codificación de la pregunta abierta correspondiente.],
+) <tbl:aprendizaje>
+
+Ahora bien, este resultado debe matizarse con dos observaciones que emergen de la
+lectura cualitativa. En primer lugar, varias respuestas clasificadas como afirmativas
+describen en realidad el comportamiento por diseño del jefe según la distancia (por
+ejemplo, "si me acercaba atacaba de cerca, y si me alejaba usaba ataques a distancia"),
+un patrón que responde a la posición del jugador pero que no constituye necesariamente
+un aprendizaje en el sentido de adaptación al historial de acciones. La pregunta no
+obliga a distinguir entre ambos fenómenos, por lo que el conteo de respuestas
+afirmativas probablemente sobreestima cuántos participantes percibieron una adaptación
+real. En segundo lugar, y de manera reveladora, casi la mitad de los participantes del
+grupo control (7 de 15), que enfrentaron un jefe de comportamiento completamente fijo,
+también afirmaron percibir aprendizaje, describiendo con detalle cambios que el jefe no
+realizó. Esto evidencia que la percepción de adaptación es una señal ruidosa,
+susceptible de atribuciones que no se corresponden con el comportamiento real del
+sistema.
+
+Una posible explicación para estas atribuciones en el grupo control es un sesgo de
+expectativa. A los participantes nunca se les indicó qué versión del juego estaban
+jugando, y es plausible que muchos hayan llegado a la sesión predispuestos a encontrar
+un enemigo adaptativo, dado que el estudio se enmarca precisamente en el diseño de este
+tipo de sistemas. Esa expectativa previa pudo llevarlos a interpretar como adaptación
+comportamientos que en realidad eran fijos, lo que refuerza la necesidad de no apoyarse
+únicamente en el autoinforme para evaluar si el jugador percibió la adaptación.
+
+La idea de que la percepción de adaptación no siempre coincide con lo que el jefe
+realmente hizo pudo verificarse de forma directa, ya que el sistema guarda los pesos
+de ataque reales de cada partida. Esto permite comparar lo que cada participante dijo
+haber notado con los cambios que efectivamente ocurrieron en el _behaviour tree_
+de su combate. Al hacer ese cruce, se encontró que la correspondencia
+es baja. Un caso ilustrativo de
+coincidencia es el de un participante del grupo adaptativo que reportó que el jefe "se
+agachaba" para evitar sus proyectiles, lo que efectivamente coincide con un aumento
+sustancial del peso del ataque de charco (`BA_Poddle`) durante su combate. Sin
+embargo, otros participantes describieron ataques que percibieron como intensificados
+(por ejemplo, proyectiles que "se multiplicaban") cuyos pesos, al revisar el registro,
+no se modificaron en absoluto. En el grupo control, por definición, la totalidad de
+estas percepciones corresponden a atribuciones, dado que los pesos permanecieron fijos
+durante toda la partida. Este contraste refuerza la idea de que las respuestas
+autoinformadas sobre la adaptación del jefe deben interpretarse con cautela, y
+constituye una de las razones por las que el análisis de este trabajo se apoya
+principalmente en las métricas objetivas y en el registro interno del sistema.
+
+Respecto a la predictibilidad (pregunta 1), se observa una tendencia coherente con la
+hipótesis de una experiencia más diferenciada: mientras que en el grupo control 11 de
+15 participantes (73%) describieron al jefe como predecible, en el grupo adaptativo
+solo 7 de 15 (47%) lo hicieron, calificándolo el resto como poco predecible. En
+cuanto a la percepción de justicia (pregunta 4), no se aprecian diferencias entre
+condiciones: la gran mayoría de los participantes en ambos grupos (14 de 15 en el
+adaptativo y 13 de 15 en el control) consideró el comportamiento del jefe como justo,
+lo que indica que la dificultad, incluso en su versión adaptativa, no se percibió como
+arbitraria o injusta.
+
+Finalmente, las respuestas sobre aspectos interesantes o frustrantes (pregunta 2), de
+naturaleza más orientada al diseño que a la hipótesis del estudio, permitieron
+identificar temas recurrentes transversales a ambas condiciones. Los más mencionados
+fueron la imposibilidad de cancelar las animaciones de ataque del jugador (señalada
+por cinco participantes como un aspecto frustrante) y, en el plano positivo, la
+variedad de ataques del jefe (destacada por otros cinco como el elemento más
+interesante del combate). Estas observaciones, si bien no responden directamente a las
+preguntas de investigación, constituyen retroalimentación valiosa para el trabajo
+futuro sobre el prototipo.
+
+== Discusión
+
+Los resultados permiten evaluar la hipótesis central del trabajo: que un jefe con un
+sistema de adaptación genera una experiencia más desafiante y personalizada que un jefe
+fijo. La respuesta que dan los datos es mixta. Por un lado, el sistema funciona como fue
+diseñado y hay señales claras de que produjo una experiencia distinta en un grupo específico
+de jugadores. Por otro, esa diferencia no apareció como un efecto parejo en toda la muestra,
+al menos no con una fuerza que se pudiera detectar con la cantidad de participantes que se
+tuvo.
+
+En lo técnico, la revisión de los pesos de ataque confirmó que el mecanismo de adaptación
+funciona como se especificó: las reglas previas al combate se cumplieron en todas las
+sesiones y el ajuste durante el combate estuvo activo en casi todas. Esto importa porque
+deja claro, antes de interpretar nada sobre la experiencia percibida, que el jefe realmente
+ajustó su comportamiento a cada jugador. Así, si no se observa un efecto en las mediciones
+subjetivas, no puede deberse a una falla en la implementación.
+
+Al comparar los grupos completos en las mediciones de experiencia (SUS y las dimensiones
+del GEQ), no se encontraron diferencias significativas. En el SUS, esta equivalencia es
+esperable e incluso deseable: el sistema adaptativo cambia el comportamiento del jefe, no la
+usabilidad del juego, por lo que no debía afectar este puntaje. En el GEQ, la falta de
+diferencias en desafío y tensión, que son las dimensiones más importantes para la hipótesis,
+indica que, mirando a los dos grupos en conjunto, no se puede afirmar que la adaptación haya
+hecho la experiencia más desafiante para el jugador promedio. Las diferencias observadas van
+en la dirección esperada, pero son pequeñas. Aun así, este resultado es coherente con cómo
+funciona el sistema: un mecanismo que ajusta al jefe según el estilo de cada jugador no
+tiene por qué subir el desafío de forma pareja en todos, sino que su efecto depende de a
+quién y de qué manera se adapta.
+
+Es justamente al dejar de mirar a los grupos como un todo, y observar dentro del grupo
+adaptativo, donde aparece el resultado más importante del estudio. Los jugadores de perfil
+de rango, que son a quienes el sistema busca presionar, reportaron una tensión bastante
+mayor que los de perfil cuerpo a cuerpo, con un efecto grande y en el límite de la
+significancia, a pesar de lo pequeños que son los subgrupos. Lo clave es que este patrón
+aparece solo en la condición adaptativa: en el grupo control, dividido de la misma forma,
+ambos perfiles reportan una tensión parecida. Como el jefe control reacciona a la posición
+del jugador igual que el adaptativo, pero sin ajustar sus pesos al estilo de juego, el hecho
+de que el efecto aparezca solo cuando la adaptación está activa es la evidencia más directa
+de que el sistema logró generar una experiencia distinta, concentrada en el perfil de
+jugador para el que fue pensado. Además, el análisis del posible papel de la experiencia
+previa sugiere que esta diferencia responde al estilo de juego y no simplemente a la
+habilidad.
+
+El análisis de las preguntas abiertas deja una lección importante. Aunque una mayor
+proporción de participantes del grupo adaptativo dijo percibir que el jefe aprendía, la
+diferencia con el grupo control fue chica, y casi la mitad de los participantes de control,
+que jugaron contra un jefe completamente fijo, también afirmaron percibir adaptación. Al
+cruzar estas respuestas con el registro real de pesos, se confirmó que lo percibido coincide
+poco con lo que de verdad pasó. Esto muestra que lo que el jugador dice haber notado sobre la
+adaptación es una señal poco confiable, influida probablemente por un sesgo de expectativa y
+por lo difícil que es distinguir una adaptación real de un comportamiento que solo reacciona
+a la posición. Tener un registro interno del sistema fue clave para no depender solo de la
+percepción de los jugadores, y respalda la decisión de apoyar las conclusiones en las
+métricas objetivas.
+
+Otros dos hallazgos, más descriptivos, apuntan en la misma dirección de una experiencia
+distinta. El jefe adaptativo se percibió como menos predecible que el control, lo que calza
+con un comportamiento que varía según el jugador. Y la menor dispersión de las respuestas de
+desafío en la condición adaptativa sugiere que el sistema pudo haber acercado la experiencia
+de distintos jugadores a un rango más parejo, en lugar de subir su nivel promedio; esta
+observación, aunque no está confirmada estadísticamente, calza con el propósito de un ajuste
+de dificultad. Por último, que el jefe se percibiera como justo en ambas versiones indica
+que la adaptación no se logró a costa de volverlo arbitrario o frustrante.
+
+En síntesis, el trabajo muestra que es posible implementar un sistema de adaptación de este
+tipo y que produce efectos apreciables sobre la experiencia, aunque de forma localizada y no
+como un cambio parejo en toda la población de jugadores. La evidencia más sólida viene del
+comportamiento distinto según el perfil de juego y del registro interno del sistema, más que
+de las comparaciones entre grupos completos o del autoinforme. De todos modos, estos
+resultados deben leerse considerando las limitaciones del estudio, que se detallan a
+continuación, y que recomiendan tomarlos como indicios prometedores de una prueba de
+concepto, más que como conclusiones que se puedan generalizar.
+
+=== Cumplimiento de los objetivos
+
+Con respecto a los objetivos planteados al inicio del trabajo, es posible revisar su grado
+de cumplimiento a la luz de los resultados. El objetivo general, diseñar e implementar un
+sistema de adaptación para un enemigo jefe capaz de ajustar su comportamiento a partir del
+perfil del jugador, se cumplió: el sistema fue construido, funciona como se especificó y su
+efecto sobre la experiencia fue evaluado mediante una prueba de concepto. A continuación se
+revisa cada objetivo específico.
+
+#[
+#set list(indent: 1.5em)
+- *Investigar y analizar enfoques existentes de inteligencia artificial adaptativa en
+  videojuegos.* Cumplido. El estado del arte y los enfoques revisados se presentan en el
+  capítulo de trabajo relacionado, y sirvieron de base para las decisiones de diseño del
+  sistema.
+
+- *Construir una versión base del juego con un jefe de comportamiento fijo que sirva como
+  caso de control.* Cumplido. Se desarrolló una versión de control, idéntica a la adaptativa
+  salvo en que los pesos de ataque del jefe no se ajustan, que se utilizó como grupo de
+  comparación en el estudio.
+
+- *Diseñar e implementar un conjunto de enemigos regulares que permitan construir un perfil
+  del estilo de juego.* Cumplido. Los enemigos de la fase de exploración, junto con el
+  sistema de métricas, permiten registrar el comportamiento del jugador y traducirlo en un
+  perfil (distancia, uso de melee o distancia, esquivas, entre otros).
+
+- *Implementar un mecanismo que ajuste los pesos de ataque del jefe a partir de dicho perfil
+  antes del combate.* Cumplido. El mecanismo fue implementado y, además, se verificó que
+  operó según lo diseñado: los ajustes predichos por las reglas coincidieron exactamente con
+  los pesos reales registrados en las 15 sesiones del grupo adaptativo.
+
+- *Validar el sistema mediante pruebas de jugabilidad, midiendo la capacidad de adaptación
+  del jefe y la percepción de desafío.* Cumplido. Se realizaron pruebas con 30 participantes;
+  la capacidad de adaptación se verificó a través del registro interno de pesos, y la
+  percepción de desafío y tensión se midió con el GEQ. Si bien la comparación entre grupos
+  completos no arrojó diferencias significativas, el objetivo de medir estos aspectos se
+  cumplió, y el análisis por perfil de juego mostró un efecto apreciable en el grupo de
+  jugadores al que apunta el sistema.
+
+- *Comparar los resultados entre la versión adaptativa y la de control, identificando
+  ventajas, limitaciones y posibles mejoras.* Cumplido. Se compararon ambas versiones en las
+  métricas objetivas, el SUS, el GEQ y las preguntas abiertas. Como ventaja se identificó la
+  experiencia diferenciada en el perfil de rango; como limitaciones, el tamaño reducido de la
+  muestra, la debilidad de los efectos a nivel agregado y la baja confiabilidad del
+  autoinforme; y como posibles mejoras, las que se detallan en el trabajo futuro.
+]
 
 ]
 

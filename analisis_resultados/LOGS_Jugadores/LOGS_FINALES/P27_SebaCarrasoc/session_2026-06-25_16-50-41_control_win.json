@@ -1,0 +1,8 @@
+{
+	"session_id": "2026-06-25_16-50-41",
+	"condition": "control",
+	"written_at": "2026.06.25-16.53.47",
+	"player_won": true,
+	"attempt_number": 1,
+	"final_tree": "{    \"BA_BasicAttack\": 50.0,    \"BA_AOEAttack\": 50.0,    \"BA_HeavyAttack\": 50.0,    \"BA_ProjectilAttack\": 50.0,    \"BA_BossChase\": 50.0,    \"BA_Poddle\": 50.0,    \"BA_HomingAttack\": 50.0,    \"BA_WhipAttack\": 50.0,    \"BA_WallAttack\": 50.0}"
+}

@@ -1,0 +1,4 @@
+﻿,n,SUS (0-100),Afecto positivo,Afecto negativo,Desafio,Tension,Inmersion,Distancia prom. al jefe,Ratio ataques melee,Esquivas totales,Esquivas exitosas,Duracion combate (seg),Experiencia previa (0-9)
+Adaptativo,15,78.0,4.48,1.32,2.55,1.4,3.42,332.51,0.61,31.93,2.4,230.67,6.47
+Control,15,77.83,4.65,1.43,2.42,1.37,3.42,339.91,0.69,42.33,3.07,195.73,6.07
+General (ambos grupos),30,77.92,4.57,1.38,2.48,1.38,3.42,336.21,0.65,37.13,2.73,213.2,6.27

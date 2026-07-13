@@ -1,0 +1,21 @@
+{
+	"session_id": "2026-06-22_16-31-12",
+	"condition": "adaptive",
+	"written_at": "2026.06.22-16.31.12",
+	"AverageDistance": 322.11636352539062,
+	"DistanceSamples": 151,
+	"MeleeAttacks": 33,
+	"RangedAttacks": 30,
+	"MeleeAttacksInRangedZone": 14,
+	"RangedAttacksInRangedZone": 14,
+	"TotalDodges": 15,
+	"SuccessfulDodges": 1,
+	"AverageHealingHP": 43.400001525878906,
+	"HealingCount": 5,
+	"LateralDodgesFromDash": 0,
+	"BackwardDodgesFromDash": 1,
+	"DodgesFromDelayAttack": 10,
+	"DamageTakenInTankZone": 1,
+	"TotalDodgesTankZone": 4,
+	"DodgesFromDelayAttack_TankZone": 3
+}
