@@ -111,6 +111,35 @@ GEQuestionare:
   year: 2013
   organization: Technische Universiteit Eindhoven
 
+# TODO: verificar numero de paginas exacto de esta referencia
+HunickeMDA04:
+  type: Article
+  title: "MDA: A Formal Approach to Game Design and Game Research"
+  author:
+    - Robin Hunicke
+    - Marc LeBlanc
+    - Robert Zubek
+  year: 2004
+  parent:
+    type: Proceedings
+    title: Proceedings of the AAAI Workshop on Challenges in Game AI
+    volume: 4
+    number: 1
+
+# TODO: verificar volumen, numero de paginas y DOI de esta referencia
+GamefulQuest19:
+  type: Article
+  title: "Gameful Experience Questionnaire (GAMEFULQUEST): an instrument for measuring the perceived gamefulness of system use"
+  author:
+    - Jarl Högberg
+    - Juho Hamari
+    - Erik Wästlund
+  year: 2019
+  parent:
+    type: Periodical
+    title: User Modeling and User-Adapted Interaction
+    volume: 29
+
 Booth09:
   type: Misc
   title: The AI Systems of Left 4 Dead
@@ -118,3 +147,25 @@ Booth09:
   year: 2009
   organization: Game Developers Conference (GDC)
   url: "https://www.gdcvault.com/play/1015528/The-AI-Systems-of-Left"
+
+# TODO: verificar el ISBN (se agrego de memoria, sin certeza total del dato exacto)
+KohaviTangXie20:
+  type: Book
+  title: "Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing"
+  author:
+    - Ron Kohavi
+    - Diane Tang
+    - Ya Xie
+  year: 2020
+  publisher: Cambridge University Press
+  location: Cambridge, UK
+  isbn: 978-1-108-72426-5
+
+# TODO: verificar y agregar el ISBN de esta edicion (no se incluyo por no tener certeza del dato)
+Csikszentmihalyi90:
+  type: Book
+  title: "Flow: The Psychology of Optimal Experience"
+  author: Mihaly Csikszentmihalyi
+  year: 1990
+  publisher: Harper & Row
+  location: New York, USA
