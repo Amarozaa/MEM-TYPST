@@ -1,52 +1,9 @@
-CorlessJK97:
-  type: Article
-  title: A Sequence of Series for the Lambert W Function
-  author:
-    - Robert M. Corless
-    - David J. Jeffrey
-    - Donald E. Knuth
-  doi: "10.1145/258726.258783"
-  page-range: 197-204
-  parent:
-    type: Proceedings
-    title: International Symposium on Symbolic and Algebraic Computation
-    location: Kihei, Maui, Hawaii, USA.
-    year: 1997
-    isbn: 978-0-89791-875-6
-
-NewmanT42:
-  type: Article
-  title: A Formal Theorem in Church's Theory of Types
-  doi: "10.2307/2267552"
-  author:
-    - M. H. A. Newman
-    - Alan M. Turing
-  page-range: 28-33
-  parent:
-    type: Periodical
-    title: The Journal of Symbolic Logic
-    volume: 7
-    number: 1
-    year: 1942
-    publisher: Association for Symbolic Logic
-    url: http://www.jstor.org/stable/2267552
-
-Turing38:
-  type: Article
-  title: Systems of Logic Based on Ordinals
-  author: Alan M. Turing
-  year: 1938
-  organization: Princeton University
-  location: NJ, USA
-  doi: "10.1112/plms/s2-45.1.161"
-
 Zohaib18:
   type: Article
   title: "Dynamic Difficulty Adjustment (DDA) in Computer Games: A Review"
   author: Mohammad Zohaib
   year: 2018
   doi: "10.1155/2018/5681652"
-  page-range: "5681652"
   parent:
     type: Periodical
     title: Advances in Human-Computer Interaction
@@ -64,7 +21,6 @@ IOVINO2022104096:
   year: 2022
   doi: "10.1016/j.robot.2022.104096"
   url: "https://www.sciencedirect.com/science/article/pii/S0921889022000513"
-  page-range: "104096"
   parent:
     type: Periodical
     title: Robotics and Autonomous Systems
@@ -111,7 +67,6 @@ GEQuestionare:
   year: 2013
   organization: Technische Universiteit Eindhoven
 
-# TODO: verificar numero de paginas exacto de esta referencia
 HunickeMDA04:
   type: Article
   title: "MDA: A Formal Approach to Game Design and Game Research"
@@ -126,7 +81,6 @@ HunickeMDA04:
     volume: 4
     number: 1
 
-# TODO: verificar volumen, numero de paginas y DOI de esta referencia
 GamefulQuest19:
   type: Article
   title: "Gameful Experience Questionnaire (GAMEFULQUEST): an instrument for measuring the perceived gamefulness of system use"
@@ -134,6 +88,8 @@ GamefulQuest19:
     - Jarl Högberg
     - Juho Hamari
     - Erik Wästlund
+  doi: "10.1007/s11257-019-09223-w"
+  page-range: 619-660
   year: 2019
   parent:
     type: Periodical
@@ -148,7 +104,6 @@ Booth09:
   organization: Game Developers Conference (GDC)
   url: "https://www.gdcvault.com/play/1015528/The-AI-Systems-of-Left"
 
-# TODO: verificar el ISBN (se agrego de memoria, sin certeza total del dato exacto)
 KohaviTangXie20:
   type: Book
   title: "Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing"
@@ -161,11 +116,11 @@ KohaviTangXie20:
   location: Cambridge, UK
   isbn: 978-1-108-72426-5
 
-# TODO: verificar y agregar el ISBN de esta edicion (no se incluyo por no tener certeza del dato)
 Csikszentmihalyi90:
   type: Book
   title: "Flow: The Psychology of Optimal Experience"
   author: Mihaly Csikszentmihalyi
   year: 1990
+  isbn: 0-06-016253-8
   publisher: Harper & Row
   location: New York, USA

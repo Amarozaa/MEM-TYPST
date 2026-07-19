@@ -144,29 +144,10 @@
 }
 
 #let resumen(
-    metadata: (:), // metadata del documento
+    metadata: (:), // metadata del documento (se mantiene por compatibilidad)
     doc,
 ) = {
-    let _memoria = [MEMORIA PARA OPTAR AL TÍTULO DE INGENIER#metadata.autoria.pronombre.titulo CIVIL EN #metadata.grado-titulo]
-    let _tesis = [TESIS PARA OPTAR AL GRADO DE MAGÍSTER EN CIENCIAS, MENCIÓN #metadata.final.grado-magister]
-    let _doble = [TESIS PARA OPTAR AL TÍTULO DE INGENIER#metadata.autoria.pronombre.titulo CIVIL EN #metadata.grado-titulo Y MAGÍSTER EN CIENCIAS, MENCIÓN #metadata.final.grado-magister]
-    let _documento = if metadata.final.tesis and metadata.final.memoria [#_doble] 
-    else if metadata.final.tesis [#_tesis] 
-    else [#_memoria]
-    let _resumen = [RESUMEN DE LA #_documento]
-    let _anno = if metadata.anno != none [#metadata.anno] else [#datetime.today().year()]
-    // añadir bloque de resumen
-    stack(dir: ltr,
-        1fr,
-        block(
-            width: 60%,
-            [#set text(size: 11pt, hyphenate: false); #_resumen \ POR: #upper(metadata.autoria.nombre) \ FECHA: #_anno \ PROF. GUIA: #metadata.profesores.at(0).nombre],
-        )
-    )
-    show heading: it => {set text(size: 12pt, hyphenate: false); align(center, it)}
-    heading(metadata.titulo, numbering: none, outlined: false)
-    doc
-    pagebreak(weak: true)
+    frontmatter-section(title: "Resumen", doc)
 }
 
 #let agradecimientos(doc) = {

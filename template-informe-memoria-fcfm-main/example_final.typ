@@ -36,7 +36,10 @@
     jefe al estilo de cada jugador, que en la práctica funcionó mejor contra quienes se mantienen
     a distancia que contra quienes pelean cuerpo a cuerpo. Estos hallazgos deben leerse como
     indicios de una prueba de concepto, considerando el tamaño reducido de la muestra y los
-    límites de lo que el jugador reporta para evaluar sistemas de este tipo.
+    límites de lo que el jugador reporta para evaluar sistemas de este tipo. En términos
+    prácticos, este trabajo aporta una forma de subir el desafío de un enemigo cambiando su
+    estrategia en vez de sus números, y evidencia que su efecto puede variar según el estilo de
+    juego, algo a considerar al diseñar y evaluar sistemas similares.
 ]
 
 #dedicatoria[
@@ -44,11 +47,12 @@
 ]
 
 #agradecimientos[
-    #lorem(150)
+    Quiero agradecer a mi profesor guía y a mi profesor co-guía por su ayuda y orientación a lo
+    largo del desarrollo de esta memoria.
 
-    #lorem(100)
+    Agradezco también a mi familia, por su apoyo incondicional en todo momento.
 
-    #lorem(100)
+    Y gracias a todos mis amigos, por acompañarme durante este proceso.
 ]
 
 #declaracion-ia[
@@ -87,11 +91,11 @@
     _Elden Ring_#footnote[
       Elden Ring es un videojuego de rol de acción en mundo abierto desarrollado por
       FromSoftware y publicado por Bandai Namco.
-      #link("https://en.bandainamcoent.eu/elden-ring/elden-ring")[Disponible en sitio web].
+      Disponible en: #link("https://en.bandainamcoent.eu/elden-ring/elden-ring")[https://en.bandainamcoent.eu/elden-ring/elden-ring].
     ] o _Hollow Knight_#footnote[
       Hollow Knight es un videojuego de acción y aventuras en 2D desarrollado por Team
       Cherry, ambientado en el reino subterráneo de Hallownest.
-      #link("https://www.hollowknight.com/")[Disponible en sitio web].
+      Disponible en: #link("https://www.hollowknight.com/")[https://www.hollowknight.com/].
     ], donde ciertos enemigos y jefes siguen patrones de ataque que los jugadores
     terminan memorizando tras varios intentos. En géneros particularmente exigentes en
     este aspecto, como los _souls-like_#footnote[
@@ -115,7 +119,7 @@
       Alien: Isolation es un videojuego de sigilo y supervivencia en primera persona
       desarrollado por Creative Assembly y publicado por SEGA, ambientado en el universo
       de la película Alien.
-      #link("https://www.sega.com/es/alien-isolation/alien-isolation")[Disponible en sitio web].
+      Disponible en: #link("https://www.sega.com/es/alien-isolation/alien-isolation")[https://www.sega.com/es/alien-isolation/alien-isolation].
     ], donde el antagonista aprende los patrones de escondite del jugador y ajusta sus
     rutas de patrullaje para mantener la tensión en cada encuentro.
 
@@ -322,7 +326,7 @@
     mostrado posibilidades interesantes de aprendizaje dinámico. Por ejemplo, en el juego
     MIR5#footnote[
       MIR5 es un MMORPG desarrollado por Wemade Next.
-      #link("https://www.invenglobal.com/articles/19158/wemade-next-to-develop-an-ai-boss-in-mir5-in-collaboration-with-nvidia")[Disponible en sitio web].
+      Disponible en: #link("https://www.invenglobal.com/articles/19158/wemade-next-to-develop-an-ai-boss-in-mir5-in-collaboration-with-nvidia")[https://www.invenglobal.com/articles/19158/wemade-next-to-develop-an-ai-boss-in-mir5-in-collaboration-with-nvidia].
     ], un jefe conocido como _Asterion_ utiliza esta tecnología para evaluar tácticas,
     habilidades y equipo del jugador en tiempo real, adaptando sus estrategias para
     mantener un desafío personalizado y constante. Aunque el enfoque principal de NVIDIA
@@ -352,7 +356,7 @@
       Valve Corporation y publicado en 2008. El juego se centra en cuatro supervivientes
       que deben atravesar escenarios infestados de zombis, enfrentándose a hordas
       dinámicas controladas por el sistema AI Director.
-      #link("https://www.l4d.com/")[Disponible en sitio web].
+      Disponible en: #link("https://www.l4d.com/")[https://www.l4d.com/].
     ] introdujo un sistema conocido como "AI Director", diseñado para crear experiencias
     dinámicas de terror y supervivencia cooperativa. A diferencia de los sistemas
     tradicionales, donde los enemigos aparecen en ubicaciones predefinidas, el AI Director
@@ -387,7 +391,7 @@
       Interactive Entertainment en 2014, ambientado en el universo de El Señor de los
       Anillos. El juego presenta el Sistema Nemesis, que genera enemigos dinámicos con
       memoria persistente de sus encuentros con el jugador.
-      #link("https://www.shadowofmordor.com/")[Disponible en sitio web].
+      Disponible en: #link("https://www.shadowofmordor.com/")[https://www.shadowofmordor.com/].
     ] (2014) y expandido en su secuela Shadow of War (2017), representa un enfoque
     distinto hacia la personalización de enemigos. El sistema genera una jerarquía
     dinámica de capitanes orcos, cada uno con personalidad, fortalezas, debilidades y
@@ -607,8 +611,8 @@
       PackDev citado en la sección @sec:diseno-niveles, mientras que el báculo del mago
       corresponde al modelo 3D "Khajiiti Moon Staff" por Shriker1, licenciado bajo
       #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0]
-      (#link("https://sketchfab.com/3d-models/khajiiti-moon-staff-87cca6fa0b94448b97a3b354843393e1")[disponible en sitio web]).
-      #link("https://sketchfab.com/3d-models/skeleton-character-psx-ece576bbed4b4364911c7596d828a558")[Disponible en sitio web].
+      (disponible en #link("https://sketchfab.com/3d-models/khajiiti-moon-staff-87cca6fa0b94448b97a3b354843393e1")[https://sketchfab.com/3d-models/khajiiti-moon-staff-87cca6fa0b94448b97a3b354843393e1]).
+      Disponible en: #link("https://sketchfab.com/3d-models/skeleton-character-psx-ece576bbed4b4364911c7596d828a558")[https://sketchfab.com/3d-models/skeleton-character-psx-ece576bbed4b4364911c7596d828a558].
     ], corresponde al enemigo más básico del
     juego: un enemigo cuerpo a cuerpo que persigue al jugador y cuyo único ataque es un
     golpe directo de espada, sin variaciones ni segundas intenciones. Su rol es introducir
@@ -647,7 +651,7 @@
       modelo original agregando rig y animaciones mediante Mixamo. El arma equipada
       proviene del pack "Dungeon Environment / 135+ Assets" de PackDev citado en la
       sección @sec:diseno-niveles.
-      #link("https://sketchfab.com/3d-models/skeleton-lord-a3f7b44275cf4c489ad62c535268ac16")[Disponible en sitio web].
+      Disponible en: #link("https://sketchfab.com/3d-models/skeleton-lord-a3f7b44275cf4c489ad62c535268ac16")[https://sketchfab.com/3d-models/skeleton-lord-a3f7b44275cf4c489ad62c535268ac16].
     ], se diseñó con un propósito distinto a los
     dos anteriores: a diferencia del esqueleto normal y del mago, cuyos ataques se
     resuelven con relativamente poca preparación visible, los dos ataques del caballero
@@ -786,7 +790,7 @@
     aprovechar assets disponibles de Fab (Unreal Engine Marketplace)#footnote[
       Asset "Dungeon Environment / 135+ Assets" por PackDev, obtenido de Fab bajo la Fab
       Standard License.
-      #link("https://www.fab.com/listings/bb39bae4-7f7a-4127-b07e-151cf52db0f6")[Disponible en sitio web].
+      Disponible en: #link("https://www.fab.com/listings/bb39bae4-7f7a-4127-b07e-151cf52db0f6")[https://www.fab.com/listings/bb39bae4-7f7a-4127-b07e-151cf52db0f6].
     ], y no condiciona las
     decisiones de diseño que se describen a continuación.
 
@@ -1522,7 +1526,7 @@ _The Legend of Zelda: Breath of the Wild_
   abierto desarrollado y publicado por Nintendo en 2017. El juego introduce mecánicas
   innovadoras de supervivencia y exploración, incluyendo un sistema de stamina que se
   muestra dinámicamente solo cuando se está utilizando o recuperando.
-  #link("https://www.zelda.com/breath-of-the-wild/")[Disponible en sitio web].
+  Disponible en: #link("https://www.zelda.com/breath-of-the-wild/")[https://www.zelda.com/breath-of-the-wild/].
 ].
 
 Finalmente, al iniciarse el componente activa dos timers que regeneran de forma continua la
@@ -1551,7 +1555,9 @@ encontraba esquivando en el momento del impacto:
   que implementa la invulnerabilidad del jugador durante toda la esquiva descrita en el
   capítulo 3.
 - Si no estaba esquivando, se registra el daño recibido y se reproduce el sonido de dolor
-  correspondiente; si además el jugador se encontraba en la zona de tanque, se efectúa un
+  correspondiente#footnote[Todos los efectos de sonido y la música del juego se obtuvieron de
+  Freesound (#link("https://freesound.org")[freesound.org]) y son de dominio público.];
+  si además el jugador se encontraba en la zona de tanque, se efectúa un
   registro adicional. Recién en ese caso se aplica el daño a la vida del jugador y, si el
   daño es mayor a cero, se reproduce la animación de reacción a daño, que detiene
   temporalmente su movimiento mientras dura.
@@ -2182,9 +2188,6 @@ El Blackboard asociado (`BBD_AI`) contiene las siguientes _keys_:
   caption: [Secuencia de los tres golpes del ataque cuerpo a cuerpo del esqueleto.],
 ) <fig:skeleton-ataque>
 
-
-
-//TODO: En algun ladom no necesariamente aca, mencionar el tema como se anclo los static mesh de las armas a los juagdores
 === Esqueleto mago
 
 El esqueleto mago (`BP_SkeletonMage`) comparte la base estructural y gran parte de la lógica
@@ -2796,7 +2799,7 @@ infraestructura de métricas, que contemplaba adaptar también el comportamiento
 durante el combate en base a estas métricas, dicha adaptación en tiempo real no se llegó a
 implementar. La adaptación pre-combate (`ApplyPreCombatAdaptation` y sus subfunciones, ver
 @sec:pesos-ataque) lee exclusivamente las variables sin prefijo; ningún punto del sistema
-consulta las variables `Combat*` para tomar decisiones. Las únicas excepciones, es decir, las
+consulta las variables con prefijo `Combat` para tomar decisiones. Las únicas excepciones, es decir, las
 únicas métricas recolectadas durante el combate que sí tienen un efecto real sobre el
 comportamiento del jefe, son el registro de aciertos por tipo de ataque
 (`TotalAttemptsPerType` y `SuccessfulHits`, en `PlayerMetricsComponent`), que alimenta
@@ -2844,7 +2847,7 @@ salvo las excepciones señaladas, no se utiliza.
 
 === Funciones de registro (`SlimeGameInstance`)
 
-Sobre estas variables opera una familia de funciones `Register*` (por ejemplo
+Sobre estas variables opera una familia de funciones con prefijo `Register` (por ejemplo
 `RegisterDistance`, `RegisterMeleeAttack`, `RegisterHealingMoment`, `RegisterTotalDodge` o
 `RegisterDodgeResult`), cada una invocada desde el evento de juego correspondiente para
 actualizar la variable asociada. Casi todas siguen el mismo patrón: bifurcan según
@@ -2859,8 +2862,7 @@ tipo de ataque (`EBossAttackType`): `TotalAttemptsPerType` y `SuccessfulHits`.
 
 `RegisterBossAttackAttempt(AttackType)` incrementa el contador de intentos correspondiente
 en `TotalAttemptsPerType`, además de un contador global `TotalAttacksPerformed`. Cada 15
-ataques realizados (`TotalAttacksPerformed % 15 == 0`), se dispara automáticamente
-`ApplyInCombatSuccessfulHits`.
+ataques realizados, se dispara automáticamente `ApplyInCombatSuccessfulHits`.
 
 `RegisterBossAttackHit(AttackType)` incrementa el contador de aciertos correspondiente en
 `SuccessfulHits`.
@@ -3169,13 +3171,8 @@ Los datos se persisten en archivos JSON dentro de `Saved/StudyLogs`:
 #[
 #set par(justify: true)
 #let c(x) = emph(x)
-+ *DumpMetricsToFile* (#c("SlimeGameInstance")): vuelca las variables de la fase pre-combate
-  (#c("AverageDistance"), #c("DistanceSamples"), #c("MeleeAttacks"), #c("RangedAttacks"),
-  #c("MeleeAttacksInRangedZone"), #c("RangedAttacksInRangedZone"), #c("TotalDodges"),
-  #c("SuccessfulDodges"), #c("AverageHealingHP"), #c("HealingCount"), #c("LateralDodgesFromDash"),
-  #c("BackwardDodgesFromDash"), #c("DodgesFromDelayAttack"), #c("DamageTakenInTankZone"),
-  #c("TotalDodgesTankZone"), #c("DodgesFromDelayAttack_TankZone")) a
-  #c("session_{SessionId}_{condición}_metrics.json").
++ *DumpMetricsToFile* (#c("SlimeGameInstance")): vuelca todas las variables de la fase
+  pre-combate (las descritas más arriba) a #c("session_{SessionId}_{condición}_metrics.json").
 + *DumpCombatResultToFile(bPlayerWon)* (#c("PlayerMetricsComponent")): vuelca #c("bPlayerWon"),
   #c("AttemptNumber") y el contenido de #c("AttackWeightsJSON") a #c("session_{SessionId}_{condición}_win.json")
   o #c("_retry_{AttemptNumber}.json"), según corresponda.
@@ -3211,7 +3208,7 @@ asociada).
 El maniquí#footnote[
   Modelo 3D "Medieval Combat Dummy" por CaptainHC, obtenido de Fab, licenciado bajo
   #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
-  #link("https://www.fab.com/listings/d9d89431-ff36-454a-8c73-de5b5f8b03df")[Disponible en sitio web].
+  Disponible en: #link("https://www.fab.com/listings/d9d89431-ff36-454a-8c73-de5b5f8b03df")[https://www.fab.com/listings/d9d89431-ff36-454a-8c73-de5b5f8b03df].
 ] es un enemigo funcional usado como objetivo de práctica: al recibir daño se tambalea y,
 al llegar a cero de vida, dispara el delegado `OnDummyDied` (que abre la puerta
 correspondiente) y luego regenera su vida progresivamente para poder practicar sobre él de
@@ -3227,7 +3224,7 @@ nuevo.
 La puerta#footnote[
   Modelo 3D "SM Door" por DenisFernandes, licenciado bajo
   #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
-  #link("https://sketchfab.com/3d-models/sm-door-634fa1602d8f44e7a8e3868fb02c6d39")[Disponible en sitio web].
+  Disponible en: #link("https://sketchfab.com/3d-models/sm-door-634fa1602d8f44e7a8e3868fb02c6d39")[https://sketchfab.com/3d-models/sm-door-634fa1602d8f44e7a8e3868fb02c6d39].
 ] (`BP_Door`) expone la función `OpenDoor`, invocada externamente, que la desliza hacia
 arriba mediante una Timeline. El mismo Blueprint se reutiliza en el nivel previo al jefe
 con una malla de portón metálico, acorde con la ambientación de mazmorra.
@@ -3241,7 +3238,7 @@ con una malla de portón metálico, acorde con la ambientación de mazmorra.
 
 Las espinas#footnote[
   Modelo 3D "Spike Trap 01" por Nichgon, obtenido de Sketchfab bajo licencia Standard.
-  #link("https://sketchfab.com/3d-models/spike-trap-01-4022678cac214fd2963894aa152fc6f2")[Disponible en sitio web].
+  Disponible en: #link("https://sketchfab.com/3d-models/spike-trap-01-4022678cac214fd2963894aa152fc6f2")[https://sketchfab.com/3d-models/spike-trap-01-4022678cac214fd2963894aa152fc6f2].
 ] (`BP_Spykes`) aplican un daño fijo al jugador que las toca y lo reposicionan de inmediato
 en un punto seguro (`RespawnPoint`).
 
@@ -3255,7 +3252,7 @@ en un punto seguro (`RespawnPoint`).
 El puente#footnote[
   Modelo 3D "Bridge" por TAK0YT0, obtenido de Fab, licenciado bajo
   #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
-  #link("https://www.fab.com/listings/71b99663-eed6-40e0-9674-96b218efc974")[Disponible en sitio web].
+  Disponible en: #link("https://www.fab.com/listings/71b99663-eed6-40e0-9674-96b218efc974")[https://www.fab.com/listings/71b99663-eed6-40e0-9674-96b218efc974].
 ] (`BP_Bridge`) expone la función `RotateBridge`, invocada externamente, que lo baja
 mediante una Timeline hasta habilitar el paso sobre el abismo.
 
@@ -3269,7 +3266,7 @@ mediante una Timeline hasta habilitar el paso sobre el abismo.
 La palanca#footnote[
   Modelo 3D "Lever With Animation" por LeeMoorhead, licenciado bajo
   #link("https://creativecommons.org/licenses/by/4.0/")[CC BY 4.0].
-  #link("https://sketchfab.com/3d-models/lever-with-animation-de90d94208e44741a754e57307ec68ec")[Disponible en sitio web].
+  Disponible en: #link("https://sketchfab.com/3d-models/lever-with-animation-de90d94208e44741a754e57307ec68ec")[https://sketchfab.com/3d-models/lever-with-animation-de90d94208e44741a754e57307ec68ec].
 ] (`BP_Lever`) detecta al jugador dentro de su zona de interacción y, al activarse
 (`IA_MyInteract`), reproduce su animación e invoca el delegado `OnLeverActivated`,
 escuchado por el Level Blueprint de `Lvl_PreBoss` para abrir la puerta y el atajo
@@ -4151,8 +4148,6 @@ generalización.
 // ==========================================
 #capitulo(title: "Conclusión y trabajo futuro")[
 
-    == Conclusión
-
     Este trabajo partió de un problema concreto: los enemigos de comportamiento fijo se
     vuelven predecibles una vez que el jugador aprende su patrón. Para abordarlo, se diseñó e
     implementó un jefe capaz de ajustar su comportamiento de combate al estilo de cada
@@ -4189,8 +4184,6 @@ generalización.
     eso sí, deben leerse como indicios prometedores de una prueba de concepto y no como
     conclusiones generalizables a toda la población de jugadores, dadas las limitaciones ya
     discutidas.
-
-    == Trabajo futuro
 
     A partir de lo aprendido, quedan varias líneas abiertas para continuar este trabajo.
 
@@ -4236,6 +4229,7 @@ generalización.
 // ANEXOS / APÉNDICES
 // ==========================================
 #apendice(title: "Cuestionario de Experiencia de Juego (GEQ)")[
+    #set heading(numbering: none)
 
     A continuación se presenta el _Game Experience Questionnaire_ @GEQuestionare traducido al
     español, tal como se aplicó en el estudio. Sus 20 afirmaciones se responden en una escala de
