@@ -128,13 +128,17 @@
     pagebreak(weak: true)
 }
 
+// "Anexo A:" para la tabla de contenido. Se usa una función porque el patrón de texto
+// "Anexo A:" contiene letras que Typst interpretaría como símbolos de conteo.
+#let numeracion-anexo = (..n) => [Anexo #numbering("A", ..n.pos()):]
+
 #let backmatter-section(title, label, doc) = {
     let cnt = counter(heading)
-    show heading.where(level: 1): it => text(size: 24pt, weight: "bold")[Anexo #cnt.display("A") \ \ #it.body]
+    show heading.where(level: 1): it => text(size: 24pt, weight: "bold")[Anexo \ \ Anexo #cnt.display("A"): #it.body]
     v(85pt)
     [#heading(
         title,
-        numbering: "A.",
+        numbering: numeracion-anexo,
         outlined: true,
         supplement: "Anexo",
     ) #label] // Para añadir la label, debe estar en modo markup
@@ -151,6 +155,7 @@
 }
 
 #let agradecimientos(doc) = {
+    set par(first-line-indent: 0pt)
     frontmatter-section(title: "Agradecimientos", doc)
 }
 
@@ -199,10 +204,14 @@
     )
 }
 
-#let start-doc(doc) = {
+#let start-doc(declaracion: none, doc) = {
     toc
     tot
     toi
+    // La declaración de uso de IA va en la página inmediatamente anterior a la introducción
+    if declaracion != none {
+        declaracion-ia(declaracion)
+    }
     set page(numbering: "1")
     set heading(numbering: "1.1.")
     counter(page).update(1)
@@ -210,9 +219,17 @@
 }
 
 #let end-doc(bib-file: "bibliografia.yml", doc) = {
-    bibliography(bib-file, title: "Bibliografía", style: "ieee")
+    [#set text(lang: "en")
+    #bibliography(bib-file, title: "Bibliografía", style: "ieee")]
     counter(heading).update(0)
     pagebreak(weak: true)
+    // Entrada "Anexo" a nivel de capítulo en la tabla de contenido; el título visible
+    // lo imprime cada anexo en su propia página.
+    {
+        show heading: none
+        heading(level: 1, numbering: none, outlined: true)[Anexo]
+    }
+    counter(heading).update(0)
     doc
 }
 

@@ -57,6 +57,23 @@ Pinelle08:
     location: Florence, Italy
     publisher: ACM
 
+Brooke96:
+  type: Chapter
+  title: "SUS: A 'quick and dirty' usability scale"
+  author: John Brooke
+  year: 1996
+  page-range: 189-194
+  parent:
+    type: Book
+    title: Usability Evaluation in Industry
+    editor:
+      - P. W. Jordan
+      - B. Thomas
+      - B. A. Weerdmeester
+      - A. L. McClelland
+    publisher: Taylor & Francis
+    location: London, UK
+
 GEQuestionare:
   type: Report
   title: The Game Experience Questionnaire
@@ -124,3 +141,30 @@ Csikszentmihalyi90:
   isbn: 0-06-016253-8
   publisher: Harper & Row
   location: New York, USA
+
+SauroLewis16:
+  type: Book
+  title: "Quantifying the User Experience: Practical Statistics for User Research"
+  author:
+    - Jeff Sauro
+    - James R. Lewis
+  year: 2016
+  edition: "2"
+  isbn: 978-0-12-802308-2
+  publisher: Morgan Kaufmann
+  location: Cambridge, MA, USA
+
+Bangor09:
+  type: Article
+  title: "Determining What Individual SUS Scores Mean: Adding an Adjective Rating Scale"
+  author:
+    - Aaron Bangor
+    - Philip Kortum
+    - James Miller
+  year: 2009
+  page-range: 114-123
+  parent:
+    type: Periodical
+    title: Journal of Usability Studies
+    volume: 4
+    issue: 3

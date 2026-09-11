@@ -1,0 +1,55 @@
+--- Pagina 2 | Text | Autor: Cristian Llull Torres ---
+Buen scoping de trabajo, bien explicado y relevante.
+
+--- Pagina 15 | Text | Autor: Cristian Llull Torres ---
+Hasta aquí, no se entiende bien si se espera que el jefe final se adapte en tiempo real a lo que el usuario va jugando o tenga una conducta predeterminada según el historial de todo el juego.
+
+--- Pagina 16 | Text | Autor: Cristian Llull Torres ---
+Los párrafos deberían ser de  líneas, a lo más 8. Considerar si hay que dividir algunos
+
+--- Pagina 16 | Text | Autor: Cristian Llull Torres ---
+La metodología propuesta es coherente y aborda suficientes detalles
+
+--- Pagina 22 | Text | Autor: Cristián Llull ---
+Súper bien
+
+--- Pagina 23 | Text | Autor: Cristián Llull ---
+Podría introducir sesgos, pero OK, parece ser suficiente para probar el motor.
+
+--- Pagina 39 | Text | Autor: Cristián Llull ---
+Más arriba aparrece que ciertos valores numéricos aparecieron de forma iterativa. Es en referencia a estos pesos?
+
+Sería bueno volver recalcarlo.
+
+--- Pagina 43 | Text | Autor: Cristián Llull ---
+Insertar la referencia también
+
+--- Pagina 44 | Text | Autor: Cristián Llull ---
+El diseño está bien pensado y justificado según el objetivo principal.
+
+--- Pagina 53 | Text | Autor: Cristián Llull ---
+cursiva
+
+--- Pagina 93 | Text | Autor: Cristian Llull Torres ---
+La cantidad de participantes y la clasificación de los perfiles es adecuada para eliminar sesgos.
+
+--- Pagina 94 | Highlight | Autor: Cristian Llull Torres ---
+Aquí, separar el párrafo.
+
+--- Pagina 94 | Text | Autor: Cristian Llull Torres ---
+Necesita referencia
+
+--- Pagina 97 | Text | Autor: Cristian Llull Torres ---
+Es interesante que logra nivelar la experiencia respecto al desafío que implica, sin conocer nada del jugador de antemano
+
+--- Pagina 109 | Text | Autor: Cristian Llull Torres ---
+Excelente plantemiento experimental y análisis de los resultados y las limitaciones
+
+--- Pagina 111 | Text | Autor: Cristián Llull ---
+No dejar esta frase como párrafo: incluir en el siguiente
+
+--- Pagina 111 | Text | Autor: Cristián Llull ---
+Cuántos participantes se estiman necesario?
+
+--- Pagina 113 | Text | Autor: Cristián Llull ---
+Importante: en las referencias no se puede poner la comilla «», dado que es propia del español. En inglés se utiliza “”

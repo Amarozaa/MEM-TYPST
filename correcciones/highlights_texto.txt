@@ -1,0 +1,54 @@
+--- Pagina 2 | Highlight | Autor: Cristian Llull Torres ---
+Texto resaltado: mediante un enemigo jefe capaz de adaptar su  comportamiento de combate al estilo de cada jugador.
+
+--- Pagina 2 | Highlight | Autor: Cristian Llull Torres ---
+Texto resaltado: sistema  capaz de adaptar el comportamiento del jefe al estilo de cada jugador
+
+--- Pagina 20 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: n evoluciones preprogramadas que se activan por condiciones específicas, en lugar de  aprendizaje genuino de patrones de comportamiento del jugador.
+
+--- Pagina 21 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: e manera dinámica,
+
+--- Pagina 28 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: son justamente esos pesos, no la elección del rango, que depende solo de la distancia,  los que el sistema adaptativo del capítulo 4 ajusta según el comportamiento previo del  jugador.
+
+--- Pagina 38 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: ajustes en tiempo real durante el combate.
+
+--- Pagina 39 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: perfil de cuatro dimensiones  independientes entre sí,
+
+--- Pagina 39 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: n requiere un mínimo de 20 muestras
+
+--- Pagina 39 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: se reduce en 50 unidades,
+
+--- Pagina 43 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: Pinelle et al.:
+
+--- Pagina 53 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: slime.
+
+--- Pagina 63 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: El Behaviour Tree es el sistema de Unreal Engine utilizado para modelar el comportamiento  de un agente de IA mediante una estructura jerárquica de nodos.
+
+--- Pagina 76 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: al tratarse de  ataques a distancia, no es directo determinar si efectivamente conectaron con el jugador,  por lo que no se registran en las métricas de ataque.
+
+--- Pagina 94 | Highlight | Autor: Cristian Llull Torres ---
+Texto resaltado: Se prefirió el GEQ
+Nota: Aquí, separar el párrafo.
+
+--- Pagina 97 | Highlight | Autor: Cristian Llull Torres ---
+Texto resaltado: En la dimensión de desafío, si bien las medianas de ambos grupos son similares,  el rango intercuartílico del grupo adaptativo (0.50)
+
+--- Pagina 110 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: , se confirmó que el jefe sí ajustó su comportamiento al perfil de cada jugador.
+
+--- Pagina 110 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: los jugadores de perfil a  distancia reportaron una tensión notablemente mayor en la versión adaptativa, mientras  que en los de perfil cuerpo a cuerpo ese efecto casi no se notó,
+
+--- Pagina 111 | Highlight | Autor: Cristián Llull ---
+Texto resaltado: repetir la evaluación con una muestra más grande

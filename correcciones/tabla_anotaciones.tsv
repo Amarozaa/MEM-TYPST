@@ -1,0 +1,38 @@
+Pagina	Tipo	Texto resaltado	Comentario
+2	Highlight	mediante un enemigo jefe capaz de adaptar su comportamiento de combate al estilo de cada jugador.	
+2	Highlight	sistema capaz de adaptar el comportamiento del jefe al estilo de cada jugador	
+2	Nota		Buen scoping de trabajo, bien explicado y relevante.
+15	Nota		Hasta aquí, no se entiende bien si se espera que el jefe final se adapte en tiempo real a lo que el usuario va jugando o tenga una conducta predeterminada según el historial de todo el juego.
+16	Nota		Los párrafos deberían ser de  líneas, a lo más 8. Considerar si hay que dividir algunos
+16	Nota		La metodología propuesta es coherente y aborda suficientes detalles
+20	Highlight	n evoluciones preprogramadas que se activan por condiciones específicas, en lugar de aprendizaje genuino de patrones de comportamiento del jugador.	
+21	Highlight	e manera dinámica,	
+22	Nota		Súper bien
+23	Nota		Podría introducir sesgos, pero OK, parece ser suficiente para probar el motor.
+28	Highlight	son justamente esos pesos, no la elección del rango, que depende solo de la distancia, los que el sistema adaptativo del capítulo 4 ajusta según el comportamiento previo del jugador.	
+38	Highlight	ajustes en tiempo real durante el combate.	
+39	Highlight	perfil de cuatro dimensiones independientes entre sí,	
+39	Highlight	n requiere un mínimo de 20 muestras	
+39	Highlight	se reduce en 50 unidades,	
+39	Nota		"Más arriba aparrece que ciertos valores numéricos aparecieron de forma iterativa. Es en referencia a estos pesos?
+
+Sería bueno volver recalcarlo."
+43	Highlight	Pinelle et al.:	
+43	Nota		Insertar la referencia también
+44	Nota		El diseño está bien pensado y justificado según el objetivo principal.
+53	Highlight	slime.	
+53	Nota		cursiva
+63	Highlight	El Behaviour Tree es el sistema de Unreal Engine utilizado para modelar el comportamiento de un agente de IA mediante una estructura jerárquica de nodos.	
+76	Highlight	al tratarse de ataques a distancia, no es directo determinar si efectivamente conectaron con el jugador, por lo que no se registran en las métricas de ataque.	
+93	Nota		La cantidad de participantes y la clasificación de los perfiles es adecuada para eliminar sesgos.
+94	Highlight	Se prefirió el GEQ	Aquí, separar el párrafo.
+94	Nota		Necesita referencia
+97	Highlight	En la dimensión de desafío, si bien las medianas de ambos grupos son similares, el rango intercuartílico del grupo adaptativo (0.50)	
+97	Nota		Es interesante que logra nivelar la experiencia respecto al desafío que implica, sin conocer nada del jugador de antemano
+109	Nota		Excelente plantemiento experimental y análisis de los resultados y las limitaciones
+110	Highlight	, se confirmó que el jefe sí ajustó su comportamiento al perfil de cada jugador.	
+110	Highlight	los jugadores de perfil a distancia reportaron una tensión notablemente mayor en la versión adaptativa, mientras que en los de perfil cuerpo a cuerpo ese efecto casi no se notó,	
+111	Nota		No dejar esta frase como párrafo: incluir en el siguiente
+111	Highlight	repetir la evaluación con una muestra más grande	
+111	Nota		Cuántos participantes se estiman necesario?
+113	Nota		Importante: en las referencias no se puede poner la comilla «», dado que es propia del español. En inglés se utiliza “”

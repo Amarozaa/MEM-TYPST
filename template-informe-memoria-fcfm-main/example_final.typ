@@ -43,19 +43,19 @@
 ]
 
 #dedicatoria[
-    Una dedicatoria especial para alguien especial.
+    A quienes siempre estuvieron ahí para apoyarme.
 ]
 
 #agradecimientos[
-    Quiero agradecer a mi profesor guía y a mi profesor co-guía por su ayuda y orientación a lo
-    largo del desarrollo de esta memoria.
+    Quiero agradecer a mi profesor guía, junto con mi profesor co-guía, por su ayuda y
+    orientación a lo largo del desarrollo de esta memoria.
 
     Agradezco también a mi familia, por su apoyo incondicional en todo momento.
 
     Y gracias a todos mis amigos, por acompañarme durante este proceso.
 ]
 
-#declaracion-ia[
+#let declaracion-texto = [
     En la elaboración de esta memoria se utilizaron herramientas de inteligencia artificial
     generativa. Específicamente, se empleó Claude (Anthropic) como asistente durante el
     proceso de redacción y edición del documento escrito, y también como apoyo en la
@@ -74,7 +74,7 @@
     responsabilidad sobre el trabajo presentado.
 ]
 
-#show: start-doc
+#show: start-doc.with(declaracion: declaracion-texto)
 
 // ==========================================
 // CAPÍTULO 1: INTRODUCCIÓN
@@ -157,6 +157,18 @@
     personalizados en C++), sobre un juego del género _souls-like_ construido
     especialmente para este trabajo.
 
+    En este trabajo se entiende por inteligencia artificial adaptativa a los sistemas que
+    ajustan el comportamiento de un agente en tiempo de ejecución a partir de las acciones
+    observadas del jugador, sin generar contenido nuevo. Esto la distingue tanto de la
+    inteligencia artificial generativa, que produce contenido mediante modelos entrenados
+    previamente, como de los sistemas de IA tradicionales usados en videojuegos (como los
+    Behaviour Trees empleados en este mismo trabajo), que definen un comportamiento fijo y
+    no cambian según el jugador.
+
+    El sistema desarrollado en esta memoria corresponde al primer tipo: un mecanismo
+    basado en reglas, no en aprendizaje automático, que modula parámetros de un
+    comportamiento ya existente según el estilo de juego observado.
+
     A diferencia de otros enfoques de dificultad dinámica, que ajustan parámetros
     generales del juego (vida, daño, velocidad), la adaptación aquí propuesta opera sobre
     las probabilidades de selección de los distintos ataques del jefe: el repertorio de
@@ -172,12 +184,14 @@
     recolectado. La comparación entre ambas versiones (capítulo 6) permite aislar el
     efecto de la adaptación de otros factores del diseño del juego.
 
-    Cabe precisar que, durante la etapa de propuesta, se consideró además la posibilidad
-    de extender esta adaptación al combate mismo, ajustando el comportamiento del jefe en
-    tiempo real según las acciones del jugador durante el enfrentamiento. Esta línea quedó
-    fuera del alcance final de este trabajo, que se concentra en la adaptación previa al
-    combate mediante las herramientas nativas del motor; se retoma como trabajo futuro en el
-    capítulo 7.
+    Cabe precisar que la adaptación del jefe combina dos mecanismos. El principal ocurre
+    antes del combate: los pesos de ataque se fijan a partir de un perfil construido con
+    el comportamiento del jugador frente a los enemigos regulares previos al enfrentamiento.
+    Durante el combate mismo existe además un ajuste acotado, que sube o baja el peso de
+    cada tipo de ataque según su tasa de acierto reciente (capítulo 4). Una adaptación en
+    tiempo real más completa, que reaccione a patrones de comportamiento más ricos del
+    jugador durante el propio combate, quedó fuera del alcance de este trabajo y se retoma
+    como trabajo futuro en el capítulo 7.
 
     == Objetivos
 
@@ -210,7 +224,9 @@
     En este tipo de metodología se comparan dos versiones de un mismo producto o sistema,
     la versión de control (sin la modificación que se quiere evaluar) y la versión de
     tratamiento (con dicha modificación), para determinar si la diferencia entre ambas
-    produce un efecto medible. En este trabajo, la versión de control corresponde a un jefe
+    produce un efecto medible.
+
+    En este trabajo, la versión de control corresponde a un jefe
     de comportamiento fijo y sin mecanismos de adaptación, mientras que la versión de
     tratamiento corresponde a una segunda versión, idéntica en el resto de sus sistemas, en
     la que el jefe ajusta los pesos de selección de sus ataques a partir de un perfil
@@ -221,12 +237,16 @@
     verifica la corrección del propio mecanismo de adaptación: a partir de los pesos de
     ataque volcados a archivo al iniciar cada combate (capítulo 5), se revisa que el
     perfil construido sobre el comportamiento del jugador se traduzca efectivamente en los
-    ajustes esperados sobre dichos pesos. Desde la perspectiva de experiencia de usuario, se
+    ajustes esperados sobre dichos pesos.
+
+    Desde la perspectiva de experiencia de usuario, se
     diseñaron pruebas de jugabilidad mediante un experimento controlado con un diseño
     entre sujetos (_between-subjects_): cada participante juega una sola de las dos
     versiones, nunca ambas. Se optó por este diseño, en lugar de uno intrasujeto en que la
     misma persona jugara ambas versiones, para evitar que el aprendizaje acumulado durante
-    una condición contaminara la percepción de la otra. La experiencia de juego se mide
+    una condición contaminara la percepción de la otra.
+
+    La experiencia de juego se mide
     utilizando el Game Experience Questionnaire @GEQuestionare para las dimensiones de
     desafío, tensión, inmersión y afecto (positivo y negativo), complementado con
     retroalimentación cualitativa sobre la percepción de predictibilidad de cada versión.
@@ -237,7 +257,9 @@
     realmente registrados en cada sesión, se confirma que el jefe sí ajustó su
     comportamiento al perfil de cada jugador. Al comparar la versión de control con la
     adaptativa mirando todo el grupo junto, no aparecen diferencias significativas en la experiencia
-    de juego reportada. El hallazgo más importante surge al mirar el estilo de juego de
+    de juego reportada.
+
+    El hallazgo más importante surge al mirar el estilo de juego de
     cada persona: el sistema logra su efecto con éxito en los jugadores de perfil a
     distancia, quienes reportan una tensión notablemente mayor en la versión adaptativa,
     aunque ese mismo efecto casi no se nota en los jugadores de perfil cuerpo a cuerpo, y
@@ -245,6 +267,7 @@
     este trabajo es un sistema capaz de adaptar el comportamiento del jefe al estilo de
     cada jugador, que en la práctica funcionó mejor contra quienes se mantienen a distancia
     que contra quienes pelean cuerpo a cuerpo.
+
     Esta diferencia, eso sí, no se puede atribuir por completo al estilo de juego, ya que
     también podría influir la experiencia previa de cada perfil de jugador. Sumado a esto,
     los resultados muestran que confiar solo en lo que el jugador reporta tiene límites
@@ -265,7 +288,9 @@
     conceptual del videojuego desarrollado, incluyendo su narrativa, mecánicas y enemigos.
     El capítulo 4 detalla el diseño del sistema de adaptación basado en el comportamiento
     del jugador, junto con las reglas que traducen dicho comportamiento en ajustes sobre el
-    jefe. El capítulo 5 describe la implementación técnica del videojuego en Unreal Engine.
+    jefe.
+
+    El capítulo 5 describe la implementación técnica del videojuego en Unreal Engine.
     El capítulo 6 presenta la prueba de concepto realizada, junto con los resultados
     obtenidos, su discusión y las limitaciones del estudio. Finalmente, el capítulo 7
     concluye el trabajo y propone líneas de trabajo futuro.
@@ -481,10 +506,10 @@
     corresponden a soluciones específicas, difíciles de replicar.
 
     Esta situación evidencia una brecha concreta: la falta de un mecanismo que permita que
-    un enemigo, en particular un jefe, registre el comportamiento del jugador y ajuste sus
-    patrones de combate de manera dinámica, implementado con las herramientas nativas de
-    un motor de uso común. Sobre esa brecha se construye el sistema descrito en los
-    capítulos siguientes.
+    un enemigo, en particular un jefe, registre el comportamiento del jugador y ajuste su
+    estrategia de combate en función de ese registro, implementado con las herramientas
+    nativas de un motor de uso común. Sobre esa brecha se construye el sistema descrito en
+    los capítulos siguientes.
 ]
 
 // ==========================================
@@ -1122,7 +1147,8 @@
     adelante en la sección "Ajuste durante el combate".
 
     Cabe señalar que los valores numéricos concretos que aparecen en las reglas de este
-    capítulo (tanto los umbrales de activación como las magnitudes de los ajustes de peso)
+    capítulo, como los umbrales de distancia, esquiva o curación, y las magnitudes de
+    ajuste de peso (por ejemplo, +15 o 50) que se detallan en las siguientes secciones,
     no se derivaron analíticamente, sino que se fijaron de forma iterativa mediante pruebas
     de juego durante el desarrollo, buscando que los cambios en el comportamiento del jefe
     resultaran perceptibles sin volverse abruptos.
@@ -1321,8 +1347,8 @@
     que la adaptación produzca el efecto contrario al buscado, ya que un jefe que repite el
     mismo ataque una y otra vez resulta tan previsible como uno completamente estático, y
     responde a la misma tensión planteada en el capítulo 2 a partir de las heurísticas de
-    Pinelle et al.: que el jefe se adapte sin volverse impredecible o frustrante para el
-    jugador.
+    Pinelle et al. @Pinelle08: que el jefe se adapte sin volverse impredecible o frustrante
+    para el jugador.
 
     == Ajuste durante el combate
 
@@ -1683,7 +1709,7 @@ malla.
 === Proyectil del jefe
 
 El jefe también lanza proyectiles mediante ciertos ataques. Es más lento que el del jugador, sin
-gravedad y con un efecto de explosión de slime. Según el ataque, se usa en dos variantes:
+gravedad y con un efecto de explosión de _slime_. Según el ataque, se usa en dos variantes:
 una que avanza en línea recta y otra que persigue activamente al jugador. Además, si tras 5
 segundos no ha impactado nada, se autodestruye dejando un efecto de partículas, para que los
 proyectiles fallados no queden indefinidamente en la escena.
@@ -2370,7 +2396,7 @@ pudieran ajustarse específicamente a los requerimientos de _gameplay_ del jefe,
 particular a los _Anim Notify States_ que delimitan las ventanas de ataque y a las
 distintas formas que necesita adoptar durante el combate.
 
-Dado que el slime no posee un esqueleto tradicional, gran parte de sus deformaciones se
+Dado que el _slime_ no posee un esqueleto tradicional, gran parte de sus deformaciones se
 modelaron mediante _shape keys_ (deformaciones predefinidas de la malla), tanto para las distintas formas que puede adoptar el
 cuerpo (por ejemplo, su forma de charco, o su forma de espinas) como para las acciones propias
 de cada ataque.
@@ -3476,7 +3502,7 @@ que el rendimiento del juego no constituyó una variable de confusión en
 los resultados obtenidos.
 
 Al cerrar la sesión, se le pide responder dos instrumentos más: el SUS
-(System Usability Scale) adaptado a videojuegos, y una selección de ítems
+(System Usability Scale) @Brooke96 adaptado a videojuegos, y una selección de ítems
 del GEQ (Game Experience Questionnaire), ambos en escala de 1 a 5. La
 adaptación del SUS consistió en reemplazar las referencias al «sistema» por el
 juego evaluado, una práctica documentada y aceptada en la literatura sobre
@@ -3484,8 +3510,9 @@ usabilidad que preserva la estructura, los diez ítems y el método de cálculo 
 instrumento original. No se trata, por tanto, de un «SUS para videojuegos»
 formalmente validado, que como tal no existe de manera única, sino de la
 aplicación de esa práctica establecida al contexto de este estudio; esta decisión
-se retoma en las limitaciones. Se
-prefirió el GEQ sobre alternativas como el GAMEFULQUEST @GamefulQuest19 porque este último
+se retoma en las limitaciones.
+
+Se prefirió el GEQ sobre alternativas como el GAMEFULQUEST @GamefulQuest19 porque este último
 mide «gamefulness», es decir, cuánto se parece una experiencia a un juego,
 una pregunta pensada para sistemas gamificados y no para comparar el desafío,
 la competencia, la tensión o la inmersión que es lo que realmente interesa
@@ -3540,7 +3567,8 @@ Se aplicó el System Usability Scale (SUS) adaptado a contexto de videojuegos al
 cierre de cada sesión, sobre el total de la muestra válida (N = 30; 15 en
 condición control y 15 en condición adaptativa). El puntaje promedio general fue
 de 77.9 (mediana 77.5, DE = 7.80), por encima del punto de referencia habitual
-de la industria (68) y cercano al umbral considerado «Excelente» (80.3). De los
+de la industria (68) @SauroLewis16 y cercano al umbral considerado «Excelente»
+(80.3) @Bangor09. De los
 30 participantes, 11 calificaron su experiencia como Excelente, 14 como Buena y 5
 como Aceptable, sin registrarse evaluaciones en la categoría Pobre.
 
@@ -4185,11 +4213,17 @@ generalización.
     conclusiones generalizables a toda la población de jugadores, dadas las limitaciones ya
     discutidas.
 
-    A partir de lo aprendido, quedan varias líneas abiertas para continuar este trabajo.
+    A partir de lo aprendido, quedan varias líneas abiertas para continuar este trabajo. La
+    más directa es repetir la evaluación con una muestra más grande y, de ser posible, con
+    un diseño en que la misma persona juegue ambas versiones. Como referencia, el único
+    efecto significativo detectado (perfil a distancia) tuvo un tamaño de efecto grande ($r =
+    0.55$); dado que la comparación del grupo completo no alcanzó significancia, el efecto
+    real combinando ambos perfiles es probablemente menor, por lo que detectarlo con
+    confianza requeriría del orden de 40 participantes por condición (80 en total), casi el
+    triple de la muestra usada en este trabajo.
 
-    La más directa es repetir la evaluación con una muestra más grande y, de ser posible, con
-    un diseño en que la misma persona juegue ambas versiones. Con más participantes se ganaría
-    poder estadístico para detectar efectos de magnitud moderada que acá pudieron pasar
+    Con más participantes se ganaría poder
+    estadístico para detectar efectos de magnitud moderada que acá pudieron pasar
     desapercibidos, y un diseño intrasujeto ayudaría a separar el efecto de la adaptación de la
     experiencia previa de cada perfil de jugador, que en este estudio quedó como una posible
     fuente de confusión.
