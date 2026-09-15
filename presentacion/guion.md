@@ -46,22 +46,25 @@ completos"*. Nunca sacrifiques las diapositivas 21 y 22.
 
 ### Diapositiva 4 — La excepción y la pregunta · 1:20 – 1:55
 
-> La excepción más citada es Alien: Isolation, donde el antagonista aprende
-> dónde se esconde el jugador y ajusta sus rutas de patrullaje. Pero son muy
-> pocos los títulos que hacen algo así.
->
-> Y de ahí sale la pregunta que motiva este trabajo: ¿qué pasaría si un jefe
-> identificara el estilo de juego de cada persona y ajustara su propia
-> estrategia en consecuencia? Un mismo enemigo, combates distintos según quién
-> lo enfrente.
+> Hay un caso especial, el ejemplo que más se repite cuando se habla de
+> enemigos adaptativos. En *Alien: Isolation* el alien aprende dónde sueles
+> esconderte y cambia sus rutas de patrullaje, así que el escondite que te
+> salvó una vez deja de servirte. Que siempre se llegue al mismo juego ya dice
+> lo poco común que es.
 
+*Acá baja el ritmo y mira a la comisión, no a la pantalla. Es la pregunta
+central de toda la defensa: dila, pero no la leas palabra por palabra.*
+
+> Y de ahí sale la pregunta de este trabajo: ¿y si el jefe reconociera cómo
+> juega cada persona y cambiara su estrategia según eso? Un mismo jefe podria ser distinto para todos. 
 ### Diapositiva 5 — Agenda · 1:55 – 2:30
 
-> Para responder eso, hoy voy a partir con los objetivos, después les voy a
-> mostrar el juego que construí y cómo funciona el sistema adaptativo, luego
-> cómo lo evalué con treinta participantes, y finalmente los resultados, donde
-> está el hallazgo principal del trabajo, junto con las conclusiones y
-> limitaciones.
+*No leas los seis puntos, ya están en pantalla. Agrúpalos.*
+
+> Para responder eso, la presentación va así. Primero los objetivos. Después,
+> cómo se construyeron el juego y el sistema que adapta al jefe. Luego, cómo se
+> puso a prueba con treinta personas. Y al final, los resultados, que fueron
+> menos simples de lo esperado.
 
 ---
 
@@ -69,11 +72,11 @@ completos"*. Nunca sacrifiques las diapositivas 21 y 22.
 
 ### Diapositiva 6 — Objetivos · 2:30 – 3:20
 
-*Lee el objetivo general tal cual está en pantalla — es el que está en el
-escrito y conviene que coincida palabra por palabra.*
+*Lee el objetivo general tal cual está en pantalla. Es casi el mismo que está
+en el escrito, así que conviene no improvisarlo.*
 
 > El objetivo general fue diseñar e implementar un sistema de adaptación para un
-> enemigo jefe en Unreal Engine, capaz de ajustar su comportamiento de combate a
+> enemigo jefe, capaz de ajustar su comportamiento de combate a
 > partir de un perfil construido sobre las acciones previas del jugador, para
 > reducir la previsibilidad del enfrentamiento y evaluar su efecto sobre la
 > experiencia de juego.
@@ -86,21 +89,21 @@ escrito y conviene que coincida palabra por palabra.*
 
 ### Diapositiva 8 — El juego · 3:20 – 4:10
 
-> No existía un juego donde probar esto, así que lo construí. Es un souls-like
+> No había un juego base donde probar esto, así que se construyó uno. Es un souls-like
 > en Unreal Engine 5.6, hecho con Blueprints y C++, usando las herramientas
 > nativas de inteligencia artificial del motor: Behaviour Tree y Blackboard.
 >
-> Tiene mecánicas completas del género: combate melee, hechizos a distancia,
+> Tiene las mecánicas clásicas del género: combate melee, hechizos a distancia,
 > esquiva con frames de invulnerabilidad, stamina, pociones y fijado de objetivo.
 >
-> Lo importante es esto: el nivel previo al jefe no es relleno. Tiene tres
-> arquetipos de enemigo, y cada uno está diseñado a propósito para exponer una
-> dimensión distinta del estilo de juego de la persona.
+> El nivel previo al jefe no es relleno. Es ahí donde el sistema observa cómo
+> juega la persona. Tiene tres arquetipos de enemigo, y cada uno está diseñado
+> a propósito para exponer una dimensión distinta del estilo de juego.
 
 ### Diapositiva 9 — El repertorio del jefe · 4:10 – 4:50
 
 > El jefe tiene nueve ataques, agrupados en bandas de distancia. Dentro de cada
-> banda elige mediante un selector aleatorio ponderado que implementé en C++, y
+> banda elige mediante un selector aleatorio ponderado implementado en C++, y
 > todos los ataques parten con el mismo peso base: cincuenta.
 >
 > Y acá está la decisión de diseño central del trabajo: la adaptación no toca
@@ -162,33 +165,33 @@ escrito y conviene que coincida palabra por palabra.*
 
 ### Diapositiva 14 — Diseño experimental · 7:30 – 8:15
 
-> Para evaluarlo hice una prueba A/B con diseño entre sujetos: cada persona
+> Para evaluarlo se hizo una prueba A/B con diseño entre sujetos: cada persona
 > juega una sola condición, nunca las dos, para que el aprendizaje de una no
 > contamine la percepción de la otra.
 >
 > La condición de control es exactamente el mismo jefe, con los mismos nueve
 > ataques, pero con los pesos parejos durante toda la partida.
 >
-> La condición se fija con un botón escondido en el menú principal, que aprieto
-> yo antes de entregarle el control al participante, así que la persona nunca
+> La condición se fija con un botón escondido en el menú principal, que se
+> presiona antes de entregarle el control al participante, así que la persona nunca
 > sabe qué versión está jugando.
 >
 > Y hay un detalle importante: la recolección del perfil es independiente de la
 > condición. *Todos* los participantes generan perfil; lo único que cambia es si
-> ese perfil se aplica o no. Eso me permitió después verificar que ambos grupos
+> ese perfil se aplica o no. Eso permitió después verificar que ambos grupos
 > partieron jugando parecido.
 >
-> Recluté treinta y tres personas; descarté tres por problemas de métricas en
-> las primeras sesiones, quedando treinta: quince y quince.
+> Se reclutó a treinta y tres personas y se descartaron tres por problemas de
+> métricas en las primeras sesiones, así que quedaron treinta: quince y quince.
 
 ### Diapositiva 15 — Qué se midió · 8:15 – 8:45
 
-> Medí tres cosas. El registro interno del juego, que guarda las métricas de
+> Se midieron tres cosas. El registro interno del juego, que guarda las métricas de
 > comportamiento y, lo más importante, los pesos de ataque reales de cada
 > partida. El SUS adaptado y una selección de ítems del GEQ. Y un bloque de
 > preguntas abiertas.
 >
-> Que los pesos reales queden registrados es lo que después me va a permitir
+> Que los pesos reales queden registrados es lo que después permite
 > contrastar lo que el jugador *dijo* contra lo que el sistema *efectivamente
 > hizo*.
 
@@ -199,8 +202,8 @@ escrito y conviene que coincida palabra por palabra.*
 ### Diapositiva 17 — Verificación técnica · 8:45 – 9:30
 
 > Antes de mirar la experiencia, había que verificar que el sistema hace lo que
-> dice hacer. Apliqué las reglas a mano sobre las métricas de exploración de
-> cada participante del grupo adaptativo, y comparé mi predicción contra el
+> dice hacer. Se aplicaron las reglas a mano sobre las métricas de exploración
+> de cada participante del grupo adaptativo, y esa predicción se comparó contra el
 > archivo de pesos que el juego dejó registrado.
 >
 > Coincidieron exactamente en las quince sesiones. Y el ajuste durante el
@@ -238,8 +241,8 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ### Diapositiva 20 — El hallazgo · 11:00 – 12:30
 
-> Ahora bien, mirando el grupo completo se pierde algo. Observando a los
-> participantes jugar durante las sesiones me surgió una hipótesis: el sistema
+> Ahora bien, mirando el grupo completo se pierde algo. Al observar a los
+> participantes jugar durante las sesiones surgió una hipótesis: el sistema
 > no se percibe igual en todos.
 >
 > A quien juega a distancia, el jefe adaptado lo persigue y le cierra la
@@ -247,7 +250,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > pelea de cerca, la adaptación le refuerza ataques de corto alcance para los
 > que de todas formas está preparado.
 >
-> Entonces dividí el grupo adaptativo por la mediana de distancia de
+> Entonces se dividió el grupo adaptativo por la mediana de distancia de
 > exploración: ocho jugadores de perfil rango y siete de cuerpo a cuerpo.
 >
 > Los de perfil rango reportaron una tensión media de 1.69, contra 1.07 en los
@@ -271,16 +274,16 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 ### Diapositiva 22 — Descartando la habilidad · 13:20 – 14:15
 
 > Antes de atribuirle esto al estilo de juego, había que revisar una explicación
-> alternativa que se me ocurrió viendo las sesiones: los jugadores agresivos y
+> alternativa que surgió al observar las sesiones: los jugadores agresivos y
 > cercanos solían ser también los más experimentados. Si eso fuera cierto, su
 > menor tensión no sería por su estilo, sino porque simplemente son mejores.
 >
-> Hice tres revisiones. Primero, medí si distancia y experiencia están
-> relacionadas dentro del grupo adaptativo: la relación resultó débil y no
-> significativa. Segundo, comparé la experiencia promedio de ambos perfiles, y
+> Se hicieron tres revisiones. Primero, se midió si distancia y experiencia
+> están relacionadas dentro del grupo adaptativo: la relación resultó débil y no
+> significativa. Segundo, se comparó la experiencia promedio de ambos perfiles, y
 > resultó casi idéntica.
 >
-> Y tercero, la más importante: volví a medir la relación entre distancia y
+> Y tercero, la más importante: se volvió a medir la relación entre distancia y
 > tensión, pero descontando el efecto de la experiencia mediante correlación
 > parcial. Si la tensión se debiera a la habilidad, esa relación debería
 > debilitarse. No solo se mantuvo, sino que siguió siendo significativa.
@@ -296,12 +299,12 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > aprendía, contra siete de quince en el control. La dirección es la correcta,
 > pero no alcanza significancia.
 >
-> Y acá viene la advertencia, que para mí es uno de los resultados más
+> Y acá viene la advertencia, que es uno de los resultados más
 > interesantes del trabajo: siete personas del grupo de control, que enfrentaron
 > un jefe completamente fijo, también afirmaron percibir aprendizaje, y
 > describieron con detalle cambios que nunca ocurrieron.
 >
-> Como el sistema guarda los pesos reales, pude cruzar lo que cada persona
+> Como el sistema guarda los pesos reales, se pudo cruzar lo que cada persona
 > reportó contra lo que efectivamente pasó en su partida, y la correspondencia
 > es baja. Probablemente hay un sesgo de expectativa: el estudio trata sobre
 > enemigos adaptativos y mucha gente llegó esperando encontrar uno.
@@ -344,7 +347,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ### Diapositiva 26 — Conclusiones · 16:30 – 17:10
 
-> Resumo en tres puntos.
+> En resumen, tres puntos.
 >
 > Primero, el sistema funciona como se especificó: las reglas predicen
 > exactamente los pesos registrados en las quince sesiones.

@@ -1,5 +1,5 @@
 // =============================================================
-// Defensa de memoria — Amaro Zurita Alvarado
+// Defensa de memoria de Amaro Zurita Alvarado
 // Compilar desde la raíz del repositorio (MEMORIA_TYPST):
 //     typst compile --root . presentacion/defensa.typ
 // =============================================================
@@ -86,7 +86,7 @@
       #text(size: 19pt, weight: "semibold", fill: tinta)[Amaro Zurita Alvarado]
       #v(10pt)
       #text(size: 13pt, fill: tinta.lighten(25%))[
-        Universidad de Chile — Facultad de Ciencias Físicas y Matemáticas
+        Universidad de Chile, Facultad de Ciencias Físicas y Matemáticas
         #v(6pt)
         Profesor guía: Francisco Gutiérrez Figueroa#h(1.2em)·#h(1.2em)Co-guía: Elías Zelada Baeza \
         Comisión: Valentín Muñoz Apablaza#h(1.2em)·#h(1.2em)Cristián Llull Torres
@@ -139,11 +139,11 @@
     subtitle: [Memoria para optar al título de Ingeniero Civil en Computación],
     author: [Amaro Zurita Alvarado],
     date: datetime.today().display("[day]/[month]/[year]"),
-    institution: [Universidad de Chile — Facultad de Ciencias Físicas y Matemáticas],
+    institution: [Universidad de Chile, Facultad de Ciencias Físicas y Matemáticas],
     contact: [
       Profesor guía: Francisco Gutiérrez Figueroa \
       Profesor co-guía: Elías Zelada Baeza \
-      Comisión: Valentín Muñoz Apablaza — Cristián Llull Torres
+      Comisión: Valentín Muñoz Apablaza y Cristián Llull Torres
     ],
   ),
   config-colors(
@@ -180,8 +180,9 @@
 
     #v(6pt)
     #destaca[
-      Las técnicas de dificultad dinámica existentes ajustan *números* —vida,
-      daño, velocidad—, no el *comportamiento* del enemigo.
+      La gran mayoría de los enfoques de dificultad dinámica existentes
+      ajustan *números* (vida, daño, velocidad), no el *comportamiento*
+      del enemigo.
     ]
   ],
   [
@@ -241,7 +242,7 @@
 #block(fill: azul.lighten(90%), inset: 12pt, radius: 6pt, width: 100%)[
   #set text(size: 17pt)
   *Objetivo general.* Diseñar e implementar un sistema de adaptación para un
-  enemigo jefe en Unreal Engine, capaz de ajustar su comportamiento de combate a
+  enemigo jefe, capaz de ajustar su comportamiento de combate a
   partir de un perfil construido sobre las acciones previas del jugador, con el
   fin de reducir la previsibilidad del enfrentamiento y evaluar su efecto sobre
   la experiencia de juego.
@@ -275,13 +276,13 @@
     #set text(size: 17pt)
     - Unreal Engine 5.6, *Blueprints + C++*, con las herramientas nativas de IA
       del motor (_Behaviour Tree_ y _Blackboard_).
-    - Mecánicas completas de _souls-like_: melee, hechizos a distancia,
+    - Mecánicas clásicas de _souls-like_: melee, hechizos a distancia,
       esquiva con _i-frames_, _stamina_, pociones, fijado de objetivo.
     - Un *nivel previo* con tres arquetipos de enemigo regular, y luego el
       combate contra el *jefe*.
     #v(4pt)
     #destaca[
-      El nivel previo no es relleno: cada arquetipo está diseñado para exponer
+      El nivel previo no es relleno, cada arquetipo está hecho para exponer
       una dimensión distinta del estilo de juego.
     ]
   ],
@@ -295,34 +296,49 @@
 
 == El repertorio del jefe
 
-#grid(
-  columns: (1fr, 1.05fr),
-  column-gutter: 18pt,
-  [
-    #set text(size: 17pt)
-    *Nueve ataques*, agrupados en bandas de distancia (corta, media, larga).
+#set text(size: 15.5pt)
+*Nueve ataques* repartidos en tres bandas de distancia. Dentro de cada banda, un
+*selector aleatorio ponderado* implementado en C++ elige cuál se ejecuta, y todos
+parten con el mismo peso base.
 
-    #v(6pt)
-    Dentro de cada banda, el jefe elige mediante un *selector aleatorio
-    ponderado* implementado en C++.
+#v(8pt)
 
-    #v(6pt)
-    Todos los ataques parten con el *mismo peso base (50)*.
-
-    #v(10pt)
-    #block(fill: gris, inset: 10pt, radius: 5pt, width: 100%)[
-      #set text(size: 15pt)
-      *La adaptación no toca el daño ni la velocidad.* Solo cambia _qué tan
-      seguido_ el jefe elige cada ataque.
-    ]
-  ],
-  [
-    #image(img + "cap5/BT_Jefe.png", width: 100%)
-    #v(2pt)
-    #set text(size: 13pt)
-    #align(center)[_Behaviour Tree_ del jefe]
-  ],
+#let caja(cnt, fill: gris) = block(
+  fill: fill, stroke: 0.7pt + borde, radius: 5pt,
+  inset: (x: 7pt, y: 5pt), width: 100%, align(center, cnt),
 )
+#let baja = align(center, text(fill: azul, size: 12pt)[#sym.arrow.b])
+#let rama(titulo, rango, ataques) = [
+  #caja(fill: azul.lighten(88%))[
+    #text(size: 13.5pt, weight: "bold", fill: azul)[#titulo] \
+    #text(size: 11pt, fill: tinta.lighten(20%))[#rango]
+  ]
+  #baja
+  #caja(text(size: 12pt)[Selector ponderado])
+  #baja
+  #caja(text(size: 13pt)[#ataques], fill: white)
+]
+
+#align(center, block(width: 94%)[
+  #caja(fill: azul.lighten(90%))[
+    #text(size: 14pt, weight: "bold", fill: azul)[Selector principal según la distancia al jugador]
+  ]
+  #v(3pt)
+  #grid(
+    columns: (1fr, 1fr, 1fr),
+    column-gutter: 10pt,
+    align: top,
+    rama[Banda lejana][mayor a `FarRange`][Proyectil dirigido \ Proyectil \ Persecución \ Charco],
+    rama[Banda media][entre ambos rangos][Básico \ Pesado \ Látigo],
+    rama[Banda cercana][menor a `CloseRange`][Básico \ Área \ Muro],
+  )
+])
+
+#v(8pt)
+#destaca[
+  La adaptación no toca el daño ni la velocidad. Solo cambia _qué tan seguido_ el
+  jefe elige cada ataque.
+]
 
 == El perfil de juego: cuatro dimensiones
 
@@ -449,7 +465,7 @@
     sabe qué versión juega.
 
     #v(6pt)
-    *Clave:* la recolección del perfil es independiente de la condición — *todos*
+    *Clave:* la recolección del perfil es independiente de la condición: *todos*
     generan perfil, solo cambia si se aplica.
   ],
   [
@@ -463,7 +479,7 @@
     #v(8pt)
     #text(size: 15pt)[
       Asignación alternada dentro de cada perfil de experiencia previa, para no
-      desbalancear novatos y experimentados. Sesiones de 25–40 min, mismo equipo,
+      desbalancear novatos y experimentados. Sesiones de 25 a 40 min, mismo equipo,
       mismo guion.
     ]
   ],
@@ -621,7 +637,8 @@ que el juego dejó registrado al iniciar el combate.
     #block(fill: azul.lighten(90%), inset: 10pt, radius: 5pt, width: 100%)[
       #text(size: 15pt)[
         *Tensión reportada (media)* \
-        Rango: *1.69* — Cuerpo a cuerpo: *1.07* \
+        Rango: *1.69* \
+        Cuerpo a cuerpo: *1.07* \
         $U = 43.5$, $p = 0.050$, $r = 0.55$ (efecto grande)
       ]
     ]
@@ -652,7 +669,7 @@ Correlación entre la distancia mantenida en la exploración y la tensión repor
       *Grupo adaptativo* \
       #v(4pt)
       #text(size: 24pt, weight: "bold", fill: rojo)[$r_s = 0.517$] \
-      #text(size: 15pt)[$p = 0.048$ — positiva y significativa]
+      #text(size: 15pt)[$p = 0.048$ (positiva y significativa)]
     ]
   ],
   block(fill: gris, inset: 14pt, radius: 6pt, width: 100%, height: 100%)[
@@ -660,7 +677,7 @@ Correlación entre la distancia mantenida en la exploración y la tensión repor
       *Grupo control* \
       #v(4pt)
       #text(size: 24pt, weight: "bold")[$r_s = -0.075$] \
-      #text(size: 15pt)[$p = 0.790$ — prácticamente nula]
+      #text(size: 15pt)[$p = 0.790$ (prácticamente nula)]
     ]
   ],
 )
@@ -740,12 +757,12 @@ Tres revisiones para descartar esa explicación alternativa:
       [Control], [7], [8],
     )
     #v(4pt)
-    #text(size: 14pt)[Fisher, $p = 0.462$ — no significativo.]
+    #text(size: 14pt)[Fisher, $p = 0.462$ (no significativo).]
   ],
   [
     #set text(size: 16pt)
     #destaca[
-      *7 de 15 del grupo control* —que enfrentaron un jefe completamente fijo—
+      *7 de 15 del grupo control*, que enfrentaron un jefe completamente fijo,
       también afirmaron percibir aprendizaje, y describieron con detalle cambios
       que nunca ocurrieron.
     ]
@@ -788,7 +805,7 @@ Tres revisiones para descartar esa explicación alternativa:
   block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15pt)[
       *Que la adaptación sea visible.* Lo único que los jugadores identificaron
-      bien fue un cambio llamativo —la forma de charco—, no un ataque repetido
+      bien fue un cambio llamativo (la forma de charco), no un ataque repetido
       un poco más seguido.
     ]
   ],
@@ -801,7 +818,7 @@ Tres revisiones para descartar esa explicación alternativa:
   block(fill: azul.lighten(90%), inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15pt)[
       *No hace falta subir la dificultad promedio.* La meta puede ser que
-      distintos jugadores sientan un desafío *más parejo entre ellos* — lo que
+      distintos jugadores sientan un desafío *más parejo entre ellos*, lo que
       sugiere el rango intercuartílico más compacto.
     ]
   ],
@@ -907,7 +924,7 @@ Tres revisiones para descartar esa explicación alternativa:
   block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15.5pt)[
       *Medidas menos dependientes de la opinión*: telemetría más fina del
-      combate o señales fisiológicas. Y pulir la jugabilidad —cancelar
+      combate o señales fisiológicas. Y pulir la jugabilidad: cancelar
       animaciones fue la queja más repetida.
     ]
   ],
