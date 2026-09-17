@@ -294,7 +294,7 @@
 == El repertorio del jefe
 
 #set text(size: 15.5pt)
-*Nueve ataques* repartidos en tres bandas de distancia. Dentro de cada banda, un
+*Nueve ataques* repartidos en tres rangos de distancia. Dentro de cada rango, un
 *selector aleatorio ponderado* implementado en C++ elige cuál se ejecuta, y todos
 parten con el mismo peso base.
 
@@ -325,29 +325,40 @@ parten con el mismo peso base.
     columns: (1fr, 1fr, 1fr),
     column-gutter: 10pt,
     align: top,
-    rama[Banda lejana][mayor a `FarRange`][Proyectil dirigido \ Proyectil \ Persecución \ Charco],
-    rama[Banda media][entre ambos rangos][Básico \ Pesado \ Látigo],
-    rama[Banda cercana][menor a `CloseRange`][Básico \ Área \ Muro],
+    rama[Rango lejano][mayor a `FarRange`][Proyectil dirigido \ Proyectil \ Persecución \ Charco],
+    rama[Rango medio][entre ambos rangos][Básico \ Pesado \ Látigo],
+    rama[Rango cercano][menor a `CloseRange`][Básico \ Área \ Muro],
   )
 ])
 
-#v(8pt)
-#destaca[
-  La adaptación no sube el daño, la velocidad ni la vida del jefe. Cambia qué tan
-  seguido elige cada ataque, en qué rangos de distancia los usa y cuánto persigue
-  al jugador.
-]
 
 == El perfil de juego: cuatro dimensiones
 
 #set text(size: 16pt)
+#block(
+  fill: rojo.lighten(92%),
+  stroke: (left: 5pt + rojo),
+  inset: (left: 18pt, rest: 12pt), radius: (right: 5pt),
+  width: 100%,
+)[
+  #text(size: 20pt, weight: "bold", fill: azul)[
+    La adaptación no sube el daño, la velocidad ni la vida del jefe.
+  ]
+  #v(5pt)
+  #text(size: 16pt)[
+    Cambia qué tan seguido elige cada ataque, en qué rangos de distancia los usa
+    y cuánto persigue al jugador
+  ]
+]
+
+#v(8pt)
 #tabla(
   columns: (auto, 1fr, 1.2fr),
   table.header([*Dimensión*], [*Qué observa*], [*Hacia dónde empuja al jefe*]),
       table.hline(stroke: 0.6pt + borde),
   [Distancia],
   [Distancia promedio frente al esqueleto normal y al caballero],
-  [Achica la banda cercana o alarga la persecución],
+  [Achica el rango cercano o alarga la persecución],
   [Melee vs. rango],
   [Proporción de ataques a distancia sobre el total],
   [Refuerza ataques que cierran distancia, o los que castigan de cerca],
@@ -359,8 +370,8 @@ parten con el mismo peso base.
   [Refuerza Giro o Salto, replicando su patrón de reacción],
 )
 
-#v(8pt)
-#text(size: 15pt)[
+#v(6pt)
+#text(size: 14pt)[
   Cada regla *suma bonificaciones* (+10 / +15) sobre la base pareja, sin
   eliminar ningún ataque. Se registra además el *porcentaje de vida al que
   suele curarse*, usado durante el combate.

@@ -14,10 +14,10 @@ El bloque "antecedentes y diseño" incluye el sistema adaptativo, que es aporte
 propio, pero funciona como el "materiales y métodos" de la exposición. Contando
 así, el aporte propio ocupa cerca del 60% del tiempo, dentro de lo recomendado.
 
-**Regla de rescate.** Si a los 12:00 todavía no llegaste a la diapositiva 21
+**Regla de rescate.** Si a los 12:00 todavía no llegaste a la diapositiva 20
 ("El hallazgo"), salta la 19 (GEQ) resumiéndola en una frase: *"ninguna
 dimensión del GEQ mostró diferencias significativas mirando los grupos
-completos"*. Nunca sacrifiques las diapositivas 21 y 22.
+completos"*. Nunca sacrifiques las diapositivas 20 y 21.
 
 ---
 
@@ -102,25 +102,28 @@ en el escrito, así que conviene no improvisarlo.*
 
 ### Diapositiva 9 — El repertorio del jefe · 4:10 – 4:50
 
-> El jefe tiene nueve ataques, agrupados en bandas de distancia. Dentro de cada
-> banda elige mediante un selector aleatorio ponderado implementado en C++, y
+> El jefe tiene nueve ataques, agrupados en rangos de distancia. Dentro de cada
+> rango elige mediante un selector aleatorio ponderado implementado en C++, y
 > todos los ataques parten con el mismo peso base: cincuenta.
->
-> Y acá está la decisión de diseño central del trabajo. La adaptación nunca sube
-> el daño, la velocidad ni la vida del jefe. Lo que cambia es qué tan seguido
-> elige cada ataque, en qué rangos de distancia los usa y cuánto alarga la
-> persecución. El jefe sigue siendo igual de fuerte, lo que cambia es su
-> estrategia.
 
 ### Diapositiva 10 — El perfil de cuatro dimensiones · 4:50 – 6:00
 
 *Esta es la diapositiva más densa. No leas la tabla completa: recórrela.*
 
+**Primero el recuadro de arriba** (unos 20 segundos):
+
+> Partamos por la decisión de diseño central del trabajo. La adaptación no sube
+> el daño, la velocidad ni la vida del jefe. Cambia qué tan seguido elige cada
+> ataque, en qué rangos de distancia los usa y cuánto persigue al jugador. El
+> jefe sigue siendo igual de fuerte, lo que cambia es su estrategia.
+
+**Recién ahí la tabla**, una dimensión a la vez:
+
 > El perfil tiene cuatro dimensiones, y cada una se mide contra un enemigo
 > distinto del nivel previo.
 >
 > La primera es la distancia promedio que el jugador mantiene. Si juega pegado,
-> se achica la banda cercana del jefe, obligándolo a recurrir antes a ataques de
+> se achica el rango cercano del jefe, obligándolo a recurrir antes a ataques de
 > rango medio.
 >
 > La segunda es qué tipo de ataque usa: si predominan los ataques a distancia,
