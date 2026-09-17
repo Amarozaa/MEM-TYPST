@@ -214,9 +214,6 @@
     #block(fill: azul.lighten(90%), inset: 12pt, radius: 6pt, width: 100%)[
       *¿Y si un jefe identificara el estilo de juego de cada persona y ajustara
       su propia estrategia en consecuencia?*
-
-      #v(4pt)
-      #text(size: 16pt)[Un mismo enemigo, combates distintos según quién lo enfrente.]
     ]
   ],
 )
@@ -282,8 +279,8 @@
       combate contra el *jefe*.
     #v(4pt)
     #destaca[
-      El nivel previo no es relleno, cada arquetipo está hecho para exponer
-      una dimensión distinta del estilo de juego.
+      El nivel previo es donde el sistema observa al jugador. Cada arquetipo
+      expone una dimensión distinta de su estilo de juego.
     ]
   ],
   [
@@ -336,8 +333,9 @@ parten con el mismo peso base.
 
 #v(8pt)
 #destaca[
-  La adaptación no toca el daño ni la velocidad. Solo cambia _qué tan seguido_ el
-  jefe elige cada ataque.
+  La adaptación no sube el daño, la velocidad ni la vida del jefe. Cambia qué tan
+  seguido elige cada ataque, en qué rangos de distancia los usa y cuánto persigue
+  al jugador.
 ]
 
 == El perfil de juego: cuatro dimensiones

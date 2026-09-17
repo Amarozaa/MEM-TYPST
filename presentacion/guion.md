@@ -106,10 +106,11 @@ en el escrito, así que conviene no improvisarlo.*
 > banda elige mediante un selector aleatorio ponderado implementado en C++, y
 > todos los ataques parten con el mismo peso base: cincuenta.
 >
-> Y acá está la decisión de diseño central del trabajo: la adaptación no toca
-> el daño ni la velocidad de los ataques. Lo único que cambia es *qué tan
-> seguido* el jefe elige cada uno. El jefe sigue siendo igual de fuerte; lo que
-> cambia es su estrategia.
+> Y acá está la decisión de diseño central del trabajo. La adaptación nunca sube
+> el daño, la velocidad ni la vida del jefe. Lo que cambia es qué tan seguido
+> elige cada ataque, en qué rangos de distancia los usa y cuánto alarga la
+> persecución. El jefe sigue siendo igual de fuerte, lo que cambia es su
+> estrategia.
 
 ### Diapositiva 10 — El perfil de cuatro dimensiones · 4:50 – 6:00
 
