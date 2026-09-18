@@ -173,8 +173,8 @@
   column-gutter: 20pt,
   [
     #set text(size: 18pt)
-    En los géneros _souls-like_ y _roguelike_, los jefes siguen patrones de
-    ataque *fijos*. Tras varios intentos, el jugador los memoriza.
+    En los juegos de acción con combates exigentes, los jefes siguen patrones
+    de ataque *fijos*. Tras varios intentos, el jugador los memoriza.
 
     #v(6pt)
     La dificultad deja de ser un desafío dinámico y pasa a ser un ejercicio de
@@ -266,7 +266,7 @@
 = El sistema desarrollado
 // =============================================================
 
-== El juego: un souls-like construido para el estudio
+== El juego construido para el estudio
 
 #grid(
   columns: (1.15fr, 1fr),
@@ -275,7 +275,7 @@
     #set text(size: 17pt)
     - Unreal Engine 5.6, *Blueprints + C++*, con las herramientas nativas de IA
       del motor (_Behaviour Tree_ y _Blackboard_).
-    - Mecánicas clásicas de _souls-like_: melee, hechizos a distancia,
+    - Mecánicas clásicas de juegos de acción: melee, hechizos a distancia,
       esquiva con _i-frames_, _stamina_, pociones, fijado de objetivo.
     - Un *nivel previo* con tres arquetipos de enemigo regular, y luego el
       combate contra el *jefe*.
@@ -437,8 +437,7 @@ parten con el mismo peso base.
 
     #v(6pt)
     #text(size: 15pt)[
-      Un jefe que repite el mismo ataque es tan previsible como uno estático.
-      La adaptación no puede volverse el problema que vino a resolver.
+      Así el jefe no termina repitiendo el mismo ataque una y otra vez, algo que se vería poco natural.
     ]
   ],
 )
@@ -446,6 +445,11 @@ parten con el mismo peso base.
 == Dos ajustes adicionales durante el combate
 
 #set text(size: 17pt)
+#text(size: 16pt)[
+  La adaptación principal se calcula *una sola vez, al iniciar el combate*, con
+  el perfil del nivel previo. Durante el combate solo hay dos ajustes acotados.
+]
+#v(8pt)
 #grid(
   rows: (7cm,),
   align: top,
@@ -467,8 +471,8 @@ parten con el mismo peso base.
     *2. Por ventana de curación* \
     #v(4pt)
     #text(size: 15.5pt)[
-      Se conoce el % de vida al que suele curarse. Cuando el jugador entra a ese
-      rango (±10 pp):
+      Usa el % de vida al que el jugador se curaba en el *nivel previo*.
+      Cuando entra a ese rango (±10 pp):
       #v(4pt)
       - Básico, Salto, Charco y Homing *+15*
       #v(4pt)
