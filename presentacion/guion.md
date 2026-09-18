@@ -5,19 +5,19 @@
 | Bloque | Diapositivas | Tiempo | % |
 |---|---|---|---|
 | Inicio | 1–5 | 0:00 – 2:30 | 12% |
-| Antecedentes y diseño | 6–15 | 2:30 – 8:30 | 30% |
-| Aporte propio (resultados y discusión) | 16–25 | 8:30 – 16:30 | 40% |
-| Cierre | 26–29 | 16:30 – 18:00 | 8% |
+| Antecedentes y diseño | 6–16 | 2:30 – 8:30 | 30% |
+| Aporte propio (resultados y discusión) | 17–26 | 8:30 – 16:30 | 40% |
+| Cierre | 27–30 | 16:30 – 18:00 | 8% |
 | **Colchón** | — | 18:00 – 20:00 | 10% |
 
 El bloque "antecedentes y diseño" incluye el sistema adaptativo, que es aporte
 propio, pero funciona como el "materiales y métodos" de la exposición. Contando
 así, el aporte propio ocupa cerca del 60% del tiempo, dentro de lo recomendado.
 
-**Regla de rescate.** Si a los 12:00 todavía no llegaste a la diapositiva 20
-("El hallazgo"), salta la 19 (GEQ) resumiéndola en una frase: *"ninguna
+**Regla de rescate.** Si a los 12:00 todavía no llegaste a la diapositiva 21
+("El hallazgo"), salta la 20 (GEQ) resumiéndola en una frase: *"ninguna
 dimensión del GEQ mostró diferencias significativas mirando los grupos
-completos"*. Nunca sacrifiques las diapositivas 20 y 21.
+completos"*. Nunca sacrifiques las diapositivas 21 y 22.
 
 ---
 
@@ -106,18 +106,19 @@ en el escrito, así que conviene no improvisarlo.*
 > rango elige mediante un selector aleatorio ponderado implementado en C++, y
 > todos los ataques parten con el mismo peso base: cincuenta.
 
-### Diapositiva 10 — El perfil de cuatro dimensiones · 4:50 – 6:00
+### Diapositiva 10 — La decisión de diseño central · 4:50 – 5:15
 
-*Esta es la diapositiva más densa. No leas la tabla completa: recórrela.*
+*Dos columnas, no las leas en voz alta: la comisión ya las está leyendo. Di la
+idea y deja que la pantalla haga el resto.*
 
-**Primero el recuadro de arriba** (unos 20 segundos):
-
-> Partamos por la decisión de diseño central del trabajo. La adaptación no sube
-> el daño, la velocidad ni la vida del jefe. Cambia qué tan seguido elige cada
+> Y acá está la decisión de diseño central del trabajo. La adaptación no sube el
+> daño, la velocidad ni la vida del jefe. Cambia qué tan seguido elige cada
 > ataque, en qué rangos de distancia los usa y cuánto persigue al jugador. El
 > jefe sigue siendo igual de fuerte, lo que cambia es su estrategia.
 
-**Recién ahí la tabla**, una dimensión a la vez:
+### Diapositiva 11 — El perfil de cuatro dimensiones · 5:15 – 6:00
+
+*Esta es la diapositiva más densa. No leas la tabla completa: recórrela.*
 
 > El perfil tiene cuatro dimensiones, y cada una se mide contra un enemigo
 > distinto del nivel previo.
@@ -138,10 +139,15 @@ en el escrito, así que conviene no improvisarlo.*
 > Y la cuarta observa hacia qué lado esquiva en la zona de tanque, y replica ese
 > mismo patrón en el jefe.
 >
-> Cada regla suma bonificaciones de diez o quince puntos sobre la base pareja,
-> sin eliminar nunca un ataque del repertorio.
+> Cada regla que se activa suma diez o quince puntos al peso de ciertos ataques,
+> sobre una base pareja de cincuenta, sin eliminar nunca un ataque del
+> repertorio. No es que el ataque haga más daño: pesa más a la hora de elegirlo.
+>
+> En este mismo nivel se registra además a qué porcentaje de vida suele curarse
+> el jugador, pero eso no ajusta los pesos antes del combate sino durante él,
+> como voy a mostrar en un momento.
 
-### Diapositiva 11 — De perfil a comportamiento · 6:00 – 6:50
+### Diapositiva 12 — De perfil a comportamiento · 6:00 – 6:50
 
 > Este es un ejemplo concreto. Un jugador que juega a distancia, esquiva bien lo
 > telegrafiado y tiende a esquivar de lado, termina enfrentando un jefe donde
@@ -154,7 +160,7 @@ en el escrito, así que conviene no improvisarlo.*
 > como uno completamente estático. La adaptación no puede convertirse en el
 > problema que vino a resolver.
 
-### Diapositiva 12 — Ajustes durante el combate · 6:50 – 7:30
+### Diapositiva 13 — Ajustes durante el combate · 6:50 – 7:30
 
 > Además de eso hay dos ajustes acotados que sí ocurren en tiempo real.
 >
@@ -167,7 +173,7 @@ en el escrito, así que conviene no improvisarlo.*
 > curarse el jugador, y cuando entra a ese rango sube los pesos de los ataques
 > más rápidos, reduciéndole la ventana para tomar la poción.
 
-### Diapositiva 14 — Diseño experimental · 7:30 – 8:15
+### Diapositiva 15 — Diseño experimental · 7:30 – 8:15
 
 > Para evaluarlo se hizo una prueba A/B con diseño entre sujetos: cada persona
 > juega una sola condición, nunca las dos, para que el aprendizaje de una no
@@ -188,7 +194,7 @@ en el escrito, así que conviene no improvisarlo.*
 > Se reclutó a treinta y tres personas y se descartaron tres por problemas de
 > métricas en las primeras sesiones, así que quedaron treinta: quince y quince.
 
-### Diapositiva 15 — Qué se midió · 8:15 – 8:45
+### Diapositiva 16 — Qué se midió · 8:15 – 8:45
 
 > Se midieron tres cosas. El registro interno del juego, que guarda las métricas de
 > comportamiento y, lo más importante, los pesos de ataque reales de cada
@@ -203,7 +209,7 @@ en el escrito, así que conviene no improvisarlo.*
 
 ## RESULTADOS — 8:45 a 16:30
 
-### Diapositiva 17 — Verificación técnica · 8:45 – 9:30
+### Diapositiva 18 — Verificación técnica · 8:45 – 9:30
 
 > Antes de mirar la experiencia, había que verificar que el sistema hace lo que
 > dice hacer. Se aplicaron las reglas a mano sobre las métricas de exploración
@@ -216,7 +222,7 @@ en el escrito, así que conviene no improvisarlo.*
 > Esto es importante porque cualquier resultado que venga después no se explica
 > por un sistema que no funcionó.
 
-### Diapositiva 18 — SUS · 9:30 – 10:05
+### Diapositiva 19 — SUS · 9:30 – 10:05
 
 > En usabilidad, el promedio general fue 77.9, por sobre el referente de
 > industria que son 68 puntos, y cerca del umbral de "Excelente". Ninguna
@@ -226,7 +232,7 @@ en el escrito, así que conviene no improvisarlo.*
 > la adaptación cambia el comportamiento del jefe, no la interfaz ni los
 > controles.
 
-### Diapositiva 19 — GEQ global · 10:05 – 11:00
+### Diapositiva 20 — GEQ global · 10:05 – 11:00
 
 > En el GEQ, mirando los grupos completos, ninguna de las cinco dimensiones
 > alcanzó significancia estadística, y todos los tamaños de efecto son pequeños.
@@ -243,7 +249,7 @@ en el escrito, así que conviene no improvisarlo.*
 *Marca el tono: acá reconoces que el resultado global es negativo. No lo
 escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
-### Diapositiva 20 — El hallazgo · 11:00 – 12:30
+### Diapositiva 21 — El hallazgo · 11:00 – 12:30
 
 > Ahora bien, mirando el grupo completo se pierde algo. Al observar a los
 > participantes jugar durante las sesiones surgió una hipótesis: el sistema
@@ -265,7 +271,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > ambos perfiles reportan una tensión prácticamente igual. La diferencia aparece
 > solo cuando el jefe se adapta.
 
-### Diapositiva 21 — La correlación · 12:30 – 13:20
+### Diapositiva 22 — La correlación · 12:30 – 13:20
 
 > Lo mismo se ve midiéndolo de forma continua, sin cortar por la mediana. La
 > correlación entre la distancia que la persona mantuvo en la exploración y la
@@ -275,7 +281,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > Que la asociación exista solo cuando el jefe se adapta es la evidencia más
 > directa de este estudio de que el sistema generó una experiencia diferenciada.
 
-### Diapositiva 22 — Descartando la habilidad · 13:20 – 14:15
+### Diapositiva 23 — Descartando la habilidad · 13:20 – 14:15
 
 > Antes de atribuirle esto al estilo de juego, había que revisar una explicación
 > alternativa que surgió al observar las sesiones: los jugadores agresivos y
@@ -292,7 +298,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > parcial. Si la tensión se debiera a la habilidad, esa relación debería
 > debilitarse. No solo se mantuvo, sino que siguió siendo significativa.
 
-### Diapositiva 23 — Lo que los jugadores dijeron · 14:15 – 15:15
+### Diapositiva 24 — Lo que los jugadores dijeron · 14:15 – 15:15
 
 > En las preguntas abiertas hay dos resultados y una advertencia.
 >
@@ -316,7 +322,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > Por eso el análisis de este trabajo se apoya principalmente en las métricas
 > objetivas y no en lo que el jugador declara.
 
-### Diapositiva 25 — Implicancias de diseño · 15:15 – 16:30
+### Diapositiva 26 — Implicancias de diseño · 15:15 – 16:30
 
 *Esta diapositiva es tu aporte más transferible. Habla con soltura, no leas.*
 
@@ -349,7 +355,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ## CIERRE — 16:30 a 18:00
 
-### Diapositiva 26 — Conclusiones · 16:30 – 17:10
+### Diapositiva 27 — Conclusiones · 16:30 – 17:10
 
 > En resumen, tres puntos.
 >
@@ -369,7 +375,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > mejor contra quienes se mantienen a distancia que contra quienes pelean cuerpo
 > a cuerpo. Con esto el objetivo general se cumplió.
 
-### Diapositiva 27 — Limitaciones · 17:10 – 17:35
+### Diapositiva 28 — Limitaciones · 17:10 – 17:35
 
 *Rápido. No te disculpes, enúncialas con seguridad: reconocerlas te da
 credibilidad.*
@@ -383,7 +389,7 @@ credibilidad.*
 > leve desbalance entre grupos, que lo que el jugador reporta resultó poco
 > confiable, y que tanto el SUS como el GEQ se aplicaron en versiones adaptadas.
 
-### Diapositiva 28 — Trabajo futuro · 17:35 – 17:55
+### Diapositiva 29 — Trabajo futuro · 17:35 – 17:55
 
 > Las líneas más directas: repetir la evaluación con más participantes, del
 > orden de cuarenta por condición; reforzar la adaptación contra el perfil
@@ -391,7 +397,7 @@ credibilidad.*
 > adaptación al combate mismo; y complementar lo que el jugador declara con
 > medidas menos dependientes de su opinión.
 
-### Diapositiva 29 — Cierre · 17:55 – 18:00
+### Diapositiva 30 — Cierre · 17:55 – 18:00
 
 > Eso es todo. Muchas gracias por su atención, y quedo atento a sus preguntas.
 
@@ -402,7 +408,7 @@ credibilidad.*
 ## Notas de ensayo
 
 - **Cronometra dos pasadas completas antes de la defensa.** Si la primera te da
-  más de 19 minutos, el recorte va en la diapositiva 10 (perfil): describe dos
+  más de 19 minutos, el recorte va en la diapositiva 11 (perfil): describe dos
   dimensiones en detalle y menciona las otras dos.
 - **Las tres frases que no pueden faltar**, aunque se te olvide todo lo demás:
   1. "La adaptación cambia qué tan seguido elige cada ataque, no cuánto daño hace."

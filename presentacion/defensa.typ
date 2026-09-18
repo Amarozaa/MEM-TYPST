@@ -9,14 +9,16 @@
 
 #let img = "../template-informe-memoria-fcfm-main/imagenes/"
 
-// Paleta institucional (azul U. de Chile)
-#let azul = rgb("#0b3c5d")
-#let azul-claro = rgb("#1d6fa5")
-#let rojo = rgb("#b03a2e")
-#let tinta = rgb("#22303a")     // texto, en vez de negro puro
-#let fondo = rgb("#fbfbfa")     // fondo de página
-#let gris = rgb("#eaeef3")      // cajas neutras
-#let borde = rgb("#c9d3dd")     // filetes de tabla
+// Paleta navy + ámbar
+#let azul = rgb("#0d2340")      // navy: titulos, bandas, portada
+#let azul-claro = rgb("#1d4b7a")
+#let ambar = rgb("#e0a44a")     // acento cálido
+#let ambar-osc = rgb("#a9741f") // ámbar legible sobre fondo claro
+#let rojo = ambar-osc           // el acento cálido reemplaza al rojo
+#let tinta = rgb("#26303a")     // texto, en vez de negro puro
+#let fondo = rgb("#fbfaf7")     // fondo de página, apenas cálido
+#let gris = rgb("#ecedf0")      // cajas neutras
+#let borde = rgb("#cdd3da")     // filetes de tabla
 
 // --- Tipografía -----------------------------------------------
 // Segoe UI se lee mucho mejor proyectada que una serif.
@@ -66,26 +68,26 @@
   self = utils.merge-dicts(
     self,
     config-common(freeze-slide-counter: true),
-    config-page(fill: fondo, margin: 0em),
+    config-page(fill: azul, margin: 0em),
   )
   touying-slide(self: self, {
     set align(left + horizon)
     block(width: 100%, inset: (x: 3em, y: 2em))[
-      #block(width: 4.5em, height: 5pt, fill: azul)
+      #block(width: 4.5em, height: 5pt, fill: ambar)
       #v(14pt)
-      #text(size: 30pt, weight: "bold", fill: azul)[
+      #text(size: 30pt, weight: "bold", fill: ambar)[
         Diseño e implementación de enemigos adaptativos en videojuegos
       ]
       #v(8pt)
-      #text(size: 17pt, fill: tinta.lighten(15%))[
+      #text(size: 17pt, fill: ambar.lighten(25%))[
         Memoria para optar al título de Ingeniero Civil en Computación
       ]
       #v(20pt)
-      #line(length: 100%, stroke: 0.6pt + borde)
+      #line(length: 100%, stroke: 0.6pt + ambar.transparentize(60%))
       #v(12pt)
-      #text(size: 19pt, weight: "semibold", fill: tinta)[Amaro Zurita Alvarado]
+      #text(size: 19pt, weight: "semibold", fill: white)[Amaro Zurita Alvarado]
       #v(10pt)
-      #text(size: 13pt, fill: tinta.lighten(25%))[
+      #text(size: 13pt, fill: white.transparentize(25%))[
         Universidad de Chile, Facultad de Ciencias Físicas y Matemáticas
         #v(6pt)
         Profesor guía: Francisco Gutiérrez Figueroa#h(1.2em)·#h(1.2em)Co-guía: Elías Zelada Baeza \
@@ -97,13 +99,13 @@
 
 // --- Divisoria de sección propia ------------------------------
 #let seccion(config: (:), level: 1, numbered: false, body) = touying-slide-wrapper(self => {
-  self = utils.merge-dicts(self, config-page(fill: azul), config)
+  self = utils.merge-dicts(self, config-page(fill: ambar), config)
   touying-slide(self: self, {
     set align(left + horizon)
     block(inset: (x: 1.5em))[
-      #block(width: 3em, height: 4pt, fill: white.transparentize(45%))
+      #block(width: 3em, height: 4pt, fill: azul.transparentize(40%))
       #v(14pt)
-      #text(size: 34pt, weight: "bold", fill: white)[
+      #text(size: 34pt, weight: "bold", fill: azul)[
         #utils.display-current-heading(level: level, numbered: numbered)
       ]
     ]
@@ -117,9 +119,9 @@
   touying-slide(self: self, {
     set align(center + horizon)
     block[
-      #block(width: 3em, height: 4pt, fill: white.transparentize(45%))
+      #block(width: 3em, height: 4pt, fill: ambar)
       #v(18pt)
-      #text(size: 36pt, weight: "bold", fill: white)[Gracias por su atención]
+      #text(size: 36pt, weight: "bold", fill: ambar)[Gracias por su atención]
       #v(22pt)
       #text(size: 20pt, fill: white)[Amaro Zurita Alvarado]
       #v(8pt)
@@ -332,26 +334,50 @@ parten con el mismo peso base.
 ])
 
 
+== La decisión de diseño central
+
+#let panel(titulo, color, items) = block(
+  fill: color.lighten(92%),
+  stroke: (left: 5pt + color),
+  inset: (left: 18pt, rest: 16pt), radius: (right: 5pt),
+  width: 100%, height: 100%,
+)[
+  #text(size: 22pt, weight: "bold", fill: color.darken(15%))[#titulo]
+  #v(10pt)
+  #text(size: 17.5pt)[#items]
+]
+
+#grid(
+  rows: (7cm,),
+  columns: (1fr, 1fr),
+  column-gutter: 20pt,
+  align: top,
+  panel("Parámetros fijos", rojo)[
+    El daño, la velocidad y la vida del jefe se mantienen iguales en las dos
+    versiones.
+    #v(8pt)
+    - Daño de cada ataque
+    - Velocidad de ejecución
+    - Vida del jefe
+  ],
+  panel("Comportamiento adaptativo", azul)[
+    Lo que el perfil del jugador modifica es cómo el jefe usa ese mismo
+    repertorio.
+    #v(8pt)
+    - Qué tan seguido elige cada ataque
+    - En qué rangos de distancia los usa
+    - Cuánto persigue al jugador
+  ],
+)
+
+#v(6pt)
+#align(center, text(size: 17pt, fill: tinta.lighten(15%))[
+  El jefe sigue siendo igual de fuerte, lo que cambia es su estrategia
+])
+
 == El perfil de juego: cuatro dimensiones
 
 #set text(size: 16pt)
-#block(
-  fill: rojo.lighten(92%),
-  stroke: (left: 5pt + rojo),
-  inset: (left: 18pt, rest: 12pt), radius: (right: 5pt),
-  width: 100%,
-)[
-  #text(size: 20pt, weight: "bold", fill: azul)[
-    La adaptación no sube el daño, la velocidad ni la vida del jefe.
-  ]
-  #v(5pt)
-  #text(size: 16pt)[
-    Cambia qué tan seguido elige cada ataque, en qué rangos de distancia los usa
-    y cuánto persigue al jugador
-  ]
-]
-
-#v(8pt)
 #tabla(
   columns: (auto, 1fr, 1.2fr),
   table.header([*Dimensión*], [*Qué observa*], [*Hacia dónde empuja al jefe*]),
@@ -372,9 +398,9 @@ parten con el mismo peso base.
 
 #v(6pt)
 #text(size: 14pt)[
-  Cada regla *suma bonificaciones* (+10 / +15) sobre la base pareja, sin
-  eliminar ningún ataque. Se registra además el *porcentaje de vida al que
-  suele curarse*, usado durante el combate.
+  Cada regla que se activa suma *+10 o +15 al peso* de ciertos ataques, sobre un
+  *peso base de 50*, sin eliminar ninguno. Se registra además el *porcentaje de
+  vida al que suele curarse*, usado durante el combate.
 ]
 
 == De perfil a comportamiento
