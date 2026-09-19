@@ -493,23 +493,20 @@ parten con el mismo peso base.
   [
     #set text(size: 16.5pt)
     *Prueba A/B, diseño entre sujetos.* Cada persona juega una sola condición,
-    nunca ambas, para que el aprendizaje de una no contamine la otra.
+    nunca ambas.
 
     #v(6pt)
     *Control:* mismo jefe, mismos nueve ataques, pesos parejos toda la partida.
 
     #v(6pt)
-    *Cegamiento:* la condición se fija con un botón escondido en el menú, que
-    presiona el investigador antes de entregar el control. El participante nunca
-    sabe qué versión juega.
+    *Cegamiento:* el participante no sabe qué versión juega.
 
     #v(6pt)
-    *Clave:* la recolección del perfil es independiente de la condición: *todos*
-    generan perfil, solo cambia si se aplica.
+    *Perfil:* *todos* lo generan, solo cambia si se aplica.
   ],
   [
     #set text(size: 16.5pt)
-    #dato[30][participantes válidos (33 reclutados, 3 descartados por métricas)]
+    #dato[30][participantes válidos]
     #v(6pt)
     #grid(columns: (1fr, 1fr), column-gutter: 8pt,
       dato[15][control],
@@ -517,9 +514,8 @@ parten con el mismo peso base.
     )
     #v(8pt)
     #text(size: 15pt)[
-      Asignación alternada dentro de cada perfil de experiencia previa, para no
-      desbalancear novatos y experimentados. Sesiones de 25 a 40 min, mismo equipo,
-      mismo guion.
+      Sesiones de 25 a 40 minutos, con asignación alternada dentro de cada perfil
+      de experiencia previa para no desbalancear la experiencia entre grupos.
     ]
   ],
 )
@@ -530,27 +526,23 @@ parten con el mismo peso base.
 #grid(
   rows: (6.4cm,),
   align: top,
-  columns: (1fr, 1fr, 1fr),
-  column-gutter: 12pt,
+  columns: (1fr, 1.4fr),
+  column-gutter: 14pt,
   block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
-    *Registro interno* \
+    *1. Durante la partida* \
     #text(size: 14.5pt)[
-      Distancia, ratio melee/rango, esquivas, curaciones, aciertos del jefe y los
-      *pesos de ataque reales* volcados a archivo antes y después del combate.
+      *Registro interno del juego:* distancia, ratio melee/rango, esquivas, curaciones, aciertos del jefe y los
+      *pesos de ataque reales* que usó el jefe en cada partida.
     ]
   ],
   block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
-    *Instrumentos* \
+    *2. Después de jugar* \
     #text(size: 14.5pt)[
-      *SUS* adaptado a videojuegos (usabilidad) y una selección de ítems del
-      *GEQ*: afecto positivo y negativo, desafío, tensión e inmersión.
-    ]
-  ],
-  block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
-    *Preguntas abiertas* \
-    #text(size: 14.5pt)[
-      Predictibilidad, percepción de aprendizaje, justicia, y lo más interesante
-      o frustrante del combate.
+      *Cuestionario:*
+      - *SUS* (System Usability Scale) adaptado a videojuegos: usabilidad.
+      - *GEQ* (Game Experience Questionnaire): afecto positivo y negativo, desafío, tensión e inmersión.
+      - *Preguntas abiertas*: predictibilidad, aprendizaje, justicia, y lo más
+        interesante o frustrante del combate.
     ]
   ],
 )
@@ -573,7 +565,7 @@ parten con el mismo peso base.
   column-gutter: 20pt,
   dato[15 / 15][sesiones donde el ajuste *pre-combate* coincidió exactamente con
     lo predicho por las reglas],
-  dato[14 / 15][sesiones donde el ajuste *durante el combate* estuvo activo],
+  dato[14 / 15][sesiones donde los pesos cambiaron *durante la pelea*],
 )
 
 #v(14pt)
@@ -582,13 +574,7 @@ Se aplicaron las reglas *a mano* sobre las métricas de exploración de cada
 participante del grupo adaptativo, y se compararon contra el archivo de pesos
 que el juego dejó registrado al iniciar el combate.
 
-#v(8pt)
-#destaca[
-  El mecanismo opera exactamente como fue diseñado. Cualquier resultado que
-  siga *no* se explica por un sistema que no funcionó.
-]
-
-== Usabilidad: el prototipo no estorba
+== Usabilidad (SUS)
 
 #grid(
   columns: (1.1fr, 1fr),
@@ -614,8 +600,8 @@ que el juego dejó registrado al iniciar el combate.
     #dato[77.9][puntaje SUS promedio]
     #v(8pt)
     #text(size: 15.5pt)[
-      Por sobre el referente de industria (68) y cerca del umbral «Excelente»
-      (80.3). Ninguna evaluación cayó en la categoría «Pobre».
+      Por sobre el referente de industria (68)#super[1] y cerca del umbral
+      «Excelente» (80.3)#super[2].
 
       #v(6pt)
       Es lo esperable: la adaptación cambia el *comportamiento del jefe*, no la
@@ -623,6 +609,13 @@ que el juego dejó registrado al iniciar el combate.
     ]
   ],
 )
+
+#place(bottom + left, dy: 1.2em)[
+  #text(size: 11pt, fill: tinta.lighten(30%))[
+    #super[1] Sauro y Lewis (2016), _Quantifying the User Experience_.#h(1.2em)
+    #super[2] Bangor et al. (2009), _Determining What Individual SUS Scores Mean_.
+  ]
+]
 
 == Experiencia de juego: sin efecto en el grupo completo
 

@@ -178,8 +178,8 @@ idea y deja que la pantalla haga el resto.*
 ### Diapositiva 15 — Diseño experimental · 7:15 – 8:20
 
 > Para evaluarlo se hizo una prueba A/B con diseño entre sujetos: cada persona
-> juega una sola condición, nunca las dos, para que el aprendizaje de una no
-> contamine la percepción de la otra.
+> juega una sola condición, nunca las dos. Así, lo que alguien aprende jugando
+> una versión no influye en cómo percibe la otra.
 >
 > La condición de control es exactamente el mismo jefe, con los mismos nueve
 > ataques, pero con los pesos parejos durante toda la partida.
@@ -193,15 +193,16 @@ idea y deja que la pantalla haga el resto.*
 > ese perfil se aplica o no. Eso permitió después verificar que ambos grupos
 > partieron jugando parecido.
 >
-> Se reclutó a treinta y tres personas y se descartaron tres por problemas de
-> métricas en las primeras sesiones, así que quedaron treinta: quince y quince.
+> Participaron treinta personas: quince en cada condición. Cada sesión duró entre veinticinco y cuarenta minutos.
 
 ### Diapositiva 16 — Qué se midió · 8:20 – 8:50
 
-> Se midieron tres cosas. El registro interno del juego, que guarda las métricas de
-> comportamiento y, lo más importante, los pesos de ataque reales de cada
-> partida. El SUS adaptado y una selección de ítems del GEQ. Y un bloque de
-> preguntas abiertas.
+> La medición tuvo dos partes. Durante la partida, el propio juego lleva un
+> registro interno con las métricas de comportamiento y, lo más importante, los
+> pesos de ataque reales de cada partida.
+>
+> Después de jugar, cada participante respondió un cuestionario con tres
+> bloques: el SUS adaptado, una selección de ítems del GEQ y preguntas abiertas.
 >
 > Que los pesos reales queden registrados es lo que después permite
 > contrastar lo que el jugador *dijo* contra lo que el sistema *efectivamente
@@ -213,22 +214,19 @@ idea y deja que la pantalla haga el resto.*
 
 ### Diapositiva 18 — Verificación técnica · 8:50 – 9:25
 
-> Antes de mirar la experiencia, había que verificar que el sistema hace lo que
-> dice hacer. Se aplicaron las reglas a mano sobre las métricas de exploración
-> de cada participante del grupo adaptativo, y esa predicción se comparó contra el
-> archivo de pesos que el juego dejó registrado.
+> Lo primero fue verificar que el sistema efectivamente funcionó: el ajuste
+> previo al combate fue el esperado en las quince sesiones adaptativas, y en
+> catorce de quince los pesos además cambiaron durante la pelea.
 >
-> Coincidieron exactamente en las quince sesiones. Y el ajuste durante el
-> combate estuvo activo en catorce de quince.
->
-> Esto es importante porque cualquier resultado que venga después no se explica
-> por un sistema que no funcionó.
+> Así, cualquier resultado que venga después no se explica por un sistema que
+> no funcionó.
 
 ### Diapositiva 19 — SUS · 9:25 – 9:50
 
 > En usabilidad, el promedio general fue 77.9, por sobre el referente de
-> industria que son 68 puntos, y cerca del umbral de "Excelente". Ninguna
-> evaluación cayó en la categoría "Pobre".
+> industria que son 68 puntos, y cerca del umbral de "Excelente". El puntaje
+> más bajo fue 62.5, que igual se considera aceptable: bajo 50 recién se
+> habla de un sistema con problemas serios de usabilidad.
 >
 > Entre condiciones no hay ninguna diferencia, y eso es exactamente lo esperado:
 > la adaptación cambia el comportamiento del jefe, no la interfaz ni los
