@@ -251,9 +251,10 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ### Diapositiva 21 — El hallazgo · 10:35 – 11:50
 
-> Ahora bien, mirando el grupo completo se pierde algo. Al observar a los
-> participantes jugar durante las sesiones surgió una hipótesis: el sistema
-> no se percibe igual en todos.
+> Al observar a los participantes jugar durante las sesiones surgió una
+> hipótesis: el sistema no se percibe igual en todos. En concreto, que quienes
+> peleaban cuerpo a cuerpo notaban la adaptación menos que quienes preferían
+> mantenerse a distancia.
 >
 > A quien juega a distancia, el jefe adaptado lo persigue y le cierra la
 > distancia; es un cambio de comportamiento muy visible. En cambio, a quien ya

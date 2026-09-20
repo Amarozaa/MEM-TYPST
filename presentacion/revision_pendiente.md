@@ -25,9 +25,8 @@ número es uno menos.
 - [ ] **5. Palabras distintas para el ajuste en vivo.** Conviven "durante la
   pelea" (18), "durante el combate" (13), "en tiempo real" (Limitaciones) y "el
   combate mismo" (Trabajo futuro). Elegir una sola.
-- [ ] **6. Título de la diapo del GEQ (20).** Si Usabilidad quedó como
-  "Usabilidad (SUS)", esta podría ser "Experiencia de juego (GEQ)". Hoy dice
-  "Experiencia de juego: sin efecto en el grupo completo".
+- [x] **6. Título de la diapo del GEQ (20).** Hecho: quedó como "Experiencia de
+  juego (GEQ)", parejo con "Usabilidad (SUS)".
 - [ ] **7. Cuadros de conclusión como el que se sacó en la 18.** Repiten lo que
   ya dice el guion:
   - Qué se midió (16): "El registro interno permite contrastar lo que el jugador

@@ -617,7 +617,7 @@ que el juego dejó registrado al iniciar el combate.
   ]
 ]
 
-== Experiencia de juego: sin efecto en el grupo completo
+== Experiencia de juego (GEQ)
 
 #grid(
   columns: (1.25fr, 1fr),
@@ -636,22 +636,21 @@ que el juego dejó registrado al iniciar el combate.
     )
     #v(6pt)
     #text(size: 14.5pt)[
-      Ninguna dimensión alcanza significancia ($p > 0.05$); todos los tamaños de
-      efecto son pequeños. Desafío e inmersión van en la dirección esperada,
-      pero no se distinguen del azar con esta muestra.
+      Ninguna dimensión alcanza significancia ($p > 0.05$) y todos los tamaños
+      de efecto son pequeños.
     ]
   ],
   [
     #image(img + "cap6/boxplot_geq_desafio.png", width: 100%)
     #v(2pt)
     #text(size: 14pt)[
-      Las medianas son parecidas, pero el *rango intercuartílico* del grupo
-      adaptativo es más compacto (0.50 vs. 0.88).
+      Medianas parecidas, pero el *rango intercuartílico* del grupo adaptativo
+      es más compacto: *0.50 vs. 0.88*.
     ]
   ],
 )
 
-== El hallazgo: el efecto depende del estilo de juego
+== El efecto según el estilo de juego
 
 #grid(
   columns: (1fr, 1.15fr),
