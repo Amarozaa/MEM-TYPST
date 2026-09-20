@@ -721,7 +721,7 @@ que reportó. Así el resultado no depende de dónde se ponga el corte.
   directa de que el sistema generó una experiencia diferenciada.
 ]
 
-== ¿Y si fuera solo habilidad, y no estilo de juego?
+== Descartando la experiencia previa
 
 #set text(size: 16.5pt)
 Los jugadores agresivos y cercanos solían ser también los más experimentados.
@@ -773,21 +773,29 @@ Tres revisiones para descartar esa explicación alternativa:
     *«¿El jefe se sintió predecible?»*
     #v(4pt)
     #tabla(
-      columns: (auto, auto),
-      table.header([*Condición*], [*Lo llamó predecible*]),
+      columns: (auto, auto, auto),
+      table.header(
+        [*Condición*],
+        text(fill: rojo)[*Predecible*],
+        text(fill: azul)[*Poco predecible*],
+      ),
       table.hline(stroke: 0.6pt + borde),
-      [Control], [11 / 15 (73%)],
-      [Adaptativo], [7 / 15 (47%)],
+      [Adaptativo], text(fill: rojo, weight: "bold")[7 (47%)], text(fill: azul, weight: "bold")[8 (53%)],
+      [Control], text(fill: rojo, weight: "bold")[11 (73%)], text(fill: azul, weight: "bold")[4 (27%)],
     )
     #v(10pt)
     *«¿Notaste que aprendía?»*
     #v(4pt)
     #tabla(
       columns: (auto, auto, auto),
-      table.header([*Condición*], [*Sí*], [*No*]),
+      table.header(
+        [*Condición*],
+        text(fill: azul)[*Sí*],
+        text(fill: rojo)[*No*],
+      ),
       table.hline(stroke: 0.6pt + borde),
-      [Adaptativo], [10], [5],
-      [Control], [7], [8],
+      [Adaptativo], text(fill: azul, weight: "bold")[10], text(fill: rojo, weight: "bold")[5],
+      [Control], text(fill: azul, weight: "bold")[7], text(fill: rojo, weight: "bold")[8],
     )
     #v(4pt)
     #text(size: 14pt)[Fisher, $p = 0.462$ (no significativo).]
@@ -822,45 +830,35 @@ Tres revisiones para descartar esa explicación alternativa:
 
 #set text(size: 16.5pt)
 #grid(
-  rows: (3.7cm, 3.7cm),
+  rows: (5cm,),
   align: top,
-  columns: (1fr, 1fr),
+  columns: (1fr, 1fr, 1fr),
   column-gutter: 14pt,
-  row-gutter: 10pt,
 
-  block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
+  block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15pt)[
-      *Adaptar comportamiento, no números.* Subir daño o velocidad se siente
-      como un juego más difícil para todos; cambiar de estrategia se siente como
-      un enemigo que responde.
+      *Qué cambiar: el comportamiento, no los números.* Subir daño o velocidad
+      endurece el juego para todos por igual.
     ]
   ],
-  block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
+  block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15pt)[
-      *Que la adaptación sea visible.* Lo único que los jugadores identificaron
-      bien fue un cambio llamativo (la forma de charco), no un ataque repetido
-      un poco más seguido.
+      *Si se busca que se note: un cambio llamativo y una respuesta propia por
+      comportamiento.* Repetir un ataque un poco más seguido casi nadie lo notó.
     ]
   ],
-  block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
+  block(fill: azul.lighten(90%), inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15pt)[
-      *Respuestas específicas por comportamiento*, en lugar de un solo ajuste
-      genérico que lo endurece todo por igual.
-    ]
-  ],
-  block(fill: azul.lighten(90%), inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
-    #text(size: 15pt)[
-      *No hace falta subir la dificultad promedio.* La meta puede ser que
-      distintos jugadores sientan un desafío *más parejo entre ellos*, lo que
-      sugiere el rango intercuartílico más compacto.
+      *La meta: no subir la dificultad promedio*, sino un desafío *más parejo
+      entre jugadores*.
     ]
   ],
 )
 
-#v(6pt)
-#text(size: 15pt)[
-  Y una precisión: el jugador *no necesita darse cuenta* de la adaptación para
-  que esta cumpla su función. La tensión del perfil de rango subió igual.
+#v(10pt)
+#destaca[
+  El jugador *no necesita darse cuenta* de la adaptación para que esta cumpla
+  su función.
 ]
 
 == Conclusiones

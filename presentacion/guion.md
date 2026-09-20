@@ -292,7 +292,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 > Acá vuelvo a la explicación alternativa que mencioné hace un momento: los
 > jugadores agresivos y cercanos solían ser también los más experimentados. Si
-> eso fuera cierto, su menor tensión no sería por su estilo, sino porque
+> eso fuera cierto, su menor tensión no sería por su estilo(y por el sistema), sino porque
 > simplemente son mejores.
 >
 > Se hicieron tres revisiones. Primero, se midió si distancia y experiencia
@@ -307,7 +307,8 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ### Diapositiva 24 — Lo que los jugadores dijeron · 13:15 – 14:30
 
-> En las preguntas abiertas hay dos resultados y una advertencia.
+> En las preguntas abiertas hay dos resultados y un hallazgo que obliga a
+> leerlos con cuidado.
 >
 > El primero: en el grupo control, once de quince describieron al jefe como
 > predecible; en el adaptativo, solo siete. Va en la dirección esperada.
@@ -316,7 +317,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > aprendía, contra siete de quince en el control. La dirección es la correcta,
 > pero no alcanza significancia.
 >
-> Y acá viene la advertencia, que es uno de los resultados más
+> Y acá viene el tercero, que es uno de los resultados más
 > interesantes del trabajo: siete personas del grupo de control, que enfrentaron
 > un jefe completamente fijo, también afirmaron percibir aprendizaje, y
 > describieron con detalle cambios que nunca ocurrieron.
@@ -333,26 +334,29 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 *Esta diapositiva es tu aporte más transferible. Habla con soltura, no leas.*
 
-> Más allá de este jefe en particular, el trabajo deja cuatro lecciones para
+> Más allá de este jefe en particular, el trabajo deja tres lecciones para
 > quien quiera diseñar sistemas así.
 >
-> Primera: conviene adaptar el comportamiento y no los números. Subir el daño se
-> siente como un juego más difícil para todos; cambiar de estrategia se siente
-> como un enemigo que te responde.
+> La primera es qué conviene cambiar: el comportamiento del enemigo, y no sus
+> números fijos, como el daño o la velocidad. Subir los números el jugador lo
+> siente como que el juego se puso más difícil para todos por igual, no como que
+> el enemigo cambió su forma de jugar.
 >
-> Segunda: si se quiere que el jugador *note* la adaptación, esta tiene que
-> traducirse en algo llamativo. El único caso donde alguien identificó
+> La segunda es cómo lograr que se note, si es que el propósito es ese. Por un
+> lado, conviene que la adaptación
+> se traduzca en algo llamativo: el único caso donde alguien identificó
 > correctamente lo que pasó fue cuando el jefe empezó a usar mucho su forma de
-> charco, que es visualmente muy distinta. Cuando el cambio era solo que un
-> ataque se repitiera un poco más, nadie lo notó.
+> charco, que es visualmente muy distinta; cuando el cambio era solo que un
+> ataque se repitiera un poco más, nadie lo notó. Y por otro, que cada
+> comportamiento del jugador tenga una respuesta propia y reconocible, en vez de
+> un solo ajuste genérico, porque así es más fácil que la persona relacione lo
+> que hizo con lo que el enemigo hizo después.
 >
-> Tercera: conviene que cada comportamiento del jugador tenga una respuesta
-> propia y reconocible, en vez de un solo ajuste genérico.
->
-> Y cuarta, quizás la más interesante: un sistema así no necesita hacer el juego
-> más difícil en promedio para cumplir su propósito. Puede apuntar a que
-> distintos jugadores sientan un desafío más parejo entre ellos, que es
-> justamente lo que sugiere ese rango intercuartílico más compacto.
+> Y la tercera, quizás la más interesante, es cuál puede ser la meta: un sistema
+> así no necesita hacer el juego más difícil en promedio para cumplir su
+> propósito. Puede apuntar a que distintos jugadores sientan un desafío más
+> parejo entre ellos, que es justamente lo que sugiere ese rango intercuartílico
+> más compacto.
 >
 > Un matiz importante: el jugador no necesita darse cuenta de la adaptación para
 > que esta funcione. La tensión de los jugadores de rango subió igual, aunque
