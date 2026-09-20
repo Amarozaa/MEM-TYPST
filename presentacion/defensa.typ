@@ -684,10 +684,12 @@ que el juego dejó registrado al iniciar el combate.
   ],
 )
 
-== La misma señal, medida de forma continua
+== Distancia y tensión, sin dividir en grupos
 
 #set text(size: 17pt)
-Correlación entre la distancia mantenida en la exploración y la tensión reportada:
+Aquí no hay perfiles: la distancia se usa como *variable continua*, es decir,
+cada jugador entra con su valor exacto, que se correlaciona contra la tensión
+que reportó. Así el resultado no depende de dónde se ponga el corte.
 
 #v(10pt)
 #grid(

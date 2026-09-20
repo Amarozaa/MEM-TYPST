@@ -252,17 +252,23 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 ### Diapositiva 21 — El hallazgo · 10:35 – 11:50
 
 > Al observar a los participantes jugar durante las sesiones surgió una
-> hipótesis: el sistema no se percibe igual en todos. En concreto, que quienes
-> peleaban cuerpo a cuerpo notaban la adaptación menos que quienes preferían
-> mantenerse a distancia.
+> hipótesis: el sistema no se percibe igual en todos. Daba la impresión de que
+> quienes peleaban cuerpo a cuerpo acusaban menos la adaptación que quienes
+> preferían mantenerse a distancia, y había que ver si los datos lo respaldaban.
 >
 > A quien juega a distancia, el jefe adaptado lo persigue y le cierra la
 > distancia; es un cambio de comportamiento muy visible. En cambio, a quien ya
 > pelea de cerca, la adaptación le refuerza ataques de corto alcance para los
 > que de todas formas está preparado.
 >
-> Entonces se dividió el grupo adaptativo por la mediana de distancia de
-> exploración: ocho jugadores de perfil rango y siete de cuerpo a cuerpo.
+> A eso se suma que quienes pelean cuerpo a cuerpo solían ser también los más
+> familiarizados con este tipo de juegos, así que parte del efecto podría venir
+> de que al sistema le cuesta más presionar a un jugador experimentado. Es una
+> explicación alternativa que reviso en un par de diapositivas más.
+>
+> Para comprobarlo se decidió dividir el grupo adaptativo por la mediana de
+> distancia de exploración: quedaron ocho jugadores de perfil rango y siete de
+> cuerpo a cuerpo.
 >
 > Los de perfil rango reportaron una tensión media de 1.69, contra 1.07 en los
 > de cuerpo a cuerpo. La diferencia alcanza significancia, con un tamaño de
@@ -284,10 +290,10 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ### Diapositiva 23 — Descartando la habilidad · 12:20 – 13:15
 
-> Antes de atribuirle esto al estilo de juego, había que revisar una explicación
-> alternativa que surgió al observar las sesiones: los jugadores agresivos y
-> cercanos solían ser también los más experimentados. Si eso fuera cierto, su
-> menor tensión no sería por su estilo, sino porque simplemente son mejores.
+> Acá vuelvo a la explicación alternativa que mencioné hace un momento: los
+> jugadores agresivos y cercanos solían ser también los más experimentados. Si
+> eso fuera cierto, su menor tensión no sería por su estilo, sino porque
+> simplemente son mejores.
 >
 > Se hicieron tres revisiones. Primero, se midió si distancia y experiencia
 > están relacionadas dentro del grupo adaptativo: la relación resultó débil y no
