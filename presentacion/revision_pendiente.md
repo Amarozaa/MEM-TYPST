@@ -5,15 +5,22 @@ Lista de cosas detectadas al revisar `defensa.typ`, `guion.md` y
 su título, con el número del guion entre paréntesis; en la esquina de la diapo el
 número es uno menos.
 
+**Revisado el 21/09/2026.** Resueltos los puntos 2 y 6, y la parte de
+Implicancias del punto 7. El resto sigue igual que cuando se escribió esto.
+
 ## Pendientes de cambios ya conversados
 
 - [ ] **1. El 80.3 citado con Bangor**, en Usabilidad (19). Sigue como referencia
   ², y según lo que revisamos ese valor es de Sauro, no de Bangor (en Bangor,
   "Excelente" parte cerca de 85). Pasa lo mismo en la memoria
   (`example_final.typ:3570-3571`) y en `preguntas_comision.md:229`.
-- [ ] **2. Los tiempos del guion.** La diapo 18 tiene 35 s asignados y ahora se
+- [x] **2. Los tiempos del guion.** La diapo 18 tiene 35 s asignados y ahora se
   dice en unos 10. La 15 también se acortó al sacar lo de los 33 reclutados. Hay
-  30 a 40 s libres para pasar a El hallazgo (21) o dejar como colchón.
+  30 a 40 s libres para pasar a El efecto según el estilo de juego (21) o dejar como colchón.
+  **Hecho el 21/09:** se recalcularon las 25 marcas, los encabezados de bloque y
+  la tabla de tiempos a 140 pal/min. La exposición quedó en 19:05 y el colchón
+  en 0:55. Ojo que al reescribir Limitaciones (28) esa diapo volvió a quedar
+  desfasada, con 171 palabras para los 60 s marcados.
 - [ ] **3. El párrafo de cómo se verificó**, en Verificación (18). La diapo aún
   dice "Se aplicaron las reglas *a mano*…", pero eso ya no está en el guion, así
   que la diapo muestra algo que no se dice.
@@ -33,11 +40,12 @@ número es uno menos.
     dijo…", que además se repite casi igual en la 24.
   - Lo que los jugadores dijeron (24): la columna derecha tiene tres párrafos
     (baja correspondencia, sesgo de expectativa, "por eso el análisis se apoya…").
-  - Descartando la habilidad (23): la frase final "Si la tensión se debiera a la
+  - Descartando la experiencia previa (23): la frase final "Si la tensión se debiera a la
     habilidad…".
-  - Implicancias (26): la línea final "Y una precisión…".
+  - Lecciones (26): la línea final "Y una precisión…". **Hecho el 21/09:**
+    ahora es un recuadro corto ("El jugador no necesita darse cuenta…").
 
-  El cuadro de La correlación (22) conviene dejarlo: es el mensaje central.
+  El cuadro de Distancia y tensión (22) conviene dejarlo: es el mensaje central.
 - [ ] **8. "No desbalancear la experiencia" y la limitación de desbalance.**
   Diseño experimental (15) dice que la asignación fue "para no desbalancear la
   experiencia entre grupos", y Limitaciones (28) reporta "Desbalance entre grupos
@@ -55,8 +63,8 @@ número es uno menos.
   - El perfil (11): "Refuerza **Giro o Salto**".
   - Ajustes en combate (13): "**Homing**", que en la 9 se llama "Proyectil
     dirigido".
-- [ ] **10. p = 0.050 presentado como "alcanza significancia"**, en El hallazgo
-  (21). Queda justo en el borde y es una pregunta probable. Más seguro: "queda en
+- [ ] **10. p = 0.050 presentado como "alcanza significancia"**, en El efecto según el
+  estilo de juego (21). Queda justo en el borde y es una pregunta probable. Más seguro: "queda en
   el límite de la significancia, con un tamaño de efecto grande".
 - [ ] **11. Media y mediana mezcladas en la misma diapo** (21). El cuadro compara
   "Tensión reportada (media)" (1.69 vs. 1.07) y la línea del control usa
