@@ -368,8 +368,6 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ### Diapositiva 27 — Conclusiones · 16:00 – 17:00
 
-> En resumen, tres puntos.
->
 > Primero, el sistema funciona como se especificó: las reglas predicen
 > exactamente los pesos registrados en las quince sesiones.
 >
@@ -399,6 +397,9 @@ credibilidad.*
 > A eso se suma que medir la experiencia previa resultó difícil, que hubo un
 > leve desbalance entre grupos, que lo que el jugador reporta resultó poco
 > confiable, y que tanto el SUS como el GEQ se aplicaron en versiones adaptadas.
+>
+> Y una última: el efecto que se observó corresponde sobre todo a la adaptación
+> previa al combate, porque el ajuste en tiempo real es acotado.
 
 ### Diapositiva 29 — Trabajo futuro · 17:30 – 17:55
 

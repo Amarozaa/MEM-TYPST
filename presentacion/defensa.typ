@@ -899,15 +899,14 @@ Tres revisiones para descartar esa explicación alternativa:
   column-gutter: 16pt,
   row-gutter: 8pt,
   [
-    - *Tamaño de muestra.* 30 participantes (15 por condición) implica bajo poder
-      estadístico. Los resultados son descriptivos, no generalizables.
+    - *Tamaño de muestra.* 30 participantes: bajo poder estadístico. Los
+      resultados son descriptivos, no generalizables.
 
     - *Medir la experiencia es difícil.* El puntaje refleja cuánto ha jugado la
-      persona, no su habilidad real. Además, el corte resultó permisivo: todos
-      quedaron sobre el umbral.
+      persona, no su habilidad real.
 
     - *Desbalance entre grupos.* El grupo adaptativo quedó levemente más
-      experimentado (6.47 vs. 6.07) y algo más lejano en su estilo.
+      experimentado (6.47 vs. 6.07).
   ],
   [
     - *Lo que el jugador reporta es poco confiable*, y el encuadre del estudio
@@ -916,9 +915,8 @@ Tres revisiones para descartar esa explicación alternativa:
     - *Alcance de la adaptación.* El efecto observado corresponde sobre todo a la
       adaptación *pre-combate*; el ajuste en tiempo real es acotado.
 
-    - *Instrumentos adaptados.* El SUS se adaptó al contexto de videojuegos y el
-      GEQ se aplicó traducido; ninguno es el instrumento validado en su forma
-      original.
+    - *Instrumentos adaptados.* Ni el SUS ni el GEQ se aplicaron en su forma
+      validada original.
   ],
 )
 
