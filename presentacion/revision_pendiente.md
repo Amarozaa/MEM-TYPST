@@ -54,18 +54,16 @@ Implicancias del punto 7. El resto sigue igual que cuando se escribió esto.
 
 ## Encontrado de paso (no viene de los cambios)
 
-- [ ] **9. Los nombres de los ataques no calzan entre diapos.** Lo más
-  importante de la lista:
-  - Repertorio (9): Proyectil dirigido, Proyectil, Persecución, Charco, Básico,
-    Pesado, Látigo, Área, Muro.
-  - De perfil a comportamiento (12): aparecen **Salto, Giro y Espinas**, que no
-    están en la 9.
-  - El perfil (11): "Refuerza **Giro o Salto**".
-  - Ajustes en combate (13): "**Homing**", que en la 9 se llama "Proyectil
-    dirigido".
-- [ ] **10. p = 0.050 presentado como "alcanza significancia"**, en El efecto según el
-  estilo de juego (21). Queda justo en el borde y es una pregunta probable. Más seguro: "queda en
-  el límite de la significancia, con un tamaño de efecto grande".
+- [x] **9. Los nombres de los ataques no calzan entre diapos.** **Hecho el
+  21/09:** el repertorio (9) usa ahora los nombres de la memoria (Básico, Salto,
+  Giro, Espinas, Muro), en vez de "Pesado", "Látigo" y "Área", y la 13 dice
+  "Proyectil dirigido" en vez de "Homing". Los nueve nombres calzan entre todas
+  las diapositivas.
+- [x] **10. p = 0.050 presentado como "alcanza significancia"**, en El efecto
+  según el estilo de juego (21). **Hecho el 21/09:** el guion ahora dice "queda
+  justo en el límite de la significancia, y con un tamaño de efecto grande". La
+  diapositiva no se tocó: muestra los datos (p = 0.050, r = 0.55) sin afirmar
+  nada discutible.
 - [ ] **11. Media y mediana mezcladas en la misma diapo** (21). El cuadro compara
   "Tensión reportada (media)" (1.69 vs. 1.07) y la línea del control usa
   "medianas de 1.25 y 1.12".

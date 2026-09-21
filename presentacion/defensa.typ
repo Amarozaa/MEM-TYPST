@@ -327,9 +327,9 @@ parten con el mismo peso base.
     columns: (1fr, 1fr, 1fr),
     column-gutter: 10pt,
     align: top,
-    rama[Rango lejano][mayor a `FarRange`][Proyectil dirigido \ Proyectil \ Persecución \ Charco],
-    rama[Rango medio][entre ambos rangos][Básico \ Pesado \ Látigo],
-    rama[Rango cercano][menor a `CloseRange`][Básico \ Área \ Muro],
+    rama[Rango lejano][mayor a `FarRange`][Proyectil dirigido \ Proyectil en línea recta \ Persecución \ Charco],
+    rama[Rango medio][entre ambos rangos][Básico \ Salto \ Giro],
+    rama[Rango cercano][menor a `CloseRange`][Básico \ Espinas \ Muro],
   )
 ])
 
@@ -423,7 +423,7 @@ parten con el mismo peso base.
       [Giro], [50 + 10 + 10 = *70*],
       [Básico], [50 + 15 = *65*],
       [Persecución], [50 + 15 = *65*],
-      [Espinas, Muro, Proyectiles], [50 (sin cambios)],
+      [Espinas, Muro, Proyectil en línea recta], [50 (sin cambios)],
     )
   ],
   [
@@ -474,7 +474,7 @@ parten con el mismo peso base.
       Usa el % de vida al que el jugador se curaba en el *nivel previo*.
       Cuando entra a ese rango (±10 pp):
       #v(4pt)
-      - Básico, Salto, Charco y Homing *+15*
+      - Básico, Salto, Charco y Proyectil dirigido *+15*
       #v(4pt)
       Al salir del rango, se revierte. Reduce la ventana para tomar la poción.
     ]

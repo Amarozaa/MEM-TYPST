@@ -271,8 +271,9 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > cuerpo a cuerpo.
 >
 > Los de perfil rango reportaron una tensión media de 1.69, contra 1.07 en los
-> de cuerpo a cuerpo. La diferencia alcanza significancia, con un tamaño de
-> efecto grande, a pesar de lo chicos que son los subgrupos.
+> de cuerpo a cuerpo. La diferencia queda justo en el límite de la
+> significancia, y con un tamaño de efecto grande, a pesar de lo chicos que son
+> los subgrupos.
 >
 > Y lo decisivo: al aplicar exactamente la misma división al grupo de control,
 > ambos perfiles reportan una tensión prácticamente igual. La diferencia aparece
