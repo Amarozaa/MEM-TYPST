@@ -394,9 +394,14 @@ credibilidad.*
 > que los resultados son indicios de una prueba de concepto y no algo
 > generalizable.
 >
-> A eso se suma que medir la experiencia previa resultó difícil, que hubo un
-> leve desbalance entre grupos, que lo que el jugador reporta resultó poco
-> confiable, y que tanto el SUS como el GEQ se aplicaron en versiones adaptadas.
+> A eso se suma que medir la experiencia previa resultó difícil: el puntaje del
+> cuestionario inicial refleja cuánto ha jugado la persona, pero no su habilidad
+> real, y eso limita los análisis que dependen de la experiencia, como el que
+> mostré hace un rato. En la misma línea, el grupo adaptativo quedó levemente
+> más experimentado que el de control.
+>
+> Y por último, que lo que el jugador reporta resultó poco confiable, y que
+> tanto el SUS como el GEQ se aplicaron en versiones adaptadas.
 >
 > Y una última: el efecto que se observó corresponde sobre todo a la adaptación
 > previa al combate, porque el ajuste en tiempo real es acotado.
