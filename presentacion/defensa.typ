@@ -549,8 +549,8 @@ parten con el mismo peso base.
 
 #v(10pt)
 #destaca[
-  El registro interno permite contrastar *lo que el jugador dijo* contra *lo que
-  el sistema efectivamente hizo* en esa partida.
+  Dos fuentes independientes: una la escribe el sistema, la otra la escribe el
+  jugador.
 ]
 
 // =============================================================
@@ -569,10 +569,10 @@ parten con el mismo peso base.
 )
 
 #v(14pt)
-#set text(size: 17pt)
-Se aplicaron las reglas *a mano* sobre las métricas de exploración de cada
-participante del grupo adaptativo, y se compararon contra el archivo de pesos
-que el juego dejó registrado al iniciar el combate.
+#destaca[
+  Cualquier resultado que venga después *no se explica por un sistema que no
+  funcionó*.
+]
 
 == Usabilidad (SUS)
 
@@ -676,7 +676,7 @@ que el juego dejó registrado al iniciar el combate.
     #v(6pt)
     #text(size: 15pt)[
       En el grupo *control*, ambos perfiles reportan tensión prácticamente
-      igual (medianas de 1.25 y 1.12).
+      igual (medias de 1.31 y 1.43).
     ]
   ],
   [
@@ -809,15 +809,9 @@ Tres revisiones para descartar esa explicación alternativa:
     ]
     #v(8pt)
     #text(size: 15.5pt)[
-      Como los pesos reales quedan registrados, se pudo cruzar lo reportado
-      contra lo que efectivamente pasó. *La correspondencia es baja.*
-
-      #v(6pt)
-      Probable *sesgo de expectativa*: el estudio trata sobre enemigos
-      adaptativos, y muchos llegaron esperando encontrar uno.
-
-      #v(6pt)
-      Por eso el análisis se apoya en las *métricas objetivas*, no en lo declarado.
+      - Al cruzarlo con los pesos reales, *la correspondencia es baja*.
+      - Probable *sesgo de expectativa*.
+      - Por eso el análisis se apoya en las *métricas objetivas*.
     ]
   ],
 )
@@ -913,7 +907,7 @@ Tres revisiones para descartar esa explicación alternativa:
       probablemente infló la percepción de adaptación.
 
     - *Alcance de la adaptación.* El efecto observado corresponde sobre todo a la
-      adaptación *pre-combate*; el ajuste en tiempo real es acotado.
+      adaptación *pre-combate*; el ajuste durante el combate es acotado.
 
     - *Instrumentos adaptados.* Ni el SUS ni el GEQ se aplicaron en su forma
       validada original.

@@ -7,8 +7,8 @@
 | Inicio | 1–5 | 0:00 – 1:55 | 10% |
 | Antecedentes y diseño | 6–16 | 1:55 – 8:45 | 34% |
 | Aporte propio (resultados y discusión) | 17–26 | 8:45 – 16:40 | 40% |
-| Cierre | 27–30 | 16:40 – 19:05 | 12% |
-| **Colchón** | — | 19:05 – 20:00 | 5% |
+| Cierre | 27–30 | 16:40 – 19:20 | 13% |
+| **Colchón** | — | 19:20 – 20:00 | 3% |
 
 El bloque "antecedentes y diseño" incluye el sistema adaptativo, que es aporte
 propio, pero funciona como el "materiales y métodos" de la exposición. Sin
@@ -365,7 +365,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ---
 
-## CIERRE — 16:40 a 19:05
+## CIERRE — 16:40 a 19:20
 
 ### Diapositiva 27 — Conclusiones · 16:40 – 17:35
 
@@ -385,7 +385,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > mejor contra quienes se mantienen a distancia que contra quienes pelean cuerpo
 > a cuerpo. Con esto el objetivo general se cumplió.
 
-### Diapositiva 28 — Limitaciones · 17:35 – 18:35
+### Diapositiva 28 — Limitaciones · 17:35 – 18:50
 
 *Rápido. No te disculpes, enúncialas con seguridad: reconocerlas te da
 credibilidad.*
@@ -398,20 +398,20 @@ credibilidad.*
 > A eso se suma que medir la experiencia previa resultó difícil: el puntaje del
 > cuestionario inicial refleja cuánto ha jugado la persona, pero no su habilidad
 > real, y eso limita los análisis que dependen de la experiencia, como el que
-> mostré hace un rato. En la misma línea, el grupo adaptativo quedó levemente
-> más experimentado que el de control.
+> mostré hace un rato. En la misma línea, y pese a la asignación alternada, el
+> grupo adaptativo quedó levemente más experimentado que el de control.
 >
 > Lo que el jugador reporta resultó poco confiable, y el encuadre del estudio
 > probablemente infló la percepción de adaptación.
 >
 > El efecto observado, además, corresponde sobre todo a la adaptación previa al
-> combate, ya que el ajuste en tiempo real es acotado.
+> combate, ya que el ajuste durante el combate es acotado.
 >
 > Y por último, el SUS y el GEQ se aplicaron adaptados, uno cambiando las
 > referencias al sistema por el juego y el otro traducido, así que no son los
 > instrumentos validados en su forma original.
 
-### Diapositiva 29 — Trabajo futuro · 18:35 – 19:00
+### Diapositiva 29 — Trabajo futuro · 18:50 – 19:15
 
 > Las líneas más directas: repetir la evaluación con más participantes, del
 > orden de cuarenta por condición; reforzar la adaptación contra el perfil
@@ -419,7 +419,7 @@ credibilidad.*
 > adaptación al combate mismo; y complementar lo que el jugador declara con
 > medidas menos dependientes de su opinión.
 
-### Diapositiva 30 — Cierre · 19:00 – 19:05
+### Diapositiva 30 — Cierre · 19:15 – 19:20
 
 > Eso es todo. Muchas gracias por su atención, y quedo atento a sus preguntas.
 
