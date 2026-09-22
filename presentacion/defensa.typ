@@ -173,18 +173,14 @@
   column-gutter: 20pt,
   [
     #set text(size: 18pt)
-    En los juegos de acción con combates exigentes, los jefes siguen patrones
-    de ataque *fijos*. Tras varios intentos, el jugador los memoriza.
+    En los juegos de acción exigentes, los jefes siguen patrones de ataque
+    *fijos*. El jugador los memoriza, y la dificultad pasa de ser un desafío a
+    ser un ejercicio de *memorización*.
 
-    #v(6pt)
-    La dificultad deja de ser un desafío dinámico y pasa a ser un ejercicio de
-    *memorización*.
-
-    #v(6pt)
+    #v(10pt)
     #destaca[
-      La gran mayoría de los enfoques de dificultad dinámica existentes
-      ajustan *números* (vida, daño, velocidad), no el *comportamiento*
-      del enemigo.
+      Los enfoques de dificultad dinámica existentes ajustan *números* (vida,
+      daño, velocidad), no el *comportamiento* del enemigo.
     ]
   ],
   [
