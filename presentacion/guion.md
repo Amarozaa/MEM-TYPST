@@ -36,36 +36,37 @@ completos"*. Nunca sacrifiques las diapositivas 21 y 22.
 
 ### Diapositiva 3 — El problema · 0:20 – 0:55
 
-> Quiero partir por el problema concreto. En juegos de acción exigentes, como Elden Ring, los
-> jefes siguen patrones de ataque fijos. Eso significa que después de varios
-> intentos el jugador se los aprende de memoria, y a partir de ahí la dificultad
-> deja de ser un desafío y pasa a ser un ejercicio de memorización.
+> <u>Quiero partir por el problema concreto</u>. En juegos de acción exigentes,
+> <u>como Elden Ring</u>, los jefes siguen patrones de ataque fijos. Eso
+> significa que <u>después de varios intentos</u> el jugador se los aprende de
+> memoria, y a partir de ahí la dificultad deja de ser un desafío y pasa a ser
+> un ejercicio de memorización.
 >
-> Ahora, sí existen técnicas para ajustar la dificultad de forma dinámica. Pero
-> la gran mayoría ajusta *números*: la vida del enemigo, su daño, su velocidad.
-> Ninguna cambia *cómo* se comporta.
+> Ahora, sí <u>existen</u> técnicas para ajustar la dificultad de forma
+> dinámica. Pero la gran mayoría ajusta <u>números</u>: la vida del enemigo, su
+> daño, su velocidad. Ninguna cambia <u>cómo se comporta</u>.
 
 ### Diapositiva 4 — La excepción y la pregunta · 0:55 – 1:35
 
-> Hay un caso especial, el ejemplo que más se repite cuando se habla de
-> enemigos adaptativos. En *Alien: Isolation* el alien aprende dónde sueles
-> esconderte y cambia sus rutas de patrullaje, así que el escondite que te
-> salvó una vez deja de servirte. Que siempre se llegue al mismo juego ya dice
-> lo poco común que es.
+> <u>Hay un caso especial</u>, el ejemplo que más se repite cuando se habla de
+> enemigos adaptativos. En *Alien: Isolation* el alien <u>aprende dónde sueles
+> esconderte y cambia sus **rutas de patrullaje**, así que el escondite que te
+> salvó una vez deja de servirte</u>.
 
 *Acá baja el ritmo y mira a la comisión, no a la pantalla. Es la pregunta
 central de toda la defensa: dila, pero no la leas palabra por palabra.*
 
 > Y de ahí sale la pregunta de este trabajo: ¿y si el jefe reconociera cómo
-> juega cada persona y cambiara su estrategia según eso? Un mismo jefe podria ser distinto para todos. 
+> juega cada persona y cambiara su estrategia según eso? <u>Un mismo jefe podría
+> ser distinto para todos</u>.
+
 ### Diapositiva 5 — Agenda · 1:35 – 1:55
 
 *No leas los seis puntos, ya están en pantalla. Agrúpalos.*
 
-> Para responder eso, la presentación va así. Primero los objetivos. Después,
+> <u>Para responder eso</u>, la presentación va así. Primero los objetivos. Después,
 > cómo se construyeron el juego y el sistema que adapta al jefe. Luego, cómo se
-> puso a prueba con treinta personas. Y al final, los resultados, que fueron
-> menos simples de lo esperado.
+> puso a prueba con treinta personas. Y al final, los resultados.
 
 ---
 
