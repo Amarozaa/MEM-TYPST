@@ -64,9 +64,10 @@ central de toda la defensa: dila, pero no la leas palabra por palabra.*
 
 *No leas los seis puntos, ya están en pantalla. Agrúpalos.*
 
-> <u>Para responder eso</u>, la presentación va así. Primero los objetivos. Después,
-> cómo se construyeron el juego y el sistema que adapta al jefe. Luego, cómo se
-> puso a prueba con treinta personas. Y al final, los resultados.
+> <u>Para responder eso</u>, la presentación va así. <u>Primero</u> los
+> objetivos. <u>Después</u>, cómo se construyeron el juego y el sistema que
+> adapta al jefe. <u>Luego</u>, cómo se puso a prueba. <u>Y al final</u>, los
+> resultados.
 
 ---
 
@@ -78,29 +79,34 @@ central de toda la defensa: dila, pero no la leas palabra por palabra.*
 en el escrito, así que conviene no improvisarlo.*
 
 > El objetivo general fue diseñar e implementar un sistema de adaptación para un
-> enemigo jefe, capaz de ajustar su comportamiento de combate a
-> partir de un perfil construido sobre las acciones previas del jugador, para
+> enemigo jefe, capaz de <u>ajustar su comportamiento</u> de combate a partir de
+> un <u>perfil construido sobre las acciones previas del jugador</u>, para
 > reducir la previsibilidad del enfrentamiento y evaluar su efecto sobre la
 > experiencia de juego.
 >
-> Los específicos van desde revisar el estado del arte hasta comparar la versión
-> adaptativa contra una de control. Quiero destacar dos: el número dos, construir
-> una versión base con jefe fijo que sirva de control, y el número tres, diseñar
-> enemigos regulares que expongan el estilo de juego. Esos dos son los que hacen
-> posible todo el resto.
+> Los específicos van desde <u>revisar el estado del arte</u> hasta <u>comparar
+> la versión adaptativa contra una de control</u>. Quiero destacar dos: el número
+> dos, construir una versión base con jefe fijo que sirva de control, y el número
+> tres, <u>diseñar enemigos regulares que expongan el estilo de juego</u>. Esos
+> dos son los que hacen posible todo el resto.
 
 ### Diapositiva 8 — El juego · 2:40 – 3:25
 
-> No había un juego base donde probar esto, así que se construyó uno. Es un juego de acción
-> al estilo de Elden Ring, en Unreal Engine 5.6, hecho con Blueprints y C++, usando las herramientas
-> nativas de inteligencia artificial del motor: Behaviour Tree y Blackboard.
+> <u>No había un juego base donde probar esto</u>, así que se construyó uno. Es
+> un juego de acción *soulslike*, en Unreal Engine 5.6, hecho con
+> Blueprints y C++, usando las <u>herramientas nativas</u> de inteligencia
+> artificial del motor: Behaviour Tree y Blackboard.
 >
-> Tiene las mecánicas clásicas del género: combate melee, hechizos a distancia,
-> esquiva con frames de invulnerabilidad, stamina, pociones y fijado de objetivo.
+> Tiene las <u>mecánicas clásicas</u> del género: combate melee, hechizos a
+> distancia, esquiva con frames de invulnerabilidad, stamina, pociones y fijado
+> de objetivo.
 >
-> El nivel previo al jefe no es relleno. Es ahí donde el sistema observa cómo
-> juega la persona. Tiene tres arquetipos de enemigo, y cada uno está diseñado
-> a propósito para exponer una dimensión distinta del estilo de juego.
+> El juego son dos partes: un <u>nivel previo</u> con tres arquetipos de enemigo
+> regular, y después el combate contra el <u>jefe</u>.
+>
+> Ese nivel previo <u>no es relleno</u>: ahí el sistema <u>observa</u> cómo juega
+> la persona, y cada arquetipo está diseñado para <u>exponer</u> una dimensión
+> distinta de su estilo de juego.
 
 ### Diapositiva 9 — El repertorio del jefe · 3:25 – 3:40
 
