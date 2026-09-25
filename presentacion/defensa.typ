@@ -264,30 +264,59 @@
 
 == El juego construido para el estudio
 
-#grid(
-  columns: (1.15fr, 1fr),
-  column-gutter: 18pt,
-  [
-    #set text(size: 17pt)
-    - Unreal Engine 5.6, *Blueprints + C++*, con las herramientas nativas de IA
-      del motor (_Behaviour Tree_ y _Blackboard_).
-    - Mecánicas clásicas de juegos de acción: melee, hechizos a distancia,
-      esquiva con _i-frames_, _stamina_, pociones, fijado de objetivo.
-    - Un *nivel previo* con tres arquetipos de enemigo regular, y luego el
-      combate contra el *jefe*.
-    #v(4pt)
-    #destaca[
-      El nivel previo es donde el sistema observa al jugador. Cada arquetipo
-      expone una dimensión distinta de su estilo de juego.
-    ]
-  ],
-  [
-    #image(img + "cap3/enemies_comparative.png", width: 100%)
-    #v(2pt)
-    #set text(size: 13pt)
-    #align(center)[Los tres arquetipos de enemigo regular]
-  ],
-)
+#let captura(ruta, pie, alto: 5cm, modo: "cover") = [
+  #box(width: 100%, height: alto, clip: true, radius: 4pt,
+    image(img + ruta, width: 100%, height: 100%, fit: modo))
+  #v(3pt)
+  #align(center, text(size: 12pt, fill: tinta.lighten(25%))[#pie])
+]
+
+#set text(size: 16pt)
+- Unreal Engine 5.6, *Blueprints + C++*, con las herramientas nativas de IA del
+  motor (_Behaviour Tree_ y _Blackboard_).
+- Mecánicas clásicas de juegos de acción: melee, hechizos a distancia, esquiva
+  con _i-frames_, _stamina_, pociones y fijado de objetivo.
+
+#v(10pt)
+#align(center, grid(
+  columns: (11.86cm, 13.98cm),
+  column-gutter: 10pt,
+  align: top,
+  captura("cap5/player-casting-firespell.png", [Hechizo a distancia], alto: 7.15cm),
+  captura("cap5/player-taking-potion.png", [Vida, _stamina_ y pociones], alto: 7.15cm),
+))
+
+== Los tres niveles
+
+#set text(size: 16pt)
+El juego son tres niveles: un *tutorial* donde se aprenden los controles, un
+*nivel previo* con tres arquetipos de enemigo regular, y el combate contra el
+*jefe*.
+
+#v(10pt)
+#align(center, grid(
+  columns: (12.59cm, 10.05cm),
+  column-gutter: 10pt,
+  align: top,
+  captura("cap5/main-menu_OG_ESTE_ES.png", [El menú principal], alto: 7cm),
+  captura("cap5/manequinn-y-puerta.png", [El tutorial], alto: 7cm),
+))
+
+== El nivel previo: donde el sistema observa
+
+#set text(size: 16pt)
+El nivel previo no es relleno: es donde el sistema *observa* cómo juega la
+persona. Cada arquetipo está diseñado para *exponer una dimensión distinta* de
+su estilo de juego.
+
+#v(10pt)
+#align(center, grid(
+  columns: (9.93cm, 13.01cm),
+  column-gutter: 10pt,
+  align: top,
+  captura("cap3/sala-central-nivelprevio.png", [El nivel previo], alto: 7cm),
+  captura("cap5/player-locking-enemy.png", [El combate contra el jefe], alto: 7cm),
+))
 
 == El repertorio del jefe
 
@@ -424,6 +453,15 @@ parten con el mismo peso base.
   ],
   [
     #set text(size: 16pt)
+    #tabla(
+      columns: (auto, auto),
+      table.header([*Qué cambia*], [*Ajuste*]),
+      table.hline(stroke: 0.6pt + borde),
+      [Rango lejano], [*--75* \ entra antes a larga distancia],
+      [Persecución], [*+2 s* \ pasa más tiempo cerrando espacio],
+    )
+
+    #v(10pt)
     *Una restricción independiente del perfil:*
 
     #destaca[
@@ -499,6 +537,10 @@ parten con el mismo peso base.
 
     #v(6pt)
     *Perfil:* *todos* lo generan, solo cambia si se aplica.
+
+    #v(6pt)
+    *Cómo se fija:* desde el *menú principal*, con un control aparte de los
+    botones de navegación, antes de entregarle el mando al participante.
   ],
   [
     #set text(size: 16.5pt)
@@ -516,7 +558,8 @@ parten con el mismo peso base.
   ],
 )
 
-== Qué se midió
+
+== Los datos que se recogieron
 
 #set text(size: 17pt)
 #grid(
