@@ -162,10 +162,6 @@
 
 #portada()
 
-// =============================================================
-= Introducción
-// =============================================================
-
 == El problema: enemigos que se memorizan
 
 #grid(
@@ -809,7 +805,7 @@ Tres revisiones para descartar esa explicación alternativa:
   column-gutter: 18pt,
   [
     #set text(size: 15.5pt)
-    *«¿El jefe se sintió predecible?»*
+    *“¿El jefe se sintió predecible?”*
     #v(4pt)
     #tabla(
       columns: (auto, auto, auto),
@@ -823,7 +819,7 @@ Tres revisiones para descartar esa explicación alternativa:
       [Control], text(fill: rojo, weight: "bold")[11 (73%)], text(fill: azul, weight: "bold")[4 (27%)],
     )
     #v(10pt)
-    *«¿Notaste que aprendía?»*
+    *“¿Notaste que aprendía?”*
     #v(4pt)
     #tabla(
       columns: (auto, auto, auto),
@@ -894,6 +890,35 @@ Tres revisiones para descartar esa explicación alternativa:
   su función.
 ]
 
+== Limitaciones
+
+#set text(size: 16pt)
+#grid(
+  columns: (1fr, 1fr),
+  column-gutter: 16pt,
+  row-gutter: 8pt,
+  [
+    - *Tamaño de muestra.* 30 participantes: bajo poder estadístico. Los
+      resultados son descriptivos, no generalizables.
+
+    - *Medir la experiencia es difícil.* El puntaje refleja cuánto ha jugado la
+      persona, no su habilidad real.
+
+    - *Desbalance entre grupos.* El grupo adaptativo quedó levemente más
+      experimentado (6.47 vs. 6.07).
+  ],
+  [
+    - *Lo que el jugador reporta es poco confiable*, y el encuadre del estudio
+      probablemente infló la percepción de adaptación.
+
+    - *Alcance de la adaptación.* El efecto observado corresponde sobre todo a la
+      adaptación *pre-combate*; el ajuste durante el combate es acotado.
+
+    - *Instrumentos adaptados.* Ni el SUS ni el GEQ se aplicaron en su forma
+      validada original.
+  ],
+)
+
 == Conclusiones
 
 #set text(size: 17.5pt)
@@ -923,35 +948,6 @@ Tres revisiones para descartar esa explicación alternativa:
   jefe al estilo de cada jugador, que en la práctica funcionó mejor contra
   quienes se mantienen a distancia que contra quienes pelean cuerpo a cuerpo.
 ]
-
-== Limitaciones
-
-#set text(size: 16pt)
-#grid(
-  columns: (1fr, 1fr),
-  column-gutter: 16pt,
-  row-gutter: 8pt,
-  [
-    - *Tamaño de muestra.* 30 participantes: bajo poder estadístico. Los
-      resultados son descriptivos, no generalizables.
-
-    - *Medir la experiencia es difícil.* El puntaje refleja cuánto ha jugado la
-      persona, no su habilidad real.
-
-    - *Desbalance entre grupos.* El grupo adaptativo quedó levemente más
-      experimentado (6.47 vs. 6.07).
-  ],
-  [
-    - *Lo que el jugador reporta es poco confiable*, y el encuadre del estudio
-      probablemente infló la percepción de adaptación.
-
-    - *Alcance de la adaptación.* El efecto observado corresponde sobre todo a la
-      adaptación *pre-combate*; el ajuste durante el combate es acotado.
-
-    - *Instrumentos adaptados.* Ni el SUS ni el GEQ se aplicaron en su forma
-      validada original.
-  ],
-)
 
 == Trabajo futuro
 
