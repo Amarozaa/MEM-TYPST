@@ -84,6 +84,8 @@ en el escrito, así que conviene no improvisarlo.*
 > reducir la previsibilidad del enfrentamiento y evaluar su efecto sobre la
 > experiencia de juego.
 >
+> **[clic × 6 — uno por objetivo específico]**
+>
 > Los específicos van desde <u>revisar el estado del arte</u> hasta <u>comparar
 > la versión adaptativa contra una de control</u>. Quiero destacar dos: el número
 > dos, construir una versión base con jefe fijo que sirva de control, y el número
@@ -127,10 +129,16 @@ en el escrito, así que conviene no improvisarlo.*
 idea y deja que la pantalla haga el resto.*
 
 > La decisión de diseño central que se tomó en el trabajo es la siguiente: la
-> adaptación no sube el daño, la velocidad ni la vida del jefe. Cambia qué tan
-> seguido elige cada ataque, en qué rangos de distancia los usa y cuánto
-> persigue al jugador. El jefe sigue siendo igual de fuerte, lo que cambia es su
-> estrategia.
+> adaptación no sube el daño, la velocidad ni la vida del jefe.
+>
+> **[clic]**
+>
+> Cambia qué tan seguido elige cada ataque, en qué rangos de distancia los usa y
+> cuánto persigue al jugador.
+>
+> **[clic]**
+>
+> El jefe sigue siendo igual de fuerte, lo que cambia es su estrategia.
 
 ### Diapositiva 12 — El perfil de cuatro dimensiones · 4:05 – 5:40
 
@@ -143,8 +151,12 @@ idea y deja que la pantalla haga el resto.*
 > se achica el rango cercano del jefe, obligándolo a recurrir antes a ataques de
 > rango medio.
 >
+> **[clic]**
+>
 > La segunda es qué tipo de ataque usa: si predominan los ataques a distancia,
 > suben los pesos de los ataques que cierran distancia rápido.
+>
+> **[clic]**
 >
 > La tercera es la esquiva: qué proporción de sus esquivas fueron exitosas
 > contra el ataque telegrafiado del caballero. Si esquiva muy bien lo que se
@@ -152,8 +164,12 @@ idea y deja que la pantalla haga el resto.*
 > se telegrafía. Si esquiva mal, suben los de preparación larga, que igual le
 > conectan.
 >
+> **[clic]**
+>
 > Y la cuarta observa hacia qué lado esquiva en la zona de tanque, y replica ese
 > mismo patrón en el jefe.
+>
+> **[clic]**
 >
 > Cada regla que se activa suma diez o quince puntos al peso de ciertos ataques,
 > sobre una base pareja de cincuenta, sin eliminar nunca un ataque del
@@ -187,10 +203,14 @@ idea y deja que la pantalla haga el resto.*
 > principal de la adaptación. Durante el combate hay además dos ajustes más
 > acotados.
 >
+> **[clic]**
+>
 > El primero mira, cada quince ataques del jefe, qué proporción de cada tipo
 > efectivamente conectó. Si conecta mucho, ese ataque sube; si el jugador lo
 > esquiva siempre, baja. Así el jefe deja de insistir en lo que la persona ya
 > domina.
+>
+> **[clic]**
 >
 > El segundo usa el dato de curación registrado en el nivel previo. El sistema
 > sabe a qué porcentaje de vida suele curarse el jugador, y cuando entra a ese rango sube los pesos de los ataques
@@ -222,8 +242,12 @@ idea y deja que la pantalla haga el resto.*
 > registro interno con las métricas de comportamiento y, lo más importante, los
 > pesos de ataque reales de cada partida.
 >
+> **[clic]**
+>
 > Después de jugar, cada participante respondió un cuestionario con tres
 > bloques: el SUS adaptado, una selección de ítems del GEQ y preguntas abiertas.
+>
+> **[clic]**
 >
 > <u>Que los pesos reales queden registrados es lo que después permite
 > contrastar lo que el jugador *dijo* contra lo que el sistema *efectivamente
@@ -236,29 +260,48 @@ idea y deja que la pantalla haga el resto.*
 ### Diapositiva 19 — Verificación técnica · 8:45 – 9:10
 
 > Lo primero fue verificar que el sistema efectivamente funcionó: el ajuste
-> previo al combate fue el esperado en las quince sesiones adaptativas, y en
-> catorce de quince los pesos además cambiaron durante la pelea.
+> previo al combate fue el esperado en las quince sesiones adaptativas,
+>
+> **[clic]**
+>
+> y en catorce de quince los pesos además cambiaron durante la pelea.
+>
+> **[clic]**
 >
 > Así, cualquier resultado que venga después no se explica por un sistema que
 > no funcionó.
 
 ### Diapositiva 20 — SUS · 9:10 – 9:40
 
-> En usabilidad, el promedio general fue 77.9, por sobre el referente de
-> industria que son 68 puntos, y cerca del umbral de "Excelente". El puntaje
-> más bajo fue 62.5, que igual se considera aceptable: bajo 50 recién se
-> habla de un sistema con problemas serios de usabilidad.
+> En usabilidad, la tabla muestra los puntajes por grupo.
 >
-> Entre condiciones no hay ninguna diferencia, y eso es exactamente lo esperado:
-> la adaptación cambia el comportamiento del jefe, no la interfaz ni los
-> controles.
+> **[clic]**
+>
+> Entre condiciones no hay ninguna diferencia.
+>
+> **[clic]**
+>
+> El promedio general fue 77.9. El puntaje más bajo fue 62.5, que igual se
+> considera aceptable: bajo 50 recién se habla de un sistema con problemas
+> serios de usabilidad.
+>
+> **[clic]**
+>
+> Está por sobre el referente de industria, que son 68 puntos, y cerca del
+> umbral de "Excelente". Y que no haya diferencia entre condiciones es
+> exactamente lo esperado: la adaptación cambia el comportamiento del jefe, no
+> la interfaz ni los controles.
 
 ### Diapositiva 21 — GEQ global · 9:40 – 10:25
 
 > En el GEQ, mirando los grupos completos, ninguna de las cinco dimensiones
 > alcanzó significancia estadística, y todos los tamaños de efecto son pequeños.
+> **[clic]**
+>
 > Desafío e inmersión van en la dirección esperada, pero no se distinguen del
 > azar con esta muestra.
+>
+> **[clic]**
 >
 > Hay una observación descriptiva que sí vale la pena. En desafío, las medianas
 > son parecidas, pero el rango intercuartílico del grupo adaptativo es
@@ -287,14 +330,20 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > de que al sistema le cuesta más presionar a un jugador experimentado. Es una
 > explicación alternativa que reviso en un par de diapositivas más.
 >
+> **[clic]**
+>
 > Para comprobarlo se decidió dividir el grupo adaptativo por la mediana de
 > distancia de exploración: quedaron ocho jugadores de perfil rango y siete de
 > cuerpo a cuerpo.
+>
+> **[clic]**
 >
 > Los de perfil rango reportaron una tensión media de 1.69, contra 1.07 en los
 > de cuerpo a cuerpo. La diferencia queda justo en el límite de la
 > significancia, y con un tamaño de efecto grande, a pesar de lo chicos que son
 > los subgrupos.
+>
+> **[clic]**
 >
 > Y lo decisivo: al aplicar exactamente la misma división al grupo de control,
 > ambos perfiles reportan una tensión prácticamente igual. La diferencia aparece
@@ -305,7 +354,13 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > Lo mismo se ve midiéndolo de forma continua, sin cortar por la mediana. La
 > correlación entre la distancia que la persona mantuvo en la exploración y la
 > tensión que reportó después es positiva y significativa en el grupo
-> adaptativo, y prácticamente nula en el control.
+> adaptativo,
+>
+> **[clic]**
+>
+> y prácticamente nula en el control.
+>
+> **[clic]**
 >
 > Que la asociación exista solo cuando el jefe se adapta es la evidencia más
 > directa de este estudio de que el sistema generó una experiencia diferenciada.
@@ -319,13 +374,23 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 >
 > Se hicieron tres revisiones. Primero, se midió si distancia y experiencia
 > están relacionadas dentro del grupo adaptativo: la relación resultó débil y no
-> significativa. Segundo, se comparó la experiencia promedio de ambos perfiles, y
-> resultó casi idéntica.
+> significativa.
+>
+> **[clic]**
+>
+> Segundo, se comparó la experiencia promedio de ambos perfiles, y resultó casi
+> idéntica.
+>
+> **[clic]**
 >
 > Y tercero, la más importante: se volvió a medir la relación entre distancia y
 > tensión, pero descontando el efecto de la experiencia mediante correlación
 > parcial. Si la tensión se debiera a la habilidad, esa relación debería
-> debilitarse. No solo se mantuvo, sino que siguió siendo significativa.
+> debilitarse.
+>
+> **[clic]**
+>
+> No solo se mantuvo, sino que siguió siendo significativa.
 
 ### Diapositiva 25 — Lo que los jugadores dijeron · 13:30 – 14:50
 
@@ -364,6 +429,8 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > siente como que el juego se puso más difícil para todos por igual, no como que
 > el enemigo cambió su forma de jugar.
 >
+> **[clic]**
+>
 > La segunda es cómo lograr que se note, si es que el propósito es ese. Por un
 > lado, conviene que la adaptación
 > se traduzca en algo llamativo: el único caso donde alguien identificó
@@ -374,11 +441,15 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > un solo ajuste genérico, porque así es más fácil que la persona relacione lo
 > que hizo con lo que el enemigo hizo después.
 >
+> **[clic]**
+>
 > Y la tercera, quizás la más interesante, es cuál puede ser la meta: un sistema
 > así no necesita hacer el juego más difícil en promedio para cumplir su
 > propósito. Puede apuntar a que distintos jugadores sientan un desafío más
 > parejo entre ellos, que es justamente lo que sugiere ese rango intercuartílico
 > más compacto.
+>
+> **[clic]**
 >
 > Un matiz importante: el jugador no necesita darse cuenta de la adaptación para
 > que esta funcione. La tensión de los jugadores de rango subió igual, aunque
@@ -398,17 +469,29 @@ credibilidad.*
 > que los resultados son indicios de una prueba de concepto y no algo
 > generalizable.
 >
+> **[clic]**
+>
 > A eso se suma que medir la experiencia previa resultó difícil: el puntaje del
 > cuestionario inicial refleja cuánto ha jugado la persona, pero no su habilidad
 > real, y eso limita los análisis que dependen de la experiencia, como el que
-> mostré hace un rato. En la misma línea, y pese a la asignación alternada, el
-> grupo adaptativo quedó levemente más experimentado que el de control.
+> mostré hace un rato.
+>
+> **[clic]**
+>
+> En la misma línea, y pese a la asignación alternada, el grupo adaptativo
+> quedó levemente más experimentado que el de control.
+>
+> **[clic]**
 >
 > Lo que el jugador reporta resultó poco confiable, y el encuadre del estudio
 > probablemente infló la percepción de adaptación.
 >
+> **[clic]**
+>
 > El efecto observado, además, corresponde sobre todo a la adaptación previa al
 > combate, ya que el ajuste durante el combate es acotado.
+>
+> **[clic]**
 >
 > Y por último, el SUS y el GEQ se aplicaron adaptados, uno cambiando las
 > referencias al sistema por el juego y el otro traducido, así que no son los
@@ -419,13 +502,19 @@ credibilidad.*
 > Primero, el sistema funciona como se especificó: las reglas predicen
 > exactamente los pesos registrados en las quince sesiones.
 >
+> **[clic]**
+>
 > Segundo, comparando los grupos completos las diferencias fueron pequeñas y no
 > significativas. Con una muestra de este tamaño, eso no descarta que exista un
 > efecto real; solo indica que no llegó a hacerse visible.
 >
+> **[clic]**
+>
 > Y tercero, al mirar el estilo de juego el efecto sí aparece: los jugadores de
 > perfil a distancia reportaron una tensión notablemente mayor en la versión
 > adaptativa, y esa diferencia no existe en el control.
+>
+> **[clic]**
 >
 > La contribución principal, entonces, es un sistema capaz de adaptar el
 > comportamiento del jefe al estilo de cada jugador, que en la práctica funcionó

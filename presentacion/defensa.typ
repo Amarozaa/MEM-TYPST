@@ -9,6 +9,13 @@
 
 #let img = "../template-informe-memoria-fcfm-main/imagenes/"
 
+// Dos salidas desde este mismo archivo (ver build.sh):
+//   sin --input            -> defensa.pdf, una pagina por diapositiva.
+//                             Es la numeracion que usa el guion.
+//   con --input animado=1  -> defensa-animada.pdf, con revelado progresivo.
+//                             El numero de diapositiva del pie no cambia.
+#let sin-animaciones = "animado" not in sys.inputs
+
 // Paleta navy + ámbar
 #let azul = rgb("#0d2340")      // navy: titulos, bandas, portada
 #let azul-claro = rgb("#1d4b7a")
@@ -157,7 +164,7 @@
     neutral-dark: tinta,
     neutral-darkest: tinta,
   ),
-  config-common(new-section-slide-fn: seccion),
+  config-common(new-section-slide-fn: seccion, handout: sin-animaciones),
 )
 
 #portada()
@@ -242,17 +249,23 @@
 #v(8pt)
 #set text(size: 15.5pt)
 *Objetivos específicos*
+#block(height: 4.4cm, width: 100%)[
 #grid(
   columns: (1fr, 1fr),
   column-gutter: 18pt,
   row-gutter: 6pt,
-  [+ Revisar enfoques existentes de IA adaptativa.
-   + Construir una versión base con jefe fijo (control).
-   + Diseñar enemigos regulares que expongan el estilo de juego.],
-  [4. Ajustar los pesos de ataque del jefe según ese perfil.
-   5. Validar mediante pruebas de jugabilidad.
-   6. Comparar versión adaptativa contra control.],
+  [
+    #uncover("2-")[1. Revisar enfoques existentes de IA adaptativa.]
+    #uncover("3-")[2. Construir una versión base con jefe fijo (control).]
+    #uncover("4-")[3. Diseñar enemigos regulares que expongan el estilo de juego.]
+  ],
+  [
+    #uncover("5-")[4. Ajustar los pesos de ataque del jefe según ese perfil.]
+    #uncover("6-")[5. Validar mediante pruebas de jugabilidad.]
+    #uncover("7-")[6. Comparar versión adaptativa contra control.]
+  ],
 )
+]
 
 // =============================================================
 = El sistema desarrollado
@@ -381,20 +394,20 @@ parten con el mismo peso base.
     - Velocidad de ejecución
     - Vida del jefe
   ],
-  panel("Comportamiento adaptativo", azul)[
+  uncover("2-", panel("Comportamiento adaptativo", azul)[
     Lo que el perfil del jugador modifica es cómo el jefe usa ese mismo
     repertorio.
     #v(8pt)
     - Qué tan seguido elige cada ataque
     - En qué rangos de distancia los usa
     - Cuánto persigue al jugador
-  ],
+  ]),
 )
 
 #v(6pt)
-#align(center, text(size: 17pt, fill: tinta.lighten(15%))[
+#uncover("3-", align(center, text(size: 17pt, fill: tinta.lighten(15%))[
   El jefe sigue siendo igual de fuerte, lo que cambia es su estrategia
-])
+]))
 
 == El perfil de juego: cuatro dimensiones
 
@@ -406,23 +419,23 @@ parten con el mismo peso base.
   [Distancia],
   [Distancia promedio frente al esqueleto normal y al caballero],
   [Achica el rango cercano o alarga la persecución],
-  [Melee vs. rango],
-  [Proporción de ataques a distancia sobre el total],
-  [Refuerza ataques que cierran distancia, o los que castigan de cerca],
-  [Esquiva],
-  [Proporción de esquivas exitosas contra el ataque telegrafiado],
-  [Refuerza el ataque difícil de leer, o los de preparación larga],
-  [Zona de tanque],
-  [Hacia qué lado esquiva y con qué éxito frente al caballero],
-  [Refuerza Giro o Salto, replicando su patrón de reacción],
+  uncover("2-")[Melee vs. rango],
+  uncover("2-")[Proporción de ataques a distancia sobre el total],
+  uncover("2-")[Refuerza ataques que cierran distancia, o los que castigan de cerca],
+  uncover("3-")[Esquiva],
+  uncover("3-")[Proporción de esquivas exitosas contra el ataque telegrafiado],
+  uncover("3-")[Refuerza el ataque difícil de leer, o los de preparación larga],
+  uncover("4-")[Zona de tanque],
+  uncover("4-")[Hacia qué lado esquiva y con qué éxito frente al caballero],
+  uncover("4-")[Refuerza Giro o Salto, replicando su patrón de reacción],
 )
 
 #v(6pt)
-#text(size: 14pt)[
+#uncover("5-", text(size: 14pt)[
   Cada regla que se activa suma *+10 o +15 al peso* de ciertos ataques, sobre un
   *peso base de 50*, sin eliminar ninguno. Se registra además el *porcentaje de
   vida al que suele curarse*, usado durante el combate.
-]
+])
 
 == De perfil a comportamiento
 
@@ -485,7 +498,7 @@ parten con el mismo peso base.
   align: top,
   columns: (1fr, 1fr),
   column-gutter: 16pt,
-  block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
+  uncover("2-", block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
     *1. Por tasa de acierto* \
     #v(4pt)
     #text(size: 15.5pt)[
@@ -496,8 +509,8 @@ parten con el mismo peso base.
       #v(4pt)
       El jefe deja de insistir en lo que el jugador ya domina.
     ]
-  ],
-  block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
+  ]),
+  uncover("3-", block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
     *2. Por ventana de curación* \
     #v(4pt)
     #text(size: 15.5pt)[
@@ -508,7 +521,7 @@ parten con el mismo peso base.
       #v(4pt)
       Al salir del rango, se revierte. Reduce la ventana para tomar la poción.
     ]
-  ],
+  ]),
 )
 
 // =============================================================
@@ -570,7 +583,7 @@ parten con el mismo peso base.
       *pesos de ataque reales* que usó el jefe en cada partida.
     ]
   ],
-  block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
+  uncover("2-", block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
     *2. Después de jugar* \
     #text(size: 14.5pt)[
       *Cuestionario:*
@@ -579,13 +592,15 @@ parten con el mismo peso base.
       - *Preguntas abiertas*: predictibilidad, aprendizaje, justicia, y lo más
         interesante o frustrante del combate.
     ]
-  ],
+  ]),
 )
 
 #v(10pt)
-#destaca[
-  Dos fuentes independientes: una la escribe el sistema, la otra la escribe el
-  jugador.
+#uncover("3-")[
+  #destaca[
+    Dos fuentes independientes: una la escribe el sistema, la otra la escribe el
+    jugador.
+  ]
 ]
 
 // =============================================================
@@ -600,13 +615,15 @@ parten con el mismo peso base.
   column-gutter: 20pt,
   dato[15 / 15][sesiones donde el ajuste *pre-combate* coincidió exactamente con
     lo predicho por las reglas],
-  dato[14 / 15][sesiones donde los pesos cambiaron *durante la pelea*],
+  uncover("2-", dato[14 / 15][sesiones donde los pesos cambiaron *durante la pelea*]),
 )
 
 #v(14pt)
-#destaca[
-  Cualquier resultado que venga después *no se explica por un sistema que no
-  funcionó*.
+#uncover("3-")[
+  #destaca[
+    Cualquier resultado que venga después *no se explica por un sistema que no
+    funcionó*.
+  ]
 ]
 
 == Usabilidad (SUS)
@@ -625,23 +642,23 @@ parten con el mismo peso base.
       [General], [30], [77.92], [77.50], [7.80],
     )
     #v(8pt)
-    #text(size: 15.5pt)[
+    #uncover("2-", text(size: 15.5pt)[
       Sin diferencias entre condiciones \
       ($t(27.5) = -0.06$, $p = 0.955$, $d = -0.02$).
-    ]
+    ])
   ],
   [
     #set text(size: 16pt)
-    #dato[77.9][puntaje SUS promedio]
+    #uncover("3-", dato[77.9][puntaje SUS promedio])
     #v(8pt)
-    #text(size: 15.5pt)[
+    #uncover("4-", text(size: 15.5pt)[
       Por sobre el referente de industria (68)#super[1] y cerca del umbral
       «Excelente» (80.3)#super[2].
 
       #v(6pt)
       Es lo esperable: la adaptación cambia el *comportamiento del jefe*, no la
       interfaz ni los controles.
-    ]
+    ])
   ],
 )
 
@@ -670,12 +687,12 @@ parten con el mismo peso base.
       [Inmersión], [3.25], [3.50], [106.0], [0.802], [+0.06],
     )
     #v(6pt)
-    #text(size: 14.5pt)[
+    #uncover("2-", text(size: 14.5pt)[
       Ninguna dimensión alcanza significancia ($p > 0.05$) y todos los tamaños
       de efecto son pequeños.
-    ]
+    ])
   ],
-  [
+  uncover("3-")[
     #image(img + "cap6/boxplot_geq_desafio.png", width: 100%)
     #v(2pt)
     #text(size: 14pt)[
@@ -696,25 +713,27 @@ parten con el mismo peso base.
     igual* en todos los jugadores.
 
     #v(6pt)
-    Se dividió el grupo adaptativo por la mediana de distancia de exploración
-    (300.65): perfil *rango* ($n = 8$) y perfil *cuerpo a cuerpo* ($n = 7$).
+    #uncover("2-")[
+      Se dividió el grupo adaptativo por la mediana de distancia de exploración
+      (300.65): perfil *rango* ($n = 8$) y perfil *cuerpo a cuerpo* ($n = 7$).
+    ]
 
     #v(6pt)
-    #block(fill: azul.lighten(90%), inset: 10pt, radius: 5pt, width: 100%)[
+    #uncover("3-", block(fill: azul.lighten(90%), inset: 10pt, radius: 5pt, width: 100%)[
       #text(size: 15pt)[
         *Tensión reportada (media)* \
         Rango: *1.69* \
         Cuerpo a cuerpo: *1.07* \
         $U = 43.5$, $p = 0.050$, $r = 0.55$ (efecto grande)
       ]
-    ]
+    ])
     #v(6pt)
-    #text(size: 15pt)[
+    #uncover("4-", text(size: 15pt)[
       En el grupo *control*, ambos perfiles reportan tensión prácticamente
       igual (medias de 1.31 y 1.43).
-    ]
+    ])
   ],
-  [
+  uncover("3-")[
     #image(img + "cap6/tension_por_perfil.png", width: 100%)
   ],
 )
@@ -740,20 +759,22 @@ que reportó. Así el resultado no depende de dónde se ponga el corte.
       #text(size: 15pt)[$p = 0.048$ (positiva y significativa)]
     ]
   ],
-  block(fill: gris, inset: 14pt, radius: 6pt, width: 100%, height: 100%)[
+  uncover("2-", block(fill: gris, inset: 14pt, radius: 6pt, width: 100%, height: 100%)[
     #align(center)[
       *Grupo control* \
       #v(4pt)
       #text(size: 24pt, weight: "bold")[$r_s = -0.075$] \
-      #text(size: 15pt)[$p = 0.790$ (prácticamente nula)]
+      #text(size: 15pt)[$p = 0.790$ (no significativa)]
     ]
-  ],
+  ]),
 )
 
 #v(12pt)
-#destaca[
-  Que la asociación aparezca *solo cuando el jefe se adapta* es la evidencia más
-  directa de que el sistema generó una experiencia diferenciada.
+#uncover("3-")[
+  #destaca[
+    Que la asociación aparezca *solo cuando el jefe se adapta* es la evidencia más
+    directa de que el sistema generó una experiencia diferenciada.
+  ]
 ]
 
 == Descartando la experiencia previa
@@ -776,27 +797,27 @@ Tres revisiones para descartar esa explicación alternativa:
       ($r_s = -0.313$, $p = 0.256$).
     ]
   ],
-  block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
+  uncover("2-", block(fill: gris, inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 14.5pt)[
       *2. ¿Difiere la experiencia entre perfiles?* \
       #v(4pt)
       Casi idéntica: 6.25 (rango) frente a 6.71 (cuerpo a cuerpo).
     ]
-  ],
-  block(fill: rojo.lighten(90%), inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
+  ]),
+  uncover("3-", block(fill: rojo.lighten(90%), inset: 11pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 14.5pt)[
       *3. Correlación parcial, descontando experiencia* \
       #v(4pt)
       La relación *se mantiene*: $r_s = 0.537$, $p = 0.039$.
     ]
-  ],
+  ]),
 )
 
 #v(10pt)
-#text(size: 16pt)[
+#uncover("4-", text(size: 16pt)[
   Si la tensión se debiera a la habilidad, la relación debería debilitarse al
   descontarla. No lo hizo.
-]
+])
 
 == Lo que los jugadores dijeron
 
@@ -870,24 +891,26 @@ Tres revisiones para descartar esa explicación alternativa:
       endurece el juego para todos por igual.
     ]
   ],
-  block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
+  uncover("2-", block(fill: gris, inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15pt)[
       *Si se busca que se note: un cambio llamativo y una respuesta propia por
       comportamiento.* Repetir un ataque un poco más seguido casi nadie lo notó.
     ]
-  ],
-  block(fill: azul.lighten(90%), inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
+  ]),
+  uncover("3-", block(fill: azul.lighten(90%), inset: 12pt, radius: 6pt, width: 100%, height: 100%)[
     #text(size: 15pt)[
       *La meta: no subir la dificultad promedio*, sino un desafío *más parejo
       entre jugadores*.
     ]
-  ],
+  ]),
 )
 
 #v(10pt)
-#destaca[
-  El jugador *no necesita darse cuenta* de la adaptación para que esta cumpla
-  su función.
+#uncover("4-")[
+  #destaca[
+    El jugador *no necesita darse cuenta* de la adaptación para que esta cumpla
+    su función.
+  ]
 ]
 
 == Limitaciones
@@ -898,24 +921,24 @@ Tres revisiones para descartar esa explicación alternativa:
   column-gutter: 16pt,
   row-gutter: 8pt,
   [
-    - *Tamaño de muestra.* 30 participantes: bajo poder estadístico. Los
-      resultados son descriptivos, no generalizables.
+    #uncover("1-")[- *Tamaño de muestra.* 30 participantes: bajo poder estadístico. Los
+      resultados son descriptivos, no generalizables.]
 
-    - *Medir la experiencia es difícil.* El puntaje refleja cuánto ha jugado la
-      persona, no su habilidad real.
+    #uncover("2-")[- *Medir la experiencia es difícil.* El puntaje refleja cuánto ha jugado la
+      persona, no su habilidad real.]
 
-    - *Desbalance entre grupos.* El grupo adaptativo quedó levemente más
-      experimentado (6.47 vs. 6.07).
+    #uncover("3-")[- *Desbalance entre grupos.* El grupo adaptativo quedó levemente más
+      experimentado (6.47 vs. 6.07).]
   ],
   [
-    - *Lo que el jugador reporta es poco confiable*, y el encuadre del estudio
-      probablemente infló la percepción de adaptación.
+    #uncover("4-")[- *Lo que el jugador reporta es poco confiable*, y el encuadre del estudio
+      probablemente infló la percepción de adaptación.]
 
-    - *Alcance de la adaptación.* El efecto observado corresponde sobre todo a la
-      adaptación *pre-combate*; el ajuste durante el combate es acotado.
+    #uncover("5-")[- *Alcance de la adaptación.* El efecto observado corresponde sobre todo a la
+      adaptación *pre-combate*; el ajuste durante el combate es acotado.]
 
-    - *Instrumentos adaptados.* Ni el SUS ni el GEQ se aplicaron en su forma
-      validada original.
+    #uncover("6-")[- *Instrumentos adaptados.* Ni el SUS ni el GEQ se aplicaron en su forma
+      validada original.]
   ],
 )
 
@@ -931,22 +954,24 @@ Tres revisiones para descartar esa explicación alternativa:
   [El sistema *funciona como se especificó*: las reglas predicen exactamente los
    pesos registrados en las 15 sesiones adaptativas.],
 
-  text(fill: azul, weight: "bold", size: 22pt)[2],
-  [Comparando *los grupos completos*, las diferencias fueron pequeñas y no
+  uncover("2-", text(fill: azul, weight: "bold", size: 22pt)[2]),
+  uncover("2-")[Comparando *los grupos completos*, las diferencias fueron pequeñas y no
    significativas. Con esta muestra, eso no descarta un efecto real: indica que
    no llegó a hacerse visible.],
 
-  text(fill: azul, weight: "bold", size: 22pt)[3],
-  [Al mirar el *estilo de juego*, el efecto sí aparece: los jugadores de perfil
+  uncover("3-", text(fill: azul, weight: "bold", size: 22pt)[3]),
+  uncover("3-")[Al mirar el *estilo de juego*, el efecto sí aparece: los jugadores de perfil
    a distancia reportaron una tensión notablemente mayor en la versión
    adaptativa, y esa diferencia no existe en el control.],
 )
 
 #v(10pt)
-#destaca[
-  *Contribución principal:* un sistema capaz de adaptar el comportamiento del
-  jefe al estilo de cada jugador, que en la práctica funcionó mejor contra
-  quienes se mantienen a distancia que contra quienes pelean cuerpo a cuerpo.
+#uncover("4-")[
+  #destaca[
+    *Contribución principal:* un sistema capaz de adaptar el comportamiento del
+    jefe al estilo de cada jugador, que en la práctica funcionó mejor contra
+    quienes se mantienen a distancia que contra quienes pelean cuerpo a cuerpo.
+  ]
 ]
 
 == Trabajo futuro
