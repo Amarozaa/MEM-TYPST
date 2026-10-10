@@ -5,20 +5,15 @@
 | Bloque | Diapositivas | Tiempo | % |
 |---|---|---|---|
 | Inicio | 1–4 | 0:00 – 1:55 | 10% |
-| Antecedentes y diseño | 5–17 | 1:55 – 8:45 | 34% |
-| Aporte propio (resultados y discusión) | 18–27 | 8:45 – 16:40 | 40% |
-| Cierre | 28–31 | 16:40 – 19:20 | 13% |
+| Antecedentes y diseño | 5–18 | 1:55 – 8:45 | 34% |
+| Aporte propio (resultados y discusión) | 19–28 | 8:45 – 16:40 | 40% |
+| Cierre | 29–32 | 16:40 – 19:20 | 13% |
 | **Colchón** | — | 19:20 – 20:00 | 3% |
 
 El bloque "antecedentes y diseño" incluye el sistema adaptativo, que es aporte
 propio, pero funciona como el "materiales y métodos" de la exposición. Sin
 contarlo, el reparto es 46% antecedentes y 54% aporte propio, dentro de lo
 recomendado. Contándolo, el aporte propio sube a cerca de tres cuartos.
-
-**Regla de rescate.** Si a los 11:25 todavía no llegaste a la diapositiva 22
-("El hallazgo", que en pantalla aparece como 21/30), salta la 21 (GEQ) resumiéndola en una frase: *"ninguna
-dimensión del GEQ mostró diferencias significativas mirando los grupos
-completos"*. Nunca sacrifiques las diapositivas 22 y 23.
 
 ---
 
@@ -32,8 +27,6 @@ completos"*. Nunca sacrifiques las diapositivas 22 y 23.
 > bajo la guía del profesor Francisco Gutiérrez y la co-guía del profesor Elías
 > Zelada.
 
-*Respira. No leas la comisión en voz alta, está en pantalla.*
-
 ### Diapositiva 2 — El problema · 0:20 – 0:55
 
 > <u>Quiero partir por el problema concreto</u>. En juegos de acción exigentes,
@@ -46,7 +39,7 @@ completos"*. Nunca sacrifiques las diapositivas 22 y 23.
 > dinámica. Pero la gran mayoría ajusta <u>números</u>: la vida del enemigo, su
 > daño, su velocidad. Ninguna cambia <u>cómo se comporta</u>.
 
-### Diapositiva 3 — La excepción y la pregunta · 0:55 – 1:35
+### Diapositiva 3 — La pregunta de este trabajo · 0:55 – 1:35
 
 > <u>Hay un caso especial</u>, el ejemplo que más se repite cuando se habla de
 > enemigos adaptativos. En *Alien: Isolation* el alien <u>aprende dónde sueles
@@ -103,44 +96,50 @@ en el escrito, así que conviene no improvisarlo.*
 > distancia, esquiva con frames de invulnerabilidad, stamina, pociones y fijado
 > de objetivo.
 
-### Diapositiva 8 — Los tres niveles · 3:05 – 3:15
+### Diapositiva 8 — Los tres niveles: el tutorial · 3:05 – 3:12
 
-*Las fotos están en pantalla: apunta a ellas, no las describas.*
+*Las tres diapositivas que vienen son solo fotos. El texto va hablado.*
 
-> El juego son tres niveles: un <u>tutorial</u>, donde el jugador aprende los
-> controles, un <u>nivel previo</u> que reúne a los tres arquetipos de enemigo
-> regular, y después el combate contra el <u>jefe</u>.
+> El juego son tres niveles. Primero un <u>tutorial</u>, donde el jugador
+> aprende los controles contra un maniquí, sin riesgo.
 
-### Diapositiva 9 — El nivel previo · 3:15 – 3:25
+### Diapositiva 9 — Los tres niveles: el nivel previo · 3:12 – 3:20
 
-> Ese nivel previo <u>no es relleno</u>: ahí el sistema <u>observa</u> cómo juega
-> la persona, y cada arquetipo está diseñado para <u>exponer</u> una dimensión
-> distinta de su estilo de juego.
+> Después un <u>nivel previo</u>, que reúne a los tres arquetipos de enemigo
+> regular. Mientras el jugador lo recorre, el sistema <u>observa</u> cómo juega,
+> y cada arquetipo está diseñado para <u>exponer</u> una dimensión distinta de su
+> estilo de juego.
 
-### Diapositiva 10 — El repertorio del jefe · 3:25 – 3:40
+### Diapositiva 10 — Los tres niveles: el jefe · 3:20 – 3:25
+
+> Y al final, el <u>combate contra el jefe</u>, que es donde se aplica todo lo
+> que el sistema aprendió.
+
+### Diapositiva 11 — El repertorio del jefe · 3:25 – 3:40
 
 > El jefe tiene nueve ataques, agrupados en rangos de distancia. Dentro de cada
 > rango elige mediante un selector aleatorio ponderado implementado en C++, y
 > todos los ataques parten con el mismo peso base: cincuenta.
 
-### Diapositiva 11 — La decisión de diseño central · 3:40 – 4:05
+### Diapositiva 12 — La decisión de diseño central · 3:40 – 4:05
 
-*Dos columnas, no las leas en voz alta: la comisión ya las está leyendo. Di la
-idea y deja que la pantalla haga el resto.*
+*Las dos columnas se leen solas: no las enumeres. Tú aporta el porqué, que es lo
+único que no está en pantalla.*
 
-> La decisión de diseño central que se tomó en el trabajo es la siguiente: la
-> adaptación no sube el daño, la velocidad ni la vida del jefe.
+> Lo primero es lo que <u>no cambia</u>. Estos tres parámetros son idénticos en
+> las dos versiones, y es deliberado: es lo que permite atribuir cualquier
+> diferencia al <u>comportamiento</u> del jefe, y no a que sea más fuerte.
 >
 > **[clic]**
 >
-> Cambia qué tan seguido elige cada ataque, en qué rangos de distancia los usa y
-> cuánto persigue al jugador.
+> Lo que sí cambia es <u>cómo usa ese mismo repertorio</u>: la frecuencia de cada
+> ataque, las distancias a las que los usa y cuánto persigue.
 >
-> **[clic]**
->
-> El jefe sigue siendo igual de fuerte, lo que cambia es su estrategia.
+> La distinción importa. Subir los números <u>endurece el juego para todos por
+> igual</u>; cambiar el comportamiento produce un jefe <u>distinto para cada
+> persona</u>.
 
-### Diapositiva 12 — El perfil de cuatro dimensiones · 4:05 – 5:40
+### Diapositiva 13 — El perfil de cuatro dimensiones · 4:05 – 5:40
 
 *Esta es la diapositiva más densa. No leas la tabla completa: recórrela.*
 
@@ -166,8 +165,9 @@ idea y deja que la pantalla haga el resto.*
 >
 > **[clic]**
 >
-> Y la cuarta observa hacia qué lado esquiva en la zona de tanque, y replica ese
-> mismo patrón en el jefe.
+> Y la cuarta observa hacia qué lado esquiva cuando el caballero se le viene
+> encima: si esquiva de lado sube el peso del <u>giro</u>, que barre alrededor;
+> si esquiva hacia atrás sube el del <u>salto</u>, que cierra la distancia.
 >
 > **[clic]**
 >
@@ -179,7 +179,7 @@ idea y deja que la pantalla haga el resto.*
 > el jugador, pero eso no ajusta los pesos antes del combate sino durante él,
 > como voy a mostrar en un momento.
 
-### Diapositiva 13 — De perfil a comportamiento · 5:40 – 6:20
+### Diapositiva 14 — Un ejemplo concreto · 5:40 – 6:20
 
 > Este es un ejemplo concreto. Un jugador que juega a distancia, esquiva bien lo
 > telegrafiado y tiende a esquivar de lado, termina enfrentando un jefe donde
@@ -192,12 +192,10 @@ idea y deja que la pantalla haga el resto.*
 > pasa más tiempo cerrando el espacio. Es el mismo jefe, con el mismo repertorio,
 > pero jugando distinto.
 >
-> Y hay una regla que no depende del perfil. Como la adaptación sube el peso de
-> algunos ataques, el jefe podría terminar usando el mismo cinco veces seguidas,
-> y eso no sería muy natural, además de muy previsible. Por eso ningún ataque puede salir tres veces
-> seguidas.
+> Y al margen del perfil, una regla fija: ningún ataque puede salir <u>tres veces
+> seguidas</u>, por mucho que haya subido su peso.
 
-### Diapositiva 14 — Ajustes durante el combate · 6:20 – 7:10
+### Diapositiva 15 — Ajustes durante el combate · 6:20 – 7:10
 
 > Esos pesos se calculan una sola vez, al empezar el combate, y son la parte
 > principal de la adaptación. Durante el combate hay además dos ajustes más
@@ -216,7 +214,7 @@ idea y deja que la pantalla haga el resto.*
 > sabe a qué porcentaje de vida suele curarse el jugador, y cuando entra a ese rango sube los pesos de los ataques
 > más rápidos, reduciéndole la ventana para tomar la poción.
 
-### Diapositiva 16 — Diseño experimental · 7:10 – 8:15
+### Diapositiva 17 — Diseño experimental · 7:10 – 8:15
 
 > Para evaluarlo se hizo una prueba A/B con diseño entre sujetos: cada persona
 > juega una sola condición, nunca las dos. Así, <u>lo que alguien aprende jugando
@@ -236,7 +234,7 @@ idea y deja que la pantalla haga el resto.*
 >
 > Participaron treinta personas: quince en cada condición. Cada sesión duró entre veinticinco y cuarenta minutos.
 
-### Diapositiva 17 — Los datos que se recogieron · 8:15 – 8:45
+### Diapositiva 18 — Los datos que se recogieron · 8:15 – 8:45
 
 > La medición tuvo dos partes. Durante la partida, el propio juego lleva un
 > registro interno con las métricas de comportamiento y, lo más importante, los
@@ -257,7 +255,7 @@ idea y deja que la pantalla haga el resto.*
 
 ## RESULTADOS — 8:45 a 16:40
 
-### Diapositiva 19 — Verificación técnica · 8:45 – 9:10
+### Diapositiva 20 — Verificación técnica · 8:45 – 9:10
 
 > Lo primero fue verificar que el sistema efectivamente funcionó: el ajuste
 > previo al combate fue el esperado en las quince sesiones adaptativas,
@@ -271,7 +269,7 @@ idea y deja que la pantalla haga el resto.*
 > Así, cualquier resultado que venga después no se explica por un sistema que
 > no funcionó.
 
-### Diapositiva 20 — SUS · 9:10 – 9:40
+### Diapositiva 21 — SUS · 9:10 – 9:40
 
 > En usabilidad, la tabla muestra los puntajes por grupo.
 >
@@ -292,7 +290,7 @@ idea y deja que la pantalla haga el resto.*
 > exactamente lo esperado: la adaptación cambia el comportamiento del jefe, no
 > la interfaz ni los controles.
 
-### Diapositiva 21 — GEQ global · 9:40 – 10:25
+### Diapositiva 22 — GEQ global · 9:40 – 10:25
 
 > En el GEQ, mirando los grupos completos, ninguna de las cinco dimensiones
 > alcanzó significancia estadística, y todos los tamaños de efecto son pequeños.
@@ -313,7 +311,7 @@ idea y deja que la pantalla haga el resto.*
 *Marca el tono: acá reconoces que el resultado global es negativo. No lo
 escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
-### Diapositiva 22 — El hallazgo · 10:25 – 12:10
+### Diapositiva 23 — El hallazgo · 10:25 – 12:10
 
 > Al observar a los participantes jugar durante las sesiones surgió una
 > hipótesis: el sistema no se percibe igual en todos. Daba la impresión de que
@@ -349,7 +347,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > ambos perfiles reportan una tensión prácticamente igual. La diferencia aparece
 > solo cuando el jefe se adapta.
 
-### Diapositiva 23 — La correlación · 12:10 – 12:40
+### Diapositiva 24 — La correlación · 12:10 – 12:40
 
 > Lo mismo se ve midiéndolo de forma continua, sin cortar por la mediana. La
 > correlación entre la distancia que la persona mantuvo en la exploración y la
@@ -365,7 +363,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > Que la asociación exista solo cuando el jefe se adapta es la evidencia más
 > directa de este estudio de que el sistema generó una experiencia diferenciada.
 
-### Diapositiva 24 — Descartando la habilidad · 12:40 – 13:30
+### Diapositiva 25 — Descartando la habilidad · 12:40 – 13:30
 
 > Acá vuelvo a la explicación alternativa que mencioné hace un momento: los
 > jugadores agresivos y cercanos solían ser también los más experimentados. Si
@@ -392,7 +390,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 >
 > No solo se mantuvo, sino que siguió siendo significativa.
 
-### Diapositiva 25 — Lo que los jugadores dijeron · 13:30 – 14:50
+### Diapositiva 26 — Lo que los jugadores dijeron · 13:30 – 14:50
 
 > En las preguntas abiertas hay dos resultados y un hallazgo que obliga a
 > leerlos con cuidado.
@@ -417,7 +415,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 > Por eso el análisis de este trabajo se apoya principalmente en las métricas
 > objetivas y no en lo que el jugador declara.
 
-### Diapositiva 27 — Implicancias de diseño · 14:50 – 16:40
+### Diapositiva 28 — Implicancias de diseño · 14:50 – 16:40
 
 *Esta diapositiva es tu aporte más transferible. Habla con soltura, no leas.*
 
@@ -459,7 +457,7 @@ escondas, pero no te quedes ahí — la frase siguiente es el giro.*
 
 ## CIERRE — 16:40 a 19:20
 
-### Diapositiva 28 — Limitaciones · 16:40 – 17:55
+### Diapositiva 29 — Limitaciones · 16:40 – 17:55
 
 *Rápido. No te disculpes, enúncialas con seguridad: reconocerlas te da
 credibilidad.*
@@ -497,7 +495,7 @@ credibilidad.*
 > referencias al sistema por el juego y el otro traducido, así que no son los
 > instrumentos validados en su forma original.
 
-### Diapositiva 29 — Conclusiones · 17:55 – 18:50
+### Diapositiva 30 — Conclusiones · 17:55 – 18:50
 
 > Primero, el sistema funciona como se especificó: las reglas predicen
 > exactamente los pesos registrados en las quince sesiones.
@@ -521,7 +519,7 @@ credibilidad.*
 > mejor contra quienes se mantienen a distancia que contra quienes pelean cuerpo
 > a cuerpo. Con esto el objetivo general se cumplió.
 
-### Diapositiva 30 — Trabajo futuro · 18:50 – 19:15
+### Diapositiva 31 — Trabajo futuro · 18:50 – 19:15
 
 > Las líneas más directas: repetir la evaluación con más participantes, del
 > orden de cuarenta por condición; reforzar la adaptación contra el perfil
@@ -529,7 +527,7 @@ credibilidad.*
 > adaptación al combate mismo; y complementar lo que el jugador declara con
 > medidas menos dependientes de su opinión.
 
-### Diapositiva 31 — Cierre · 19:15 – 19:20
+### Diapositiva 32 — Cierre · 19:15 – 19:20
 
 > Eso es todo. Muchas gracias por su atención, y quedo atento a sus preguntas.
 

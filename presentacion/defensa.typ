@@ -194,7 +194,7 @@
   ],
 )
 
-== La excepción, y la pregunta
+== La pregunta de este trabajo
 
 #grid(
   columns: (1fr, 1.1fr),
@@ -283,8 +283,8 @@
 #set text(size: 16pt)
 - Unreal Engine 5.6, *Blueprints + C++*, con las herramientas nativas de IA del
   motor (_Behaviour Tree_ y _Blackboard_).
-- Mecánicas clásicas de juegos de acción: melee, hechizos a distancia, esquiva
-  con _i-frames_, _stamina_, pociones y fijado de objetivo.
+- Mecánicas clásicas de juegos de acción: melee, hechizos a distancia, esquiva,
+  _stamina_, pociones y fijado de objetivo.
 
 #v(10pt)
 #align(center, grid(
@@ -297,34 +297,46 @@
 
 == Los tres niveles
 
-#set text(size: 16pt)
-El juego son tres niveles: un *tutorial* donde se aprenden los controles, un
-*nivel previo* con tres arquetipos de enemigo regular, y el combate contra el
-*jefe*.
+#let rotulo(n, titulo) = [
+  #text(size: 20pt, weight: "bold", fill: azul)[#n]
+  #h(10pt)
+  #text(size: 20pt, weight: "bold")[#titulo]
+]
 
-#v(10pt)
+#rotulo([1], [Tutorial])
+#v(8pt)
 #align(center, grid(
-  columns: (12.59cm, 10.05cm),
-  column-gutter: 10pt,
+  columns: (11.36cm, 11.07cm),
+  column-gutter: 12pt,
   align: top,
-  captura("cap5/main-menu_OG_ESTE_ES.png", [El menú principal], alto: 7cm),
-  captura("cap5/manequinn-y-puerta.png", [El tutorial], alto: 7cm),
+  captura("cap5/manequinn-y-puerta.png", [Tutorial], alto: 8cm),
+  captura("cap3/espinas-y-puente.png", [Tutorial], alto: 8cm),
 ))
 
-== El nivel previo: donde el sistema observa
+== Los tres niveles
 
-#set text(size: 16pt)
-El nivel previo no es relleno: es donde el sistema *observa* cómo juega la
-persona. Cada arquetipo está diseñado para *exponer una dimensión distinta* de
-su estilo de juego.
-
-#v(10pt)
+#rotulo([2], [Nivel previo])
+#v(8pt)
 #align(center, grid(
-  columns: (9.93cm, 13.01cm),
+  columns: (9.15cm, 7.39cm, 8.96cm),
   column-gutter: 10pt,
   align: top,
-  captura("cap3/sala-central-nivelprevio.png", [El nivel previo], alto: 7cm),
-  captura("cap5/player-locking-enemy.png", [El combate contra el jefe], alto: 7cm),
+  captura("cap3/sala-central-nivelprevio.png", [La sala central], alto: 6.45cm),
+  captura("cap3/enemies_comparative.png", [Los tres enemigos], alto: 6.45cm),
+  captura("cap3/sala-con-3magos-zonarango.png",
+    [La zona de enemigos a distancia], alto: 6.45cm),
+))
+
+== Los tres niveles
+
+#rotulo([3], [Combate contra el jefe])
+#v(8pt)
+#align(center, grid(
+  columns: (10.74cm, 14.86cm),
+  column-gutter: 12pt,
+  align: top,
+  captura("cap3/boss_arena.png", [La arena], alto: 8cm),
+  captura("cap5/player-locking-enemy.png", [El combate], alto: 8cm),
 ))
 
 == El repertorio del jefe
@@ -404,40 +416,36 @@ parten con el mismo peso base.
   ]),
 )
 
-#v(6pt)
-#uncover("3-", align(center, text(size: 17pt, fill: tinta.lighten(15%))[
-  El jefe sigue siendo igual de fuerte, lo que cambia es su estrategia
-]))
 
 == El perfil de juego: cuatro dimensiones
 
 #set text(size: 16pt)
 #tabla(
   columns: (auto, 1fr, 1.2fr),
-  table.header([*Dimensión*], [*Qué observa*], [*Hacia dónde empuja al jefe*]),
+  table.header([*Dimensión*], [*Qué observa*], [*Qué ajusta en el jefe*]),
       table.hline(stroke: 0.6pt + borde),
   [Distancia],
-  [Distancia promedio frente al esqueleto normal y al caballero],
+  [Distancia promedio frente a los enemigos],
   [Achica el rango cercano o alarga la persecución],
-  uncover("2-")[Melee vs. rango],
+  uncover("2-")[Melee vs rango],
   uncover("2-")[Proporción de ataques a distancia sobre el total],
   uncover("2-")[Refuerza ataques que cierran distancia, o los que castigan de cerca],
-  uncover("3-")[Esquiva],
+  uncover("3-")[Éxito al esquivar],
   uncover("3-")[Proporción de esquivas exitosas contra el ataque telegrafiado],
   uncover("3-")[Refuerza el ataque difícil de leer, o los de preparación larga],
-  uncover("4-")[Zona de tanque],
-  uncover("4-")[Hacia qué lado esquiva y con qué éxito frente al caballero],
-  uncover("4-")[Refuerza Giro o Salto, replicando su patrón de reacción],
+  uncover("4-")[Dirección de esquiva],
+  uncover("4-")[Hacia qué lado esquiva frente al avance del caballero],
+  uncover("4-")[Giro si esquiva de lado, Salto si esquiva hacia atrás],
 )
 
 #v(6pt)
 #uncover("5-", text(size: 14pt)[
   Cada regla que se activa suma *+10 o +15 al peso* de ciertos ataques, sobre un
-  *peso base de 50*, sin eliminar ninguno. Se registra además el *porcentaje de
-  vida al que suele curarse*, usado durante el combate.
+  *peso base de 50*. Se registra además el *porcentaje de vida al que suele
+  curarse*, usado durante el combate.
 ])
 
-== De perfil a comportamiento
+== Un ejemplo concreto
 
 #grid(
   columns: (1.3fr, 1fr),
@@ -470,20 +478,14 @@ parten con el mismo peso base.
       [Persecución], [*+2 s* \ pasa más tiempo cerrando espacio],
     )
 
-    #v(10pt)
-    *Una restricción independiente del perfil:*
-
-    #destaca[
-      Ningún ataque puede elegirse *tres veces seguidas*, por mucho que haya
-      subido su peso.
-    ]
-
-    #v(6pt)
-    #text(size: 15pt)[
-      Así el jefe no termina repitiendo el mismo ataque una y otra vez, algo que se vería poco natural.
-    ]
   ],
 )
+
+#v(12pt)
+#align(center, text(size: 14.5pt, fill: tinta.lighten(25%))[
+  Aparte del perfil, ningún ataque puede salir *tres veces seguidas*, por mucho
+  que haya subido su peso.
+])
 
 == Dos ajustes adicionales durante el combate
 
